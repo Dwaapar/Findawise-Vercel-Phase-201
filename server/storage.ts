@@ -423,6 +423,11 @@ declare const emotionProfiles: AnyPgTable;
 declare const globalComplianceAuditSystem: AnyPgTable;
 import { randomUUID } from "crypto";
 
+const enableDisasterRecovery = process.env.ENABLE_DR_SCENARIOS === "true";
+const enableCultureMap = process.env.ENABLE_CULTURE_MAP === "true";
+const enableEmotionProfiles = process.env.ENABLE_EMOTION_PROFILES === "true";
+const enableComplianceAudit = process.env.ENABLE_COMPLIANCE_AUDIT === "true";
+
 export interface IStorage {
   // User operations
   getUser(id: number): Promise<User | undefined>;
@@ -3856,6 +3861,9 @@ export class DatabaseStorage implements IStorage {
 
   // Multi-Region Disaster Recovery methods
   async getDisasterRecoveryScenarios(): Promise<any[]> {
+    if (!enableDisasterRecovery) {
+      return [];
+    }
     try {
       // Since the table might not exist yet, return default scenarios
       return [
@@ -3916,7 +3924,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createDisasterRecoveryScenario(scenario: any): Promise<any> {
-    if (typeof disasterRecoveryScenarios === "undefined") {
+    if (!enableDisasterRecovery || typeof disasterRecoveryScenarios === "undefined") {
       console.warn("Disaster recovery scenarios table not configured");
       return { id: randomUUID(), ...scenario };
     }
@@ -4557,7 +4565,7 @@ export class DatabaseStorage implements IStorage {
   // ===================================================================
 
   async getCulturalMappings(filters: any = {}): Promise<any[]> {
-    if (typeof culturalMappings === "undefined") {
+    if (!enableCultureMap || typeof culturalMappings === "undefined") {
       console.warn("culturalMappings table not configured");
       return [];
     }
@@ -4587,7 +4595,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createCulturalMapping(mappingData: any): Promise<any> {
-    if (typeof culturalMappings === "undefined") {
+    if (!enableCultureMap || typeof culturalMappings === "undefined") {
       console.warn("culturalMappings table not configured");
       return { ...mappingData };
     }
@@ -4613,7 +4621,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getEmotionProfiles(filters: any = {}): Promise<any[]> {
-    if (typeof emotionProfiles === "undefined") {
+    if (!enableEmotionProfiles || typeof emotionProfiles === "undefined") {
       console.warn("emotionProfiles table not configured");
       return [];
     }
@@ -4639,7 +4647,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createEmotionProfile(profileData: any): Promise<any> {
-    if (typeof emotionProfiles === "undefined") {
+    if (!enableEmotionProfiles || typeof emotionProfiles === "undefined") {
       console.warn("emotionProfiles table not configured");
       return { ...profileData };
     }
@@ -7733,11 +7741,19 @@ export class DatabaseStorage implements IStorage {
 
   // Compliance Audit System
   async createComplianceAudit(audit: InsertComplianceAuditSystem): Promise<ComplianceAuditSystem> {
+    if (!enableComplianceAudit) {
+      console.warn("Compliance audit system disabled");
+      return { ...audit } as ComplianceAuditSystem;
+    }
     const [newAudit] = await db.insert(complianceAuditSystem).values(audit).returning();
     return newAudit;
   }
 
   async getComplianceAuditByAuditId(auditId: string): Promise<ComplianceAuditSystem | undefined> {
+    if (!enableComplianceAudit) {
+      console.warn("Compliance audit system disabled");
+      return undefined;
+    }
     const [audit] = await db.select()
       .from(complianceAuditSystem)
       .where(eq(complianceAuditSystem.auditId, auditId));
@@ -7745,6 +7761,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getComplianceAudits(filters: any): Promise<ComplianceAuditSystem[]> {
+    if (!enableComplianceAudit) {
+      console.warn("Compliance audit system disabled");
+      return [];
+    }
     let query = db.select().from(complianceAuditSystem);
     
     if (filters.auditType) {
@@ -8599,6 +8619,10 @@ export class DatabaseStorage implements IStorage {
    * Get compliance audit data for reporting
    */
   async getComplianceAuditData(startDate: Date, endDate: Date, networkSlug?: string): Promise<any[]> {
+    if (!enableComplianceAudit) {
+      console.warn("Compliance audit system disabled");
+      return [];
+    }
     try {
       let query = db.select()
         .from(complianceAuditSystem)

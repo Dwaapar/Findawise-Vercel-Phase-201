@@ -10,7 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "@shared/*": ["shared/*"]
-    }
+    },
+    "noEmit": true
   },
-  "include": ["server", "shared", "vite.config.ts"]
+  "include": ["server", "shared", "server/types", "vite.config.ts"]
 }
