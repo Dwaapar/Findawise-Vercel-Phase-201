@@ -178,55 +178,23 @@ export const saasContent = pgTable("saas_content", {
 });
 
 // Insert schemas
-export const insertSaasToolSchema = createInsertSchema(saasTools).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertSaasToolSchema = createInsertSchema(saasTools);
 
-export const insertSaasCategorySchema = createInsertSchema(saasCategories).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertSaasCategorySchema = createInsertSchema(saasCategories);
 
-export const insertSaasStackSchema = createInsertSchema(saasStacks).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertSaasStackSchema = createInsertSchema(saasStacks);
 
-export const insertSaasReviewSchema = createInsertSchema(saasReviews).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertSaasReviewSchema = createInsertSchema(saasReviews);
 
-export const insertSaasComparisonSchema = createInsertSchema(saasComparisons).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertSaasComparisonSchema = createInsertSchema(saasComparisons);
 
-export const insertSaasDealSchema = createInsertSchema(saasDeals).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertSaasDealSchema = createInsertSchema(saasDeals);
 
-export const insertSaasQuizResultSchema = createInsertSchema(saasQuizResults).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertSaasQuizResultSchema = createInsertSchema(saasQuizResults);
 
-export const insertSaasCalculatorResultSchema = createInsertSchema(saasCalculatorResults).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertSaasCalculatorResultSchema = createInsertSchema(saasCalculatorResults);
 
-export const insertSaasContentSchema = createInsertSchema(saasContent).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertSaasContentSchema = createInsertSchema(saasContent);
 
 // Types
 export type SaasTool = typeof saasTools.$inferSelect;

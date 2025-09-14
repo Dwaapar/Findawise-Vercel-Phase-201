@@ -168,11 +168,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
 });
 
-export const insertUserSchema = createInsertSchema(users, {
-  id: undefined,
-}).omit({
-  id: true,
-});
+export const insertUserSchema = createInsertSchema(users);
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -278,45 +274,19 @@ export const pageAffiliateAssignments = pgTable("page_affiliate_assignments", {
 });
 
 // Insert schemas
-export const insertAffiliateNetworkSchema = createInsertSchema(affiliateNetworks, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertAffiliateNetworkSchema = createInsertSchema(affiliateNetworks);
 
-export const insertAffiliateOfferSchema = createInsertSchema(affiliateOffers, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertAffiliateOfferSchema = createInsertSchema(affiliateOffers);
 
-export const insertAffiliateClickSchema = createInsertSchema(affiliateClicks, {
-  id: undefined,
-  clickedAt: undefined,
-}).omit({ id: true, clickedAt: true });
+export const insertAffiliateClickSchema = createInsertSchema(affiliateClicks);
 
-export const insertPageAffiliateAssignmentSchema = createInsertSchema(pageAffiliateAssignments, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({ id: true, createdAt: true });
+export const insertPageAffiliateAssignmentSchema = createInsertSchema(pageAffiliateAssignments);
 
-export const insertUserSessionSchema = createInsertSchema(userSessions, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertUserSessionSchema = createInsertSchema(userSessions);
 
-export const insertBehaviorEventSchema = createInsertSchema(behaviorEvents, {
-  id: undefined,
-  createdAt: undefined,
-  timestamp: undefined,
-}).omit({ id: true, createdAt: true, timestamp: true });
+export const insertBehaviorEventSchema = createInsertSchema(behaviorEvents);
 
-export const insertQuizResultSchema = createInsertSchema(quizResults, {
-  id: undefined,
-  createdAt: undefined,
-  timestamp: undefined,
-}).omit({ id: true, createdAt: true, timestamp: true });
+export const insertQuizResultSchema = createInsertSchema(quizResults);
 
 // Types
 export type InsertAffiliateNetwork = z.infer<typeof insertAffiliateNetworkSchema>;
@@ -418,51 +388,15 @@ export const experimentResults = pgTable("experiment_results", {
 });
 
 // Insert schemas for A/B testing
-export const insertExperimentSchema = createInsertSchema(experiments, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertExperimentSchema = createInsertSchema(experiments);
 
-export const insertExperimentVariantSchema = createInsertSchema(experimentVariants, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertExperimentVariantSchema = createInsertSchema(experimentVariants);
 
-export const insertUserExperimentAssignmentSchema = createInsertSchema(userExperimentAssignments, {
-  id: undefined,
-  assignedAt: undefined,
-}).omit({
-  id: true,
-  assignedAt: true,
-});
+export const insertUserExperimentAssignmentSchema = createInsertSchema(userExperimentAssignments);
 
-export const insertExperimentEventSchema = createInsertSchema(experimentEvents, {
-  id: undefined,
-  timestamp: undefined,
-}).omit({
-  id: true,
-  timestamp: true,
-});
+export const insertExperimentEventSchema = createInsertSchema(experimentEvents);
 
-export const insertExperimentResultSchema = createInsertSchema(experimentResults, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertExperimentResultSchema = createInsertSchema(experimentResults);
 
 // Types for A/B testing
 export type InsertExperiment = z.infer<typeof insertExperimentSchema>;
@@ -591,69 +525,19 @@ export const emailCampaigns = pgTable("email_campaigns", {
 });
 
 // Insert schemas for Lead Capture System
-export const insertLeadMagnetSchema = createInsertSchema(leadMagnets, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertLeadMagnetSchema = createInsertSchema(leadMagnets);
 
-export const insertLeadFormSchema = createInsertSchema(leadForms, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertLeadFormSchema = createInsertSchema(leadForms);
 
-export const insertLeadCaptureSchema = createInsertSchema(leadCaptures, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertLeadCaptureSchema = createInsertSchema(leadCaptures);
 
-export const insertLeadFormAssignmentSchema = createInsertSchema(leadFormAssignments, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertLeadFormAssignmentSchema = createInsertSchema(leadFormAssignments);
 
-export const insertLeadExperimentSchema = createInsertSchema(leadExperiments, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertLeadExperimentSchema = createInsertSchema(leadExperiments);
 
-export const insertLeadActivitySchema = createInsertSchema(leadActivities, {
-  id: undefined,
-  timestamp: undefined,
-}).omit({
-  id: true,
-  timestamp: true,
-});
+export const insertLeadActivitySchema = createInsertSchema(leadActivities);
 
-export const insertEmailCampaignSchema = createInsertSchema(emailCampaigns, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertEmailCampaignSchema = createInsertSchema(emailCampaigns);
 
 // Types for Lead Capture System
 export type InsertLeadMagnet = z.infer<typeof insertLeadMagnetSchema>;
@@ -863,78 +747,21 @@ export const modelPerformanceTracking = pgTable("model_performance_tracking", {
 });
 
 // Insert schemas for AI/ML tables
-export const insertMlModelSchema = createInsertSchema(mlModels, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertMlModelSchema = createInsertSchema(mlModels);
 
-export const insertMlTrainingDataSchema = createInsertSchema(mlTrainingData, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertMlTrainingDataSchema = createInsertSchema(mlTrainingData);
 
-export const insertMlPredictionSchema = createInsertSchema(mlPredictions, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertMlPredictionSchema = createInsertSchema(mlPredictions);
 
-export const insertOrchestrationRunSchema = createInsertSchema(orchestrationRuns, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertOrchestrationRunSchema = createInsertSchema(orchestrationRuns);
 
-export const insertOrchestrationChangeSchema = createInsertSchema(orchestrationChanges, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertOrchestrationChangeSchema = createInsertSchema(orchestrationChanges);
 
-export const insertLlmInsightSchema = createInsertSchema(llmInsights, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertLlmInsightSchema = createInsertSchema(llmInsights);
 
-export const insertLlmSchedulingSchema = createInsertSchema(llmScheduling, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertLlmSchedulingSchema = createInsertSchema(llmScheduling);
 
-export const insertModelPerformanceTrackingSchema = createInsertSchema(modelPerformanceTracking, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertModelPerformanceTrackingSchema = createInsertSchema(modelPerformanceTracking);
 
 // Types for AI/ML system
 export type InsertMlModel = z.infer<typeof insertMlModelSchema>;
@@ -1113,91 +940,21 @@ export const analyticsSyncStatus = pgTable("analytics_sync_status", {
 });
 
 // Insert schemas for cross-device system
-export const insertGlobalUserProfileSchema = createInsertSchema(globalUserProfiles, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertGlobalUserProfileSchema = createInsertSchema(globalUserProfiles);
 
-export const insertDeviceFingerprintSchema = createInsertSchema(deviceFingerprints, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertDeviceFingerprintSchema = createInsertSchema(deviceFingerprints);
 
-export const insertUserProfileMergeHistorySchema = createInsertSchema(userProfileMergeHistory, {
-  id: undefined,
-  mergedAt: undefined,
-}).omit({
-  id: true,
-  mergedAt: true,
-});
+export const insertUserProfileMergeHistorySchema = createInsertSchema(userProfileMergeHistory);
 
-export const insertAnalyticsEventSchema = createInsertSchema(analyticsEvents, {
-  id: undefined,
-  serverTimestamp: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  serverTimestamp: true,
-  createdAt: true,
-}).extend({
-  eventId: z.string().optional(), // Allow eventId to be optional
-}).partial({
-  globalUserId: true,
-  deviceFingerprint: true,
-  eventCategory: true,
-  eventLabel: true,
-  eventValue: true,
-  pageTitle: true,
-  referrerUrl: true,
-  utmSource: true,
-  utmMedium: true,
-  utmCampaign: true,
-  utmTerm: true,
-  utmContent: true,
-  browserName: true,
-  browserVersion: true,
-  operatingSystem: true,
-  screenResolution: true,
-  language: true,
-  timezone: true,
-  ipAddress: true,
-  country: true,
-  region: true,
-  city: true,
-  coordinates: true,
-  customData: true,
-  processingDelay: true,
-  isProcessed: true,
-  batchId: true
-});
+export const insertAnalyticsEventSchema = createInsertSchema(analyticsEvents)
+  .extend({
+    eventId: z.string().optional(), // Allow eventId to be optional
+  })
+  .partial();
 
-export const insertSessionBridgeSchema = createInsertSchema(sessionBridge, {
-  id: undefined,
-  linkedAt: undefined,
-}).omit({
-  id: true,
-  linkedAt: true,
-});
+export const insertSessionBridgeSchema = createInsertSchema(sessionBridge);
 
-export const insertAnalyticsSyncStatusSchema = createInsertSchema(analyticsSyncStatus, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertAnalyticsSyncStatusSchema = createInsertSchema(analyticsSyncStatus);
 
 // Types for cross-device system
 export type InsertGlobalUserProfile = z.infer<typeof insertGlobalUserProfileSchema>;
@@ -1418,33 +1175,11 @@ export const apiNeuronAnalytics = pgTable("api_neuron_analytics", {
 });
 
 // Insert schemas for Federation System
-export const insertNeuronSchema = createInsertSchema(neurons, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  registeredAt: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertNeuronSchema = createInsertSchema(neurons);
 
-export const insertNeuronConfigSchema = createInsertSchema(neuronConfigs, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertNeuronConfigSchema = createInsertSchema(neuronConfigs);
 
-export const insertNeuronStatusUpdateSchema = createInsertSchema(neuronStatusUpdates, {
-  id: undefined,
-  timestamp: undefined,
-}).omit({
-  id: true,
-  timestamp: true,
-}).extend({
+export const insertNeuronStatusUpdateSchema = createInsertSchema(neuronStatusUpdates).extend({
   // Fix float/integer validation issues with robust transformation
   uptime: z.coerce.number().transform(val => Math.floor(Number(val) || 0)),
   healthScore: z.coerce.number().min(0).max(100).transform(val => Math.floor(Number(val) || 100)),
@@ -1453,52 +1188,16 @@ export const insertNeuronStatusUpdateSchema = createInsertSchema(neuronStatusUpd
   metadata: z.any().optional()
 });
 
-export const insertFederationEventSchema = createInsertSchema(federationEvents, {
-  id: undefined,
-  timestamp: undefined,
-}).omit({
-  id: true,
-  timestamp: true,
-});
+export const insertFederationEventSchema = createInsertSchema(federationEvents);
 
-export const insertNeuronAnalyticsSchema = createInsertSchema(neuronAnalytics, {
-  id: undefined,
-  date: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertNeuronAnalyticsSchema = createInsertSchema(neuronAnalytics);
 
-export const insertEmpireConfigSchema = createInsertSchema(empireConfig, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertEmpireConfigSchema = createInsertSchema(empireConfig);
 
 // Insert schemas for API-Only Neurons
-export const insertApiOnlyNeuronSchema = createInsertSchema(apiOnlyNeurons, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  registeredAt: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertApiOnlyNeuronSchema = createInsertSchema(apiOnlyNeurons);
 
-export const insertApiNeuronHeartbeatSchema = createInsertSchema(apiNeuronHeartbeats, {
-  id: undefined,
-  timestamp: undefined,
-}).omit({
-  id: true,
-  timestamp: true,
-}).extend({
+export const insertApiNeuronHeartbeatSchema = createInsertSchema(apiNeuronHeartbeats).extend({
   // Fix float/integer validation issues with robust transformation
   uptime: z.coerce.number().transform(val => Math.floor(Number(val) || 0)),
   healthScore: z.coerce.number().min(0).max(100).transform(val => Math.floor(Number(val) || 100)),
@@ -1515,22 +1214,9 @@ export const insertApiNeuronHeartbeatSchema = createInsertSchema(apiNeuronHeartb
   buildVersion: z.string().optional()
 });
 
-export const insertApiNeuronCommandSchema = createInsertSchema(apiNeuronCommands, {
-  id: undefined,
-  createdAt: undefined,
-}).omit({
-  id: true,
-  issuedAt: true,
-});
+export const insertApiNeuronCommandSchema = createInsertSchema(apiNeuronCommands);
 
-export const insertApiNeuronAnalyticsSchema = createInsertSchema(apiNeuronAnalytics, {
-  id: undefined,
-  date: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertApiNeuronAnalyticsSchema = createInsertSchema(apiNeuronAnalytics);
 
 // Types for Federation System
 export type InsertNeuron = z.infer<typeof insertNeuronSchema>;
@@ -1599,31 +1285,11 @@ export const performanceLogs = pgTable("performance_logs", {
 });
 
 // Insert schemas for monitoring tables
-export const insertSystemMetricsSchema = createInsertSchema(systemMetrics, {
-  id: undefined,
-  timestamp: undefined,
-}).omit({
-  id: true,
-  createdAt: true
-});
+export const insertSystemMetricsSchema = createInsertSchema(systemMetrics);
 
-export const insertAlertRuleSchema = createInsertSchema(alertRules, {
-  id: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertAlertRuleSchema = createInsertSchema(alertRules);
 
-export const insertPerformanceLogSchema = createInsertSchema(performanceLogs, {
-  id: undefined,
-  timestamp: undefined,
-}).omit({
-  id: true,
-  createdAt: true
-});
+export const insertPerformanceLogSchema = createInsertSchema(performanceLogs);
 
 // Types for monitoring tables
 export type InsertSystemMetric = z.infer<typeof insertSystemMetricsSchema>;

@@ -221,68 +221,27 @@ export const travelAnalyticsEvents = pgTable("travel_analytics_events", {
 });
 
 // Zod schemas for validation
-export const insertTravelDestinationSchema = createInsertSchema(travelDestinations).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTravelDestinationSchema = createInsertSchema(travelDestinations);
 
-export const insertTravelArticleSchema = createInsertSchema(travelArticles).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTravelArticleSchema = createInsertSchema(travelArticles);
 
-export const insertTravelArchetypeSchema = createInsertSchema(travelArchetypes).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTravelArchetypeSchema = createInsertSchema(travelArchetypes);
 
-export const insertTravelQuizQuestionSchema = createInsertSchema(travelQuizQuestions).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertTravelQuizQuestionSchema = createInsertSchema(travelQuizQuestions);
 
-export const insertTravelQuizResultSchema = createInsertSchema(travelQuizResults).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertTravelQuizResultSchema = createInsertSchema(travelQuizResults);
 
-export const insertTravelOfferSchema = createInsertSchema(travelOffers).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTravelOfferSchema = createInsertSchema(travelOffers);
 
-export const insertTravelItinerarySchema = createInsertSchema(travelItineraries).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTravelItinerarySchema = createInsertSchema(travelItineraries);
 
-export const insertTravelToolSchema = createInsertSchema(travelTools).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTravelToolSchema = createInsertSchema(travelTools);
 
-export const insertTravelUserSessionSchema = createInsertSchema(travelUserSessions).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTravelUserSessionSchema = createInsertSchema(travelUserSessions);
 
-export const insertTravelContentSourceSchema = createInsertSchema(travelContentSources).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTravelContentSourceSchema = createInsertSchema(travelContentSources);
 
-export const insertTravelAnalyticsEventSchema = createInsertSchema(travelAnalyticsEvents).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertTravelAnalyticsEventSchema = createInsertSchema(travelAnalyticsEvents);
 
 // Type exports
 export type TravelDestination = typeof travelDestinations.$inferSelect;

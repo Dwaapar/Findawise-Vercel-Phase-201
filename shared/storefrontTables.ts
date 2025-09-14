@@ -415,29 +415,13 @@ export const storefrontABTests = pgTable("storefront_ab_tests", {
 });
 
 // Create schemas for validation
-export const insertDigitalProductSchema = createInsertSchema(digitalProducts).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertDigitalProductSchema = createInsertSchema(digitalProducts);
 
-export const insertOrderSchema = createInsertSchema(orders).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertOrderSchema = createInsertSchema(orders);
 
-export const insertPromoCodeSchema = createInsertSchema(promoCodes).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertPromoCodeSchema = createInsertSchema(promoCodes);
 
-export const insertAffiliatePartnerSchema = createInsertSchema(affiliatePartners).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertAffiliatePartnerSchema = createInsertSchema(affiliatePartners);
 
 // Type exports
 export type InsertDigitalProduct = z.infer<typeof insertDigitalProductSchema>;

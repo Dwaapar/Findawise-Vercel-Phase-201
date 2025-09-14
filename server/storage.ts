@@ -383,7 +383,9 @@ import {
   pwaNotificationCampaigns,
   pwaConfig,
   pwaUsageStats,
-  offlineQueue
+  offlineQueue,
+  culturalMappings,
+  emotionProfiles
 } from "@shared/schema";
 
 // Import localization tables
@@ -395,7 +397,8 @@ import {
 // Import multi-region tables
 import {
   regions,
-  regionHealth
+  regionHealth,
+  disasterRecoveryScenarios
 } from "@shared/multiRegionTables";
 
 // Import storefront tables
@@ -414,7 +417,7 @@ import {
 } from "@shared/storefrontTables";
 
 import { db } from "./db";
-import { eq, and, desc, gte, lte, sql, count } from "drizzle-orm";
+import { eq, and, desc, gte, lte, sql, count, inArray, or, like } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -3041,7 +3044,7 @@ export class DatabaseStorage implements IStorage {
       const currentNeuron = neuron[0];
       const currentStatus = latestStatus[0];
 
-      return {
+      return { 
         neuronId: currentNeuron.neuronId,
         name: currentNeuron.name,
         type: currentNeuron.type,
@@ -3071,6 +3074,18 @@ export class DatabaseStorage implements IStorage {
       console.error(`Error getting neuron status for ${neuronId}:`, error);
       return null;
     }
+  }
+
+  /**
+   * Retrieve health status for all neurons
+   */
+  async getNeuronHealthStatus(): Promise<any> {
+    const neurons = await this.getNeurons();
+    return neurons.map(n => ({
+      neuronId: n.neuronId,
+      status: n.status,
+      healthScore: n.healthScore ?? 0
+    }));
   }
 
   /**
@@ -8482,7 +8497,7 @@ export class DatabaseStorage implements IStorage {
   async logComplianceDecision(logEntry: any): Promise<void> {
     try {
       // Store in compliance audit system
-      await db.insert(globalComplianceAuditSystem).values({
+      await db.insert(complianceAuditSystem).values({
         complianceType: 'affiliate_redirect',
         entityId: `${logEntry.networkSlug}_${logEntry.offerSlug}`,
         auditData: {
@@ -8509,20 +8524,20 @@ export class DatabaseStorage implements IStorage {
   async getComplianceAuditData(startDate: Date, endDate: Date, networkSlug?: string): Promise<any[]> {
     try {
       let query = db.select()
-        .from(globalComplianceAuditSystem)
+        .from(complianceAuditSystem)
         .where(and(
-          eq(globalComplianceAuditSystem.complianceType, 'affiliate_redirect'),
-          gte(globalComplianceAuditSystem.auditDate, startDate),
-          lte(globalComplianceAuditSystem.auditDate, endDate)
+          eq(complianceAuditSystem.complianceType, 'affiliate_redirect'),
+          gte(complianceAuditSystem.auditDate, startDate),
+          lte(complianceAuditSystem.auditDate, endDate)
         ));
 
       if (networkSlug) {
         query = query.where(
-          like(globalComplianceAuditSystem.entityId, `${networkSlug}_%`)
+          like(complianceAuditSystem.entityId, `${networkSlug}_%`)
         );
       }
 
-      const auditData = await query.orderBy(desc(globalComplianceAuditSystem.auditDate));
+      const auditData = await query.orderBy(desc(complianceAuditSystem.auditDate));
 
       return auditData.map(audit => ({
         ...audit,

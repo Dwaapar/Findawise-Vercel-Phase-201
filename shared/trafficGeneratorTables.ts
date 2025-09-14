@@ -163,7 +163,7 @@ export const newsletterSubscribers = pgTable("newsletter_subscribers", {
     contentTypes: string[];
     language: string;
     timezone: string;
-  }>().default({}),
+  }>().default({ frequency: "", contentTypes: [], language: "", timezone: "" }),
   segments: jsonb("segments").$type<string[]>().default([]),
   tags: jsonb("tags").$type<string[]>().default([]),
   engagementScore: real("engagement_score").default(0),
@@ -195,7 +195,7 @@ export const newsletterAnalytics = pgTable("newsletter_analytics", {
     country: string;
     state: string;
     city: string;
-  }>().default({}),
+  }>().default({ country: "", state: "", city: "" }),
   metadata: jsonb("metadata").$type<Record<string, any>>().default({})
 });
 
@@ -471,7 +471,7 @@ export const publicWidgets = pgTable("public_widgets", {
     showLogo: boolean;
     customColors: boolean;
     customFonts: boolean;
-  }>().default({}),
+  }>().default({ showLogo: false, customColors: false, customFonts: false }),
   usageCount: integer("usage_count").default(0),
   domains: jsonb("domains").$type<string[]>().default([]),
   allowedDomains: jsonb("allowed_domains").$type<string[]>().default([]),
