@@ -1,6 +1,5 @@
 import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, decimal } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod";
+import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
 // Travel Destinations table
 export const travelDestinations = pgTable("travel_destinations", {
@@ -31,6 +30,31 @@ export const travelDestinations = pgTable("travel_destinations", {
   keywords: jsonb("keywords"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type TravelDestinationRow = InferSelectModel<typeof travelDestinations>;
+export type NewTravelDestinationRow = InferInsertModel<typeof travelDestinations>;
+
+export type TravelDestinationDTO = {
+  id: number;
+  name: string;
+  slug: string;
+  country: string;
+  continent: string;
+  featuredImage?: string;
+  isTrending: boolean;
+};
+
+export const toTravelDestinationDTO = (
+  r: TravelDestinationRow,
+): TravelDestinationDTO => ({
+  id: r.id,
+  name: r.name,
+  slug: r.slug,
+  country: r.country,
+  continent: r.continent,
+  featuredImage: r.featuredImage ?? undefined,
+  isTrending: !!r.isTrending,
 });
 
 // Travel Articles table
