@@ -320,41 +320,17 @@ export const notificationChannels = pgTable("notification_channels", {
 });
 
 // Schema exports for Zod validation
-export const insertNotificationTemplateSchema = createInsertSchema(notificationTemplates).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertNotificationTemplateSchema = createInsertSchema(notificationTemplates);
 
-export const insertNotificationTriggerSchema = createInsertSchema(notificationTriggers).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertNotificationTriggerSchema = createInsertSchema(notificationTriggers);
 
-export const insertNotificationCampaignSchema = createInsertSchema(notificationCampaigns).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertNotificationCampaignSchema = createInsertSchema(notificationCampaigns);
 
-export const insertNotificationQueueSchema = createInsertSchema(notificationQueue).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertNotificationQueueSchema = createInsertSchema(notificationQueue);
 
-export const insertUserNotificationPreferencesSchema = createInsertSchema(userNotificationPreferences).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertUserNotificationPreferencesSchema = createInsertSchema(userNotificationPreferences);
 
-export const insertNotificationChannelSchema = createInsertSchema(notificationChannels).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertNotificationChannelSchema = createInsertSchema(notificationChannels);
 
 // Type exports
 export type NotificationTemplate = typeof notificationTemplates.$inferSelect;

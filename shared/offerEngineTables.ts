@@ -181,57 +181,23 @@ export const offerAiOptimizationQueue = pgTable("offer_ai_optimization_queue", {
 
 
 // Insert schemas for all tables
-export const insertOfferSourceSchema = createInsertSchema(offerSources).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertOfferSourceSchema = createInsertSchema(offerSources);
 
-export const insertOfferFeedSchema = createInsertSchema(offerFeed).omit({
-  id: true,
-  offerUuid: true,
-  createdAt: true,
-  updatedAt: true,
-  syncedAt: true,
-});
+export const insertOfferFeedSchema = createInsertSchema(offerFeed);
 
-export const insertOfferAnalyticsSchema = createInsertSchema(offerAnalytics).omit({
-  id: true,
-  timestamp: true,
-});
+export const insertOfferAnalyticsSchema = createInsertSchema(offerAnalytics);
 
-export const insertOfferPersonalizationRuleSchema = createInsertSchema(offerPersonalizationRules).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertOfferPersonalizationRuleSchema = createInsertSchema(offerPersonalizationRules);
 
-export const insertOfferExperimentSchema = createInsertSchema(offerExperiments).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertOfferExperimentSchema = createInsertSchema(offerExperiments);
 
-export const insertOfferSyncHistorySchema = createInsertSchema(offerSyncHistory).omit({
-  id: true,
-  batchId: true,
-  startedAt: true,
-});
+export const insertOfferSyncHistorySchema = createInsertSchema(offerSyncHistory);
 
-export const insertNeuronOfferAssignmentSchema = createInsertSchema(neuronOfferAssignments).omit({
-  id: true,
-  assignedAt: true,
-});
+export const insertNeuronOfferAssignmentSchema = createInsertSchema(neuronOfferAssignments);
 
-export const insertOfferComplianceRuleSchema = createInsertSchema(offerComplianceRules).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertOfferComplianceRuleSchema = createInsertSchema(offerComplianceRules);
 
-export const insertOfferAiOptimizationQueueSchema = createInsertSchema(offerAiOptimizationQueue).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertOfferAiOptimizationQueueSchema = createInsertSchema(offerAiOptimizationQueue);
 
 // Type exports
 export type OfferSource = typeof offerSources.$inferSelect;

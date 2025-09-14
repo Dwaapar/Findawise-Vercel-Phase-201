@@ -352,84 +352,17 @@ export const aiToolsAnalytics = pgTable('ai_tools_analytics', {
 });
 
 // Insert Schemas
-export const insertAiToolsArchetypeSchema = createInsertSchema(aiToolsArchetypes, {
-  uiPreferences: z.object({
-    colorScheme: z.string(),
-    layout: z.string(),
-    complexity: z.string(),
-  }).optional(),
-  primaryMotivation: z.string(),
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertAiToolsArchetypeSchema = createInsertSchema(aiToolsArchetypes);
 
-export const insertAiToolSchema = createInsertSchema(aiTools, {
-  subcategories: z.array(z.string()).optional(),
-  features: z.array(z.string()).optional(),
-  useCase: z.array(z.string()).optional(),
-  platforms: z.array(z.string()).optional(),
-  integrations: z.array(z.string()).optional(),
-  tags: z.array(z.string()).optional(),
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertAiToolSchema = createInsertSchema(aiTools);
 
-export const insertAiToolsOfferSchema = createInsertSchema(aiToolsOffers).omit({
-  id: true,
-  clicks: true,
-  conversions: true,
-  revenue: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertAiToolsOfferSchema = createInsertSchema(aiToolsOffers);
 
-export const insertAiToolsQuizSchema = createInsertSchema(aiToolsQuizzes, {
-  questions: z.array(z.object({
-    id: z.string(),
-    question: z.string(),
-    type: z.enum(['multiple_choice', 'slider', 'checkbox', 'text']),
-    options: z.array(z.object({
-      text: z.string(),
-      value: z.any(),
-      archetypes: z.array(z.string()),
-      categories: z.array(z.string()),
-    })).optional(),
-    weight: z.number(),
-  })),
-}).omit({
-  id: true,
-  totalTaken: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertAiToolsQuizSchema = createInsertSchema(aiToolsQuizzes);
 
-export const insertAiToolsContentSchema = createInsertSchema(aiToolsContent, {
-  relatedTools: z.array(z.number()).optional(),
-  categories: z.array(z.string()).optional(),
-  tags: z.array(z.string()).optional(),
-}).omit({
-  id: true,
-  views: true,
-  avgTimeOnPage: true,
-  bounceRate: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertAiToolsContentSchema = createInsertSchema(aiToolsContent);
 
-export const insertAiToolsLeadSchema = createInsertSchema(aiToolsLeads, {
-  interests: z.array(z.string()).optional(),
-}).omit({
-  id: true,
-  downloadsCount: true,
-  emailsOpened: true,
-  emailsClicked: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertAiToolsLeadSchema = createInsertSchema(aiToolsLeads);
 
 // Type exports
 export type AiToolsArchetype = typeof aiToolsArchetypes.$inferSelect;

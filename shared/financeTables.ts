@@ -200,15 +200,15 @@ export const financePerformanceMetrics = pgTable("finance_performance_metrics", 
 });
 
 // Zod schemas for type safety
-export const insertFinanceProfileSchema = createInsertSchema(financeProfiles).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertFinanceQuizResultSchema = createInsertSchema(financeQuizResults).omit({ id: true, createdAt: true });
-export const insertFinanceCalculatorResultSchema = createInsertSchema(financeCalculatorResults).omit({ id: true, createdAt: true });
-export const insertFinanceProductOfferSchema = createInsertSchema(financeProductOffers).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertFinanceContentSchema = createInsertSchema(financeContent).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertFinanceGamificationSchema = createInsertSchema(financeGamification).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertFinanceAIChatSessionSchema = createInsertSchema(financeAIChatSessions).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertFinanceLeadMagnetSchema = createInsertSchema(financeLeadMagnets).omit({ id: true, createdAt: true });
-export const insertFinancePerformanceMetricSchema = createInsertSchema(financePerformanceMetrics).omit({ id: true, createdAt: true });
+export const insertFinanceProfileSchema = createInsertSchema(financeProfiles);
+export const insertFinanceQuizResultSchema = createInsertSchema(financeQuizResults);
+export const insertFinanceCalculatorResultSchema = createInsertSchema(financeCalculatorResults);
+export const insertFinanceProductOfferSchema = createInsertSchema(financeProductOffers);
+export const insertFinanceContentSchema = createInsertSchema(financeContent);
+export const insertFinanceGamificationSchema = createInsertSchema(financeGamification);
+export const insertFinanceAIChatSessionSchema = createInsertSchema(financeAIChatSessions);
+export const insertFinanceLeadMagnetSchema = createInsertSchema(financeLeadMagnets);
+export const insertFinancePerformanceMetricSchema = createInsertSchema(financePerformanceMetrics);
 
 // Type exports
 export type InsertFinanceProfile = z.infer<typeof insertFinanceProfileSchema>;

@@ -92,33 +92,15 @@ export const offlineQueue = pgTable("offline_queue", {
 });
 
 // Create Zod schemas for validation
-export const insertPWAInstallSchema = createInsertSchema(pwaInstalls).omit({
-  id: true,
-  installedAt: true
-});
+export const insertPWAInstallSchema = createInsertSchema(pwaInstalls);
 
-export const insertPushSubscriptionSchema = createInsertSchema(pushSubscriptions).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertPushSubscriptionSchema = createInsertSchema(pushSubscriptions);
 
-export const insertPWANotificationCampaignSchema = createInsertSchema(pwaNotificationCampaigns).omit({
-  id: true,
-  createdAt: true,
-  completedAt: true
-});
+export const insertPWANotificationCampaignSchema = createInsertSchema(pwaNotificationCampaigns);
 
-export const insertPWAUsageStatsSchema = createInsertSchema(pwaUsageStats).omit({
-  id: true,
-  date: true
-});
+export const insertPWAUsageStatsSchema = createInsertSchema(pwaUsageStats);
 
-export const insertOfflineQueueSchema = createInsertSchema(offlineQueue).omit({
-  id: true,
-  createdAt: true,
-  processedAt: true
-});
+export const insertOfflineQueueSchema = createInsertSchema(offlineQueue);
 
 // Empire-Grade Mobile Optimization Extensions
 
@@ -232,38 +214,17 @@ export const pwaPerformanceMetrics = pgTable("pwa_performance_metrics", {
 });
 
 // Create additional Zod schemas
-export const insertPWAAsoMetricsSchema = createInsertSchema(pwaAsoMetrics).omit({
-  id: true,
-  date: true
-});
+export const insertPWAAsoMetricsSchema = createInsertSchema(pwaAsoMetrics);
 
-export const insertDeviceCapabilitiesSchema = createInsertSchema(deviceCapabilities).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertDeviceCapabilitiesSchema = createInsertSchema(deviceCapabilities);
 
-export const insertDeepLinkAnalyticsSchema = createInsertSchema(deepLinkAnalytics).omit({
-  id: true,
-  timestamp: true
-});
+export const insertDeepLinkAnalyticsSchema = createInsertSchema(deepLinkAnalytics);
 
-export const insertMobileAppConfigSchema = createInsertSchema(mobileAppConfigs).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertMobileAppConfigSchema = createInsertSchema(mobileAppConfigs);
 
-export const insertPushPersonalizationSchema = createInsertSchema(pushPersonalization).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertPushPersonalizationSchema = createInsertSchema(pushPersonalization);
 
-export const insertPWAPerformanceMetricsSchema = createInsertSchema(pwaPerformanceMetrics).omit({
-  id: true,
-  timestamp: true
-});
+export const insertPWAPerformanceMetricsSchema = createInsertSchema(pwaPerformanceMetrics);
 
 // Type exports
 export type PWAInstall = typeof pwaInstalls.$inferSelect;

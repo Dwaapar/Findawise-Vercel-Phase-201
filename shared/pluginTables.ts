@@ -256,45 +256,19 @@ export const pluginMarketplace = pgTable("plugin_marketplace", {
 });
 
 // Insert schemas for validation
-export const insertPluginManifestSchema = createInsertSchema(pluginManifests).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertPluginManifestSchema = createInsertSchema(pluginManifests);
 
-export const insertPluginInstanceSchema = createInsertSchema(pluginInstances).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertPluginInstanceSchema = createInsertSchema(pluginInstances);
 
-export const insertPluginExecutionSchema = createInsertSchema(pluginExecutions).omit({
-  id: true,
-  createdAt: true
-});
+export const insertPluginExecutionSchema = createInsertSchema(pluginExecutions);
 
-export const insertPluginReviewSchema = createInsertSchema(pluginReviews).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertPluginReviewSchema = createInsertSchema(pluginReviews);
 
-export const insertPluginAnalyticsSchema = createInsertSchema(pluginAnalytics).omit({
-  id: true,
-  createdAt: true
-});
+export const insertPluginAnalyticsSchema = createInsertSchema(pluginAnalytics);
 
-export const insertPluginDependencySchema = createInsertSchema(pluginDependencies).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertPluginDependencySchema = createInsertSchema(pluginDependencies);
 
-export const insertPluginMarketplaceSchema = createInsertSchema(pluginMarketplace).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertPluginMarketplaceSchema = createInsertSchema(pluginMarketplace);
 
 // TypeScript types
 export type PluginManifest = typeof pluginManifests.$inferSelect;
