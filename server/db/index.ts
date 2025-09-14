@@ -6,7 +6,8 @@
 
 import { db } from '../db';
 import { DatabaseStorage } from '../storage';
-import { DatabaseConfig } from '../../config/master-config';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { autoConfigureEnvironment, getActiveSupabaseConfig } from '../config/embedded-credentials';
 
 interface DbHealthStatus {
   isHealthy: boolean;
@@ -19,6 +20,7 @@ interface DbHealthStatus {
 interface DbConfig {
   healthCheckInterval: number;
   maxRetries: number;
+  useSupabase: boolean;
 }
 
 class UniversalDbAdapter {
@@ -26,12 +28,14 @@ class UniversalDbAdapter {
   private config: DbConfig;
   private healthStatus: DbHealthStatus;
   private healthCheckTimer: NodeJS.Timeout | null = null;
+  private supabase: SupabaseClient | null = null;
 
   constructor() {
     this.storage = new DatabaseStorage();
     this.config = {
       healthCheckInterval: 30000, // 30 seconds
-      maxRetries: 3
+      maxRetries: 3,
+      useSupabase: false,
     };
     
     this.healthStatus = {

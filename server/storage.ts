@@ -937,7 +937,7 @@ export interface IStorage {
   // Global Consent Management
   createGlobalConsent(consent: InsertGlobalConsentManagement): Promise<GlobalConsentManagement>;
   getGlobalConsentsByUser(userId: string): Promise<GlobalConsentManagement[]>;
-  updateConsent(id: number, updates: Partial<InsertGlobalConsentManagement>): Promise<GlobalConsentManagement>;
+  updateConsent(userId: string, consentData: any): Promise<void>;
   
   // Privacy Policy Management
   createPrivacyPolicy(policy: InsertPrivacyPolicyManagement): Promise<PrivacyPolicyManagement>;
@@ -1191,6 +1191,10 @@ export class DatabaseStorage implements IStorage {
       .from(userSessions)
       .where(eq(userSessions.sessionId, sessionId));
     return session;
+  }
+
+  async getUserSession(sessionId: string): Promise<UserSession | undefined> {
+    return this.getSessionBySessionId(sessionId);
   }
 
   async updateSessionActivity(sessionId: string): Promise<void> {

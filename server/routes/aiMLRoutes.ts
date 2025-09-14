@@ -2,27 +2,19 @@ import { Router } from 'express';
 import { aimlOrchestrator } from '../services/ai-ml-orchestrator';
 import { aiMLDataPipeline } from '../services/ai-ml-data-pipeline';
 import { db } from '../db';
-import { 
-  learningCycles, 
-  personalizationRules, 
+import {
+  learningCycles,
+  personalizationRules,
   aiMLModels,
   neuronDataPipelines,
   aiMLAnalytics,
   empireBrainConfig,
-  aiMLAuditTrail 
+  aiMLAuditTrail
 } from '@shared/schema';
 import { eq, desc, and, gte, count } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 
 const router = Router();
-
-// Session type extension for TypeScript
-declare module 'express-session' {
-  interface SessionData {
-    userId?: string;
-    id?: string;
-  }
-}
 
 // AI/ML Orchestrator Management
 router.get('/api/ai-ml/status', async (req, res) => {

@@ -148,7 +148,6 @@ import smartFunnelRoutes from "./routes/smartFunnel";
 import moneyTrafficGrowthRoutes from "./routes/moneyTrafficGrowth";
 import apiDiffRoutes from "./routes/api-diff";
 import pluginRoutes from "./routes/plugins";
-import vectorSearchRoutes from "./routes/vectorSearch";
 import layoutMutationRoutes from "./routes/layoutMutation";
 
 // Empire Brain "Throne Protocol" - Unified Intelligence Layer
