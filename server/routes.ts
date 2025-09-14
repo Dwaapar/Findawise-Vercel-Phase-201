@@ -1,5 +1,13 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import "express-session";
+
+declare module "express-session" {
+  interface SessionData {
+    id?: string;
+    userId?: string;
+  }
+}
 
 import { storage } from "./storage";
 import { 
