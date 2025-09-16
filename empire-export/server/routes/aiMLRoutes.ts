@@ -16,14 +16,6 @@ import { randomUUID } from 'crypto';
 
 const router = Router();
 
-// Session type extension for TypeScript
-declare module 'express-session' {
-  interface SessionData {
-    userId?: string;
-    id?: string;
-  }
-}
-
 // AI/ML Orchestrator Management
 router.get('/api/ai-ml/status', async (req, res) => {
   try {

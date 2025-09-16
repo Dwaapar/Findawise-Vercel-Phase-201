@@ -100,41 +100,17 @@ export const localizationAnalytics = pgTable("localization_analytics", {
 });
 
 // Insert schemas for validation
-export const insertLanguageSchema = createInsertSchema(languages).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertLanguageSchema = createInsertSchema(languages);
 
-export const insertTranslationKeySchema = createInsertSchema(translationKeys).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTranslationKeySchema = createInsertSchema(translationKeys);
 
-export const insertTranslationSchema = createInsertSchema(translations).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertTranslationSchema = createInsertSchema(translations);
 
-export const insertUserLanguagePreferenceSchema = createInsertSchema(userLanguagePreferences).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertUserLanguagePreferenceSchema = createInsertSchema(userLanguagePreferences);
 
-export const insertLocalizedContentAssignmentSchema = createInsertSchema(localizedContentAssignments).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertLocalizedContentAssignmentSchema = createInsertSchema(localizedContentAssignments);
 
-export const insertLocalizationAnalyticsSchema = createInsertSchema(localizationAnalytics).omit({
-  id: true,
-  timestamp: true,
-  createdAt: true,
-});
+export const insertLocalizationAnalyticsSchema = createInsertSchema(localizationAnalytics);
 
 // Type exports
 export type Language = typeof languages.$inferSelect;

@@ -262,52 +262,21 @@ export const configAiMetadata = pgTable("config_ai_metadata", {
 // SCHEMA EXPORTS FOR VALIDATION
 // ==========================================
 
-export const insertConfigRegistrySchema = createInsertSchema(configRegistry).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertConfigRegistrySchema = createInsertSchema(configRegistry);
 
-export const insertConfigChangeHistorySchema = createInsertSchema(configChangeHistory).omit({
-  id: true,
-  changeId: true,
-  createdAt: true,
-});
+export const insertConfigChangeHistorySchema = createInsertSchema(configChangeHistory);
 
-export const insertConfigSnapshotSchema = createInsertSchema(configSnapshots).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertConfigSnapshotSchema = createInsertSchema(configSnapshots);
 
-export const insertConfigPermissionSchema = createInsertSchema(configPermissions).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertConfigPermissionSchema = createInsertSchema(configPermissions);
 
-export const insertConfigFederationSyncSchema = createInsertSchema(configFederationSync).omit({
-  id: true,
-  syncId: true,
-  syncStartedAt: true,
-});
+export const insertConfigFederationSyncSchema = createInsertSchema(configFederationSync);
 
-export const insertConfigPerformanceMetricSchema = createInsertSchema(configPerformanceMetrics).omit({
-  id: true,
-  metricId: true,
-  recordedAt: true,
-});
+export const insertConfigPerformanceMetricSchema = createInsertSchema(configPerformanceMetrics);
 
-export const insertConfigValidationRuleSchema = createInsertSchema(configValidationRules).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertConfigValidationRuleSchema = createInsertSchema(configValidationRules);
 
-export const insertConfigAiMetadataSchema = createInsertSchema(configAiMetadata).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertConfigAiMetadataSchema = createInsertSchema(configAiMetadata);
 
 // ==========================================
 // TYPE EXPORTS

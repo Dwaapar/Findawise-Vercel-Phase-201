@@ -414,8 +414,19 @@ import {
 } from "@shared/storefrontTables";
 
 import { db } from "./db";
-import { eq, and, desc, gte, lte, sql, count } from "drizzle-orm";
+import { eq, and, desc, gte, lte, sql, count, inArray, or, like } from "drizzle-orm";
+import type { AnyPgTable } from "drizzle-orm/pg-core";
+
+declare const disasterRecoveryScenarios: AnyPgTable;
+declare const culturalMappings: AnyPgTable;
+declare const emotionProfiles: AnyPgTable;
+declare const globalComplianceAuditSystem: AnyPgTable;
 import { randomUUID } from "crypto";
+
+const enableDisasterRecovery = process.env.ENABLE_DR_SCENARIOS === "true";
+const enableCultureMap = process.env.ENABLE_CULTURE_MAP === "true";
+const enableEmotionProfiles = process.env.ENABLE_EMOTION_PROFILES === "true";
+const enableComplianceAudit = process.env.ENABLE_COMPLIANCE_AUDIT === "true";
 
 export interface IStorage {
   // User operations
@@ -934,7 +945,7 @@ export interface IStorage {
   // Global Consent Management
   createGlobalConsent(consent: InsertGlobalConsentManagement): Promise<GlobalConsentManagement>;
   getGlobalConsentsByUser(userId: string): Promise<GlobalConsentManagement[]>;
-  updateConsent(id: number, updates: Partial<InsertGlobalConsentManagement>): Promise<GlobalConsentManagement>;
+  updateConsent(userId: string, consentData: unknown): Promise<void>;
   
   // Privacy Policy Management
   createPrivacyPolicy(policy: InsertPrivacyPolicyManagement): Promise<PrivacyPolicyManagement>;
@@ -1020,7 +1031,7 @@ export interface IStorage {
   updateCtaCompliance(complianceId: string, updates: Partial<InsertCtaCompliance>): Promise<CtaCompliance>;
   
   // Consent Management
-  updateConsent(userId: string, consentData: any): Promise<void>;
+  updateConsent(userId: string, consentData: unknown): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1188,6 +1199,10 @@ export class DatabaseStorage implements IStorage {
       .from(userSessions)
       .where(eq(userSessions.sessionId, sessionId));
     return session;
+  }
+
+  async getUserSession(sessionId: string): Promise<UserSession | undefined> {
+    return this.getSessionBySessionId(sessionId);
   }
 
   async updateSessionActivity(sessionId: string): Promise<void> {
@@ -3041,7 +3056,7 @@ export class DatabaseStorage implements IStorage {
       const currentNeuron = neuron[0];
       const currentStatus = latestStatus[0];
 
-      return {
+      return { 
         neuronId: currentNeuron.neuronId,
         name: currentNeuron.name,
         type: currentNeuron.type,
@@ -3071,6 +3086,67 @@ export class DatabaseStorage implements IStorage {
       console.error(`Error getting neuron status for ${neuronId}:`, error);
       return null;
     }
+  }
+
+  /**
+   * Retrieve health status for all neurons
+   */
+  async getNeuronHealthStatus(): Promise<any> {
+    const statusRows = await db
+      .select({
+        neuronId: neuronStatusUpdates.neuronId,
+        status: neuronStatusUpdates.status,
+        healthScore: neuronStatusUpdates.healthScore,
+        timestamp: neuronStatusUpdates.timestamp
+      })
+      .from(neuronStatusUpdates)
+      .orderBy(desc(neuronStatusUpdates.timestamp));
+
+    const latestStatus = new Map<string, { status: string | null; healthScore: number | null }>();
+    for (const row of statusRows) {
+      if (!latestStatus.has(row.neuronId)) {
+        latestStatus.set(row.neuronId, {
+          status: row.status,
+          healthScore: row.healthScore
+        });
+      }
+    }
+
+    const analyticsRows = await db
+      .select({
+        neuronId: neuronAnalytics.neuronId,
+        sessionsCount: neuronAnalytics.sessionsCount,
+        pageViewsCount: neuronAnalytics.pageViewsCount,
+        conversionRate: neuronAnalytics.conversionRate,
+        createdAt: neuronAnalytics.createdAt
+      })
+      .from(neuronAnalytics)
+      .orderBy(desc(neuronAnalytics.createdAt));
+
+    const latestAnalytics = new Map<
+      string,
+      { sessionsCount: number | null; pageViewsCount: number | null; conversionRate: number | null }
+    >();
+    for (const row of analyticsRows) {
+      if (!latestAnalytics.has(row.neuronId)) {
+        latestAnalytics.set(row.neuronId, {
+          sessionsCount: row.sessionsCount,
+          pageViewsCount: row.pageViewsCount,
+          conversionRate: row.conversionRate
+        });
+      }
+    }
+
+    return Array.from(latestStatus.entries()).map(([neuronId, status]) => ({
+      neuronId,
+      status: status.status,
+      healthScore: status.healthScore ?? 0,
+      analytics: latestAnalytics.get(neuronId) ?? {
+        sessionsCount: 0,
+        pageViewsCount: 0,
+        conversionRate: 0
+      }
+    }));
   }
 
   /**
@@ -3785,6 +3861,9 @@ export class DatabaseStorage implements IStorage {
 
   // Multi-Region Disaster Recovery methods
   async getDisasterRecoveryScenarios(): Promise<any[]> {
+    if (!enableDisasterRecovery) {
+      return [];
+    }
     try {
       // Since the table might not exist yet, return default scenarios
       return [
@@ -3845,8 +3924,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createDisasterRecoveryScenario(scenario: any): Promise<any> {
+    if (!enableDisasterRecovery || typeof disasterRecoveryScenarios === "undefined") {
+      console.warn("Disaster recovery scenarios table not configured");
+      return { id: randomUUID(), ...scenario };
+    }
     try {
-      const [newScenario] = await db.insert(disasterRecoveryScenarios).values({
+      const [newScenario] = await db.insert(disasterRecoveryScenarios as any).values({
         ...scenario,
         id: randomUUID(),
         created_at: new Date(),
@@ -4482,6 +4565,10 @@ export class DatabaseStorage implements IStorage {
   // ===================================================================
 
   async getCulturalMappings(filters: any = {}): Promise<any[]> {
+    if (!enableCultureMap || typeof culturalMappings === "undefined") {
+      console.warn("culturalMappings table not configured");
+      return [];
+    }
     try {
       const { region, isActive, countryCode } = filters;
       let conditions: any[] = [];
@@ -4498,7 +4585,7 @@ export class DatabaseStorage implements IStorage {
         conditions.push(eq(culturalMappings.countryCode, countryCode));
       }
 
-      return await db.select().from(culturalMappings)
+      return await db.select().from(culturalMappings as any)
         .where(conditions.length > 0 ? and(...conditions) : sql`true`)
         .orderBy(culturalMappings.countryName);
     } catch (error) {
@@ -4508,8 +4595,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createCulturalMapping(mappingData: any): Promise<any> {
+    if (!enableCultureMap || typeof culturalMappings === "undefined") {
+      console.warn("culturalMappings table not configured");
+      return { ...mappingData };
+    }
     try {
-      const [created] = await db.insert(culturalMappings).values({
+      const [created] = await db.insert(culturalMappings as any).values({
         countryCode: mappingData.countryCode,
         countryName: mappingData.countryName,
         region: mappingData.region || 'Unknown',
@@ -4530,6 +4621,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getEmotionProfiles(filters: any = {}): Promise<any[]> {
+    if (!enableEmotionProfiles || typeof emotionProfiles === "undefined") {
+      console.warn("emotionProfiles table not configured");
+      return [];
+    }
     try {
       const { category, isActive } = filters;
       let conditions: any[] = [];
@@ -4542,7 +4637,7 @@ export class DatabaseStorage implements IStorage {
         conditions.push(eq(emotionProfiles.isActive, isActive));
       }
 
-      return await db.select().from(emotionProfiles)
+      return await db.select().from(emotionProfiles as any)
         .where(conditions.length > 0 ? and(...conditions) : sql`true`)
         .orderBy(emotionProfiles.emotionName);
     } catch (error) {
@@ -4552,8 +4647,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createEmotionProfile(profileData: any): Promise<any> {
+    if (!enableEmotionProfiles || typeof emotionProfiles === "undefined") {
+      console.warn("emotionProfiles table not configured");
+      return { ...profileData };
+    }
     try {
-      const [created] = await db.insert(emotionProfiles).values({
+      const [created] = await db.insert(emotionProfiles as any).values({
         emotionId: profileData.emotionId,
         emotionName: profileData.emotionName,
         category: profileData.category || 'general',
@@ -7642,11 +7741,19 @@ export class DatabaseStorage implements IStorage {
 
   // Compliance Audit System
   async createComplianceAudit(audit: InsertComplianceAuditSystem): Promise<ComplianceAuditSystem> {
+    if (!enableComplianceAudit) {
+      console.warn("Compliance audit system disabled");
+      return { ...audit } as ComplianceAuditSystem;
+    }
     const [newAudit] = await db.insert(complianceAuditSystem).values(audit).returning();
     return newAudit;
   }
 
   async getComplianceAuditByAuditId(auditId: string): Promise<ComplianceAuditSystem | undefined> {
+    if (!enableComplianceAudit) {
+      console.warn("Compliance audit system disabled");
+      return undefined;
+    }
     const [audit] = await db.select()
       .from(complianceAuditSystem)
       .where(eq(complianceAuditSystem.auditId, auditId));
@@ -7654,6 +7761,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getComplianceAudits(filters: any): Promise<ComplianceAuditSystem[]> {
+    if (!enableComplianceAudit) {
+      console.warn("Compliance audit system disabled");
+      return [];
+    }
     let query = db.select().from(complianceAuditSystem);
     
     if (filters.auditType) {
@@ -8380,33 +8491,34 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Consent Management - Required by IStorage interface
-  async updateConsent(userId: string, consentData: any): Promise<void> {
+  async updateConsent(userId: string, consentData: unknown): Promise<void> {
+    const data = consentData as Record<string, any>;
     try {
       // Update global consent management
       await db.insert(globalConsentManagement).values({
         userId,
-        framework: consentData.framework || 'GDPR', 
-        consentGiven: consentData.consentGiven || false,
-        consentWithdrawn: consentData.consentWithdrawn || false,
-        dataProcessingConsent: consentData.dataProcessingConsent || false,
-        marketingCommunicationsConsent: consentData.marketingCommunicationsConsent || false,
-        cookiePreferences: consentData.cookiePreferences || {},
-        consentHistory: consentData.consentHistory || [],
+        framework: data.framework || 'GDPR',
+        consentGiven: data.consentGiven || false,
+        consentWithdrawn: data.consentWithdrawn || false,
+        dataProcessingConsent: data.dataProcessingConsent || false,
+        marketingCommunicationsConsent: data.marketingCommunicationsConsent || false,
+        cookiePreferences: data.cookiePreferences || {},
+        consentHistory: data.consentHistory || [],
         lastUpdated: new Date(),
-        ipAddress: consentData.ipAddress,
-        userAgent: consentData.userAgent,
-        consentSource: consentData.consentSource || 'web'
+        ipAddress: data.ipAddress,
+        userAgent: data.userAgent,
+        consentSource: data.consentSource || 'web'
       }).onConflictDoUpdate({
         target: globalConsentManagement.userId,
         set: {
-          consentGiven: consentData.consentGiven,
-          consentWithdrawn: consentData.consentWithdrawn,
-          dataProcessingConsent: consentData.dataProcessingConsent,
-          marketingCommunicationsConsent: consentData.marketingCommunicationsConsent,
-          cookiePreferences: consentData.cookiePreferences,
+          consentGiven: data.consentGiven,
+          consentWithdrawn: data.consentWithdrawn,
+          dataProcessingConsent: data.dataProcessingConsent,
+          marketingCommunicationsConsent: data.marketingCommunicationsConsent,
+          cookiePreferences: data.cookiePreferences,
           lastUpdated: new Date(),
-          ipAddress: consentData.ipAddress,
-          userAgent: consentData.userAgent
+          ipAddress: data.ipAddress,
+          userAgent: data.userAgent
         }
       });
       
@@ -8482,7 +8594,7 @@ export class DatabaseStorage implements IStorage {
   async logComplianceDecision(logEntry: any): Promise<void> {
     try {
       // Store in compliance audit system
-      await db.insert(globalComplianceAuditSystem).values({
+      await db.insert(complianceAuditSystem).values({
         complianceType: 'affiliate_redirect',
         entityId: `${logEntry.networkSlug}_${logEntry.offerSlug}`,
         auditData: {
@@ -8507,22 +8619,26 @@ export class DatabaseStorage implements IStorage {
    * Get compliance audit data for reporting
    */
   async getComplianceAuditData(startDate: Date, endDate: Date, networkSlug?: string): Promise<any[]> {
+    if (!enableComplianceAudit) {
+      console.warn("Compliance audit system disabled");
+      return [];
+    }
     try {
       let query = db.select()
-        .from(globalComplianceAuditSystem)
+        .from(complianceAuditSystem)
         .where(and(
-          eq(globalComplianceAuditSystem.complianceType, 'affiliate_redirect'),
-          gte(globalComplianceAuditSystem.auditDate, startDate),
-          lte(globalComplianceAuditSystem.auditDate, endDate)
+          eq(complianceAuditSystem.complianceType, 'affiliate_redirect'),
+          gte(complianceAuditSystem.auditDate, startDate),
+          lte(complianceAuditSystem.auditDate, endDate)
         ));
 
       if (networkSlug) {
         query = query.where(
-          like(globalComplianceAuditSystem.entityId, `${networkSlug}_%`)
+          like(complianceAuditSystem.entityId, `${networkSlug}_%`)
         );
       }
 
-      const auditData = await query.orderBy(desc(globalComplianceAuditSystem.auditDate));
+      const auditData = await query.orderBy(desc(complianceAuditSystem.auditDate));
 
       return auditData.map(audit => ({
         ...audit,

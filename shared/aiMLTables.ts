@@ -223,61 +223,25 @@ export const aiMLAuditTrail = pgTable("ai_ml_audit_trail", {
 });
 
 // Insert Schemas
-export const insertAiMLModelSchema = createInsertSchema(aiMLModels).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertAiMLModelSchema = createInsertSchema(aiMLModels);
 
-export const insertLearningCycleSchema = createInsertSchema(learningCycles).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertLearningCycleSchema = createInsertSchema(learningCycles);
 
-export const insertPersonalizationRuleSchema = createInsertSchema(personalizationRules).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertPersonalizationRuleSchema = createInsertSchema(personalizationRules);
 
-export const insertNeuronDataPipelineSchema = createInsertSchema(neuronDataPipelines).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertNeuronDataPipelineSchema = createInsertSchema(neuronDataPipelines);
 
-export const insertAiMLExperimentSchema = createInsertSchema(aiMLExperiments).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertAiMLExperimentSchema = createInsertSchema(aiMLExperiments);
 
-export const insertContentOptimizationLogSchema = createInsertSchema(contentOptimizationLogs).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertContentOptimizationLogSchema = createInsertSchema(contentOptimizationLogs);
 
-export const insertAiMLAnalyticsSchema = createInsertSchema(aiMLAnalytics).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertAiMLAnalyticsSchema = createInsertSchema(aiMLAnalytics);
 
-export const insertModelTrainingJobSchema = createInsertSchema(modelTrainingJobs).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertModelTrainingJobSchema = createInsertSchema(modelTrainingJobs);
 
-export const insertEmpireBrainConfigSchema = createInsertSchema(empireBrainConfig).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertEmpireBrainConfigSchema = createInsertSchema(empireBrainConfig);
 
-export const insertAiMLAuditTrailSchema = createInsertSchema(aiMLAuditTrail).omit({
-  id: true,
-  timestamp: true,
-});
+export const insertAiMLAuditTrailSchema = createInsertSchema(aiMLAuditTrail);
 
 // Types
 export type InsertAiMLModel = z.infer<typeof insertAiMLModelSchema>;

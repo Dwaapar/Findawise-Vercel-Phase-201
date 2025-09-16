@@ -405,52 +405,21 @@ export const moderationRules = pgTable("moderation_rules", {
 });
 
 // Export the insert schemas for form validation
-export const insertModerationRulesSchema = createInsertSchema(moderationRules).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertModerationRulesSchema = createInsertSchema(moderationRules);
 
-export const insertGlobalConsentManagementSchema = createInsertSchema(globalConsentManagement).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertGlobalConsentManagementSchema = createInsertSchema(globalConsentManagement);
 
-export const insertPrivacyPolicyManagementSchema = createInsertSchema(privacyPolicyManagement).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertPrivacyPolicyManagementSchema = createInsertSchema(privacyPolicyManagement);
 
-export const insertUserDataControlRequestsSchema = createInsertSchema(userDataControlRequests).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertUserDataControlRequestsSchema = createInsertSchema(userDataControlRequests);
 
-export const insertAffiliateComplianceManagementSchema = createInsertSchema(affiliateComplianceManagement).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertAffiliateComplianceManagementSchema = createInsertSchema(affiliateComplianceManagement);
 
-export const insertComplianceAuditSystemSchema = createInsertSchema(complianceAuditSystem).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertComplianceAuditSystemSchema = createInsertSchema(complianceAuditSystem);
 
-export const insertGeoRestrictionManagementSchema = createInsertSchema(geoRestrictionManagement).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertGeoRestrictionManagementSchema = createInsertSchema(geoRestrictionManagement);
 
-export const insertComplianceRbacManagementSchema = createInsertSchema(complianceRbacManagement).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertComplianceRbacManagementSchema = createInsertSchema(complianceRbacManagement);
 
 // Type exports
 export type GlobalConsentManagement = typeof globalConsentManagement.$inferSelect;

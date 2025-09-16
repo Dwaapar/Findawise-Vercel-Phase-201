@@ -192,61 +192,25 @@ export const outreachTemplates = pgTable("outreach_templates", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const insertMediaContactsSchema = createInsertSchema(mediaContacts).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertMediaContactsSchema = createInsertSchema(mediaContacts);
 
-export const insertOutreachTemplatesSchema = createInsertSchema(outreachTemplates).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertOutreachTemplatesSchema = createInsertSchema(outreachTemplates);
 
-export const insertContentFeedSourceSchema = createInsertSchema(contentFeedSources).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertContentFeedSourceSchema = createInsertSchema(contentFeedSources);
 
-export const insertContentFeedSchema = createInsertSchema(contentFeed).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  syncedAt: true,
-});
+export const insertContentFeedSchema = createInsertSchema(contentFeed);
 
-export const insertContentFeedCategorySchema = createInsertSchema(contentFeedCategories).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertContentFeedCategorySchema = createInsertSchema(contentFeedCategories);
 
-export const insertContentFeedSyncLogSchema = createInsertSchema(contentFeedSyncLogs).omit({
-  id: true,
-  startedAt: true,
-});
+export const insertContentFeedSyncLogSchema = createInsertSchema(contentFeedSyncLogs);
 
-export const insertContentFeedRuleSchema = createInsertSchema(contentFeedRules).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertContentFeedRuleSchema = createInsertSchema(contentFeedRules);
 
-export const insertContentFeedAnalyticsSchema = createInsertSchema(contentFeedAnalytics).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertContentFeedAnalyticsSchema = createInsertSchema(contentFeedAnalytics);
 
-export const insertContentFeedInteractionSchema = createInsertSchema(contentFeedInteractions).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertContentFeedInteractionSchema = createInsertSchema(contentFeedInteractions);
 
-export const insertContentFeedNotificationSchema = createInsertSchema(contentFeedNotifications).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertContentFeedNotificationSchema = createInsertSchema(contentFeedNotifications);
 
 // Types
 export type ContentFeedSource = typeof contentFeedSources.$inferSelect;

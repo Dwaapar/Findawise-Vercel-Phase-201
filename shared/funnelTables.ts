@@ -271,50 +271,21 @@ export const funnelIntegrations = pgTable("funnel_integrations", {
 });
 
 // Create Zod schemas for validation
-export const insertFunnelTemplateSchema = createInsertSchema(funnelTemplates).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertFunnelTemplateSchema = createInsertSchema(funnelTemplates);
 
-export const insertFunnelBlockSchema = createInsertSchema(funnelBlocks).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertFunnelBlockSchema = createInsertSchema(funnelBlocks);
 
-export const insertUserFunnelSessionSchema = createInsertSchema(userFunnelSessions).omit({
-  id: true,
-  startedAt: true,
-  lastActivityAt: true
-});
+export const insertUserFunnelSessionSchema = createInsertSchema(userFunnelSessions);
 
-export const insertFunnelEventSchema = createInsertSchema(funnelEvents).omit({
-  id: true,
-  timestamp: true
-});
+export const insertFunnelEventSchema = createInsertSchema(funnelEvents);
 
-export const insertFunnelAnalyticsSchema = createInsertSchema(funnelAnalytics).omit({
-  id: true
-});
+export const insertFunnelAnalyticsSchema = createInsertSchema(funnelAnalytics);
 
-export const insertFunnelABTestSchema = createInsertSchema(funnelABTests).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertFunnelABTestSchema = createInsertSchema(funnelABTests);
 
-export const insertFunnelTriggerSchema = createInsertSchema(funnelTriggers).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertFunnelTriggerSchema = createInsertSchema(funnelTriggers);
 
-export const insertFunnelIntegrationSchema = createInsertSchema(funnelIntegrations).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertFunnelIntegrationSchema = createInsertSchema(funnelIntegrations);
 
 // Type exports
 export type FunnelTemplate = typeof funnelTemplates.$inferSelect;

@@ -250,41 +250,17 @@ export const codexReports = pgTable("codex_reports", {
 // DRIZZLE SCHEMAS
 // ===========================================
 
-export const insertCodexAuditSchema = createInsertSchema(codexAudits).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertCodexAuditSchema = createInsertSchema(codexAudits);
 
-export const insertCodexIssueSchema = createInsertSchema(codexIssues).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertCodexIssueSchema = createInsertSchema(codexIssues);
 
-export const insertCodexFixSchema = createInsertSchema(codexFixes).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertCodexFixSchema = createInsertSchema(codexFixes);
 
-export const insertCodexLearningSchema = createInsertSchema(codexLearning).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertCodexLearningSchema = createInsertSchema(codexLearning);
 
-export const insertCodexScheduleSchema = createInsertSchema(codexSchedules).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertCodexScheduleSchema = createInsertSchema(codexSchedules);
 
-export const insertCodexReportSchema = createInsertSchema(codexReports).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertCodexReportSchema = createInsertSchema(codexReports);
 
 // ===========================================
 // TYPE EXPORTS

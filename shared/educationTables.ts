@@ -279,77 +279,13 @@ export const educationQuestCompletions = pgTable("education_quest_completions", 
 });
 
 // Schema exports for type inference
-export const insertEducationArchetypeSchema = createInsertSchema(educationArchetypes).pick({
-  slug: true,
-  name: true,
-  description: true,
-  characteristics: true,
-  emotionMapping: true,
-  colorScheme: true,
-  preferredTools: true,
-  learningStyle: true,
-  goalType: true,
-});
+export const insertEducationArchetypeSchema = createInsertSchema(educationArchetypes);
 
-export const insertEducationContentSchema = createInsertSchema(educationContent).pick({
-  slug: true,
-  title: true,
-  excerpt: true,
-  content: true,
-  category: true,
-  contentType: true,
-  targetArchetype: true,
-  difficulty: true,
-  estimatedTime: true,
-  xpReward: true,
-  prerequisites: true,
-  emotionTone: true,
-  readingTime: true,
-  seoTitle: true,
-  seoDescription: true,
-  tags: true,
-  sources: true,
-  isGenerated: true,
-  publishedAt: true,
-});
+export const insertEducationContentSchema = createInsertSchema(educationContent);
 
-export const insertEducationQuizSchema = createInsertSchema(educationQuizzes).pick({
-  slug: true,
-  title: true,
-  description: true,
-  category: true,
-  quizType: true,
-  questions: true,
-  scoringLogic: true,
-  resultMappings: true,
-  estimatedTime: true,
-  xpReward: true,
-  retakeAllowed: true,
-  passingScore: true,
-});
+export const insertEducationQuizSchema = createInsertSchema(educationQuizzes);
 
-export const insertEducationOfferSchema = createInsertSchema(educationOffers).pick({
-  slug: true,
-  title: true,
-  description: true,
-  provider: true,
-  category: true,
-  offerType: true,
-  originalPrice: true,
-  salePrice: true,
-  discountPercent: true,
-  affiliateUrl: true,
-  trackingUrl: true,
-  commissionRate: true,
-  targetArchetype: true,
-  tags: true,
-  thumbnailUrl: true,
-  rating: true,
-  reviewCount: true,
-  startDate: true,
-  endDate: true,
-  isFeatured: true,
-});
+export const insertEducationOfferSchema = createInsertSchema(educationOffers);
 
 // Type exports
 export type InsertEducationArchetype = z.infer<typeof insertEducationArchetypeSchema>;

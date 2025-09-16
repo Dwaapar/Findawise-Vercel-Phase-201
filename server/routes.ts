@@ -1,21 +1,5 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-
-// Session type extension for TypeScript
-declare module 'express-session' {
-  interface SessionData {
-    userId?: string;
-    id?: string;
-  }
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      session?: import('express-session').SessionData;
-    }
-  }
-}
 import { storage } from "./storage";
 import { 
   validateSession, 
@@ -163,7 +147,6 @@ import smartFunnelRoutes from "./routes/smartFunnel";
 import moneyTrafficGrowthRoutes from "./routes/moneyTrafficGrowth";
 import apiDiffRoutes from "./routes/api-diff";
 import pluginRoutes from "./routes/plugins";
-import vectorSearchRoutes from "./routes/vectorSearch";
 import layoutMutationRoutes from "./routes/layoutMutation";
 
 // Empire Brain "Throne Protocol" - Unified Intelligence Layer

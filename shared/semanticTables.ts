@@ -152,47 +152,21 @@ export const graphAuditResults = pgTable("graph_audit_results", {
 });
 
 // Insert schemas
-export const insertSemanticNodeSchema = createInsertSchema(semanticNodes).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertSemanticNodeSchema = createInsertSchema(semanticNodes);
 
-export const insertSemanticEdgeSchema = createInsertSchema(semanticEdges).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertSemanticEdgeSchema = createInsertSchema(semanticEdges);
 
-export const insertUserIntentVectorSchema = createInsertSchema(userIntentVectors).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertUserIntentVectorSchema = createInsertSchema(userIntentVectors);
 
-export const insertVectorSimilarityIndexSchema = createInsertSchema(vectorSimilarityIndex).omit({
-  id: true,
-});
+export const insertVectorSimilarityIndexSchema = createInsertSchema(vectorSimilarityIndex);
 
-export const insertSemanticSearchQuerySchema = createInsertSchema(semanticSearchQueries).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertSemanticSearchQuerySchema = createInsertSchema(semanticSearchQueries);
 
-export const insertRealtimeRecommendationSchema = createInsertSchema(realtimeRecommendations).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertRealtimeRecommendationSchema = createInsertSchema(realtimeRecommendations);
 
-export const insertGraphAnalyticsSchema = createInsertSchema(graphAnalytics).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertGraphAnalyticsSchema = createInsertSchema(graphAnalytics);
 
-export const insertGraphAuditResultSchema = createInsertSchema(graphAuditResults).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertGraphAuditResultSchema = createInsertSchema(graphAuditResults);
 
 // Types
 export type SemanticNode = typeof semanticNodes.$inferSelect;
