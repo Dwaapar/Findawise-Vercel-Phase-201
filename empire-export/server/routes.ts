@@ -96,7 +96,7 @@ import { semanticRoutes } from "./routes/semantic";
 import { notificationRoutes } from "./routes/notifications";
 import { createTravelRoutes } from "./routes/travel";
 import { registerEducationRoutes } from "./routes/education";
-import { createAiToolsRoutes } from "./routes/aiToolsRoutes";
+import aiToolsRouter, { init as initAiToolsRoutes } from "./routes/aiToolsRoutes";
 import federationRouterBridge from "./routes/federation";
 import federationDashboardRouter from "./routes/federation-dashboard";
 import apiNeuronsRouter from "./routes/apiNeurons";
@@ -4348,7 +4348,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerEducationRoutes(app);
 
   // Register AI Tools Neuron Routes
-  app.use('/api/ai-tools', createAiToolsRoutes(storage));
+  initAiToolsRoutes(storage);
+  app.use('/api/ai-tools', aiToolsRouter);
   
   // AI/ML Centralization Routes
   app.use(aiMLRoutes);

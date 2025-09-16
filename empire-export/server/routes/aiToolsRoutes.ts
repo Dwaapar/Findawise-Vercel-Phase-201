@@ -11,8 +11,15 @@ import {
 } from '@shared/aiToolsTables';
 import type { DatabaseStorage } from '../storage';
 
-export function createAiToolsRoutes(storage: DatabaseStorage) {
-  const router = Router();
+const router = Router();
+let isInitialized = false;
+
+export function init(storage: DatabaseStorage) {
+  if (isInitialized) {
+    return;
+  }
+
+  isInitialized = true;
 
   // Get all AI tool archetypes
   router.get('/archetypes', async (req, res) => {
@@ -424,5 +431,6 @@ export function createAiToolsRoutes(storage: DatabaseStorage) {
     }
   });
 
-  return router;
 }
+
+export default router;
