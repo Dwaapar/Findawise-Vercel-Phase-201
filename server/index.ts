@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import fs from "fs";
 import { registerRoutes } from "./routes";
-import adminRoutes from "./routes/admin";
 import { setupVite, serveStatic, log } from "./vite";
 import { db } from "./db";
 import { createServer } from "http";
