@@ -337,3 +337,4 @@ router.post('/offers/force-sync', async (req, res) => {
 });
 
 export { router as notificationRoutes };
+export default router;

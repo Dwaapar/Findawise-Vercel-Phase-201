@@ -400,3 +400,4 @@ router.post('/incident/report', async (req, res) => {
 });
 
 export { router as securityAuditRouter };
+export default router;

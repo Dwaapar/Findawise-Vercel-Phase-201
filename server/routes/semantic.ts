@@ -1548,3 +1548,4 @@ router.post("/ultra/test-independence", async (req: Request, res: Response) => {
 });
 
 export { router as semanticRoutes };
+export default router;

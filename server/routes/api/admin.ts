@@ -615,3 +615,4 @@ router.post('/cultural-ab-tests', requireAuth, async (req, res) => {
 });
 
 export { router as adminRouter };
+export default router;
