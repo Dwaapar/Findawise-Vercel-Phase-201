@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ============================================================================
 // OFFLINE AI SYNC ENGINE + EDGE AI DEVICE RESILIENCE - BILLION-DOLLAR GRADE
 // ============================================================================
@@ -262,18 +264,18 @@ export const conflictResolutionLog = pgTable("conflict_resolution_log", {
 });
 
 // Type exports for TypeScript
-export type OfflineSyncQueue = typeof offlineSyncQueue.$inferSelect;
-export type InsertOfflineSyncQueue = typeof offlineSyncQueue.$inferInsert;
-export type EdgeAiModel = typeof edgeAiModels.$inferSelect;
-export type InsertEdgeAiModel = typeof edgeAiModels.$inferInsert;
-export type DeviceSyncState = typeof deviceSyncState.$inferSelect;
-export type InsertDeviceSyncState = typeof deviceSyncState.$inferInsert;
-export type OfflineAnalyticsBuffer = typeof offlineAnalyticsBuffer.$inferSelect;
-export type InsertOfflineAnalyticsBuffer = typeof offlineAnalyticsBuffer.$inferInsert;
-export type OfflineContentCache = typeof offlineContentCache.$inferSelect;
-export type InsertOfflineContentCache = typeof offlineContentCache.$inferInsert;
-export type ConflictResolutionLog = typeof conflictResolutionLog.$inferSelect;
-export type InsertConflictResolutionLog = typeof conflictResolutionLog.$inferInsert;
+export type OfflineSyncQueue = InferSelectModel<typeof offlineSyncQueue>;
+export type InsertOfflineSyncQueue = InferInsertModel<typeof offlineSyncQueue>;
+export type EdgeAiModel = InferSelectModel<typeof edgeAiModels>;
+export type InsertEdgeAiModel = InferInsertModel<typeof edgeAiModels>;
+export type DeviceSyncState = InferSelectModel<typeof deviceSyncState>;
+export type InsertDeviceSyncState = InferInsertModel<typeof deviceSyncState>;
+export type OfflineAnalyticsBuffer = InferSelectModel<typeof offlineAnalyticsBuffer>;
+export type InsertOfflineAnalyticsBuffer = InferInsertModel<typeof offlineAnalyticsBuffer>;
+export type OfflineContentCache = InferSelectModel<typeof offlineContentCache>;
+export type InsertOfflineContentCache = InferInsertModel<typeof offlineContentCache>;
+export type ConflictResolutionLog = InferSelectModel<typeof conflictResolutionLog>;
+export type InsertConflictResolutionLog = InferInsertModel<typeof conflictResolutionLog>;
 
 // Zod schemas for validation
 export const insertOfflineSyncQueueSchema = createInsertSchema(offlineSyncQueue);
@@ -282,3 +284,58 @@ export const insertDeviceSyncStateSchema = createInsertSchema(deviceSyncState);
 export const insertOfflineAnalyticsBufferSchema = createInsertSchema(offlineAnalyticsBuffer);
 export const insertOfflineContentCacheSchema = createInsertSchema(offlineContentCache);
 export const insertConflictResolutionLogSchema = createInsertSchema(conflictResolutionLog);
+
+// DTOs
+const offlineSyncQueueDTOKeys = ["id", "sessionId", "userId", "priority", "createdAt", "updatedAt", "eventType"] as const;
+
+export interface OfflineSyncQueueDTO
+  extends Pick<OfflineSyncQueue, (typeof offlineSyncQueueDTOKeys)[number]> {}
+
+export const toOfflineSyncQueueDTO = (offlineSyncQueue: OfflineSyncQueue): OfflineSyncQueueDTO =>
+  pickDTOFields(offlineSyncQueue, offlineSyncQueueDTOKeys);
+
+
+const edgeAiModelDTOKeys = ["id", "modelId", "createdAt", "updatedAt"] as const;
+
+export interface EdgeAiModelDTO
+  extends Pick<EdgeAiModel, (typeof edgeAiModelDTOKeys)[number]> {}
+
+export const toEdgeAiModelDTO = (edgeAiModel: EdgeAiModel): EdgeAiModelDTO =>
+  pickDTOFields(edgeAiModel, edgeAiModelDTOKeys);
+
+
+const deviceSyncStateDTOKeys = ["id", "userId", "createdAt", "updatedAt"] as const;
+
+export interface DeviceSyncStateDTO
+  extends Pick<DeviceSyncState, (typeof deviceSyncStateDTOKeys)[number]> {}
+
+export const toDeviceSyncStateDTO = (deviceSyncState: DeviceSyncState): DeviceSyncStateDTO =>
+  pickDTOFields(deviceSyncState, deviceSyncStateDTOKeys);
+
+
+const offlineAnalyticsBufferDTOKeys = ["id", "sessionId", "createdAt", "eventType"] as const;
+
+export interface OfflineAnalyticsBufferDTO
+  extends Pick<OfflineAnalyticsBuffer, (typeof offlineAnalyticsBufferDTOKeys)[number]> {}
+
+export const toOfflineAnalyticsBufferDTO = (offlineAnalyticsBuffer: OfflineAnalyticsBuffer): OfflineAnalyticsBufferDTO =>
+  pickDTOFields(offlineAnalyticsBuffer, offlineAnalyticsBufferDTOKeys);
+
+
+const offlineContentCacheDTOKeys = ["id", "priority", "createdAt", "updatedAt"] as const;
+
+export interface OfflineContentCacheDTO
+  extends Pick<OfflineContentCache, (typeof offlineContentCacheDTOKeys)[number]> {}
+
+export const toOfflineContentCacheDTO = (offlineContentCache: OfflineContentCache): OfflineContentCacheDTO =>
+  pickDTOFields(offlineContentCache, offlineContentCacheDTOKeys);
+
+
+const conflictResolutionLogDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface ConflictResolutionLogDTO
+  extends Pick<ConflictResolutionLog, (typeof conflictResolutionLogDTOKeys)[number]> {}
+
+export const toConflictResolutionLogDTO = (conflictResolutionLog: ConflictResolutionLog): ConflictResolutionLogDTO =>
+  pickDTOFields(conflictResolutionLog, conflictResolutionLogDTOKeys);
+

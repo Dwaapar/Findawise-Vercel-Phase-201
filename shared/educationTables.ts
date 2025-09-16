@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Education User Archetypes (Students, Career Switchers, Hobbyists)
 export const educationArchetypes = pgTable("education_archetypes", {
   id: serial("id").primaryKey(),
@@ -352,14 +354,147 @@ export const insertEducationOfferSchema = createInsertSchema(educationOffers).pi
 });
 
 // Type exports
-export type InsertEducationArchetype = z.infer<typeof insertEducationArchetypeSchema>;
-export type InsertEducationContent = z.infer<typeof insertEducationContentSchema>;
-export type InsertEducationQuiz = z.infer<typeof insertEducationQuizSchema>;
-export type InsertEducationOffer = z.infer<typeof insertEducationOfferSchema>;
+export type InsertEducationArchetype = InferInsertModel<typeof educationArchetypes>;
+export type InsertEducationContent = InferInsertModel<typeof educationContent>;
+export type InsertEducationQuiz = InferInsertModel<typeof educationQuizzes>;
+export type InsertEducationOffer = InferInsertModel<typeof educationOffers>;
 
-export type EducationArchetype = typeof educationArchetypes.$inferSelect;
-export type EducationContent = typeof educationContent.$inferSelect;
-export type EducationQuiz = typeof educationQuizzes.$inferSelect;
-export type EducationOffer = typeof educationOffers.$inferSelect;
-export type EducationProgress = typeof educationProgress.$inferSelect;
-export type EducationGamification = typeof educationGamification.$inferSelect;
+export type EducationArchetype = InferSelectModel<typeof educationArchetypes>;
+export type EducationContent = InferSelectModel<typeof educationContent>;
+export type EducationQuiz = InferSelectModel<typeof educationQuizzes>;
+export type EducationOffer = InferSelectModel<typeof educationOffers>;
+export type EducationProgress = InferSelectModel<typeof educationProgress>;
+export type EducationGamification = InferSelectModel<typeof educationGamification>;
+
+export type EducationQuizResult = InferSelectModel<typeof educationQuizResults>;
+export type InsertEducationQuizResult = InferInsertModel<typeof educationQuizResults>;
+export type EducationPath = InferSelectModel<typeof educationPaths>;
+export type InsertEducationPath = InferInsertModel<typeof educationPaths>;
+export type EducationTool = InferSelectModel<typeof educationTools>;
+export type InsertEducationTool = InferInsertModel<typeof educationTools>;
+export type EducationToolSession = InferSelectModel<typeof educationToolSessions>;
+export type InsertEducationToolSession = InferInsertModel<typeof educationToolSessions>;
+export type EducationAIChatSession = InferSelectModel<typeof educationAIChatSessions>;
+export type InsertEducationAIChatSession = InferInsertModel<typeof educationAIChatSessions>;
+export type EducationDailyQuest = InferSelectModel<typeof educationDailyQuests>;
+export type InsertEducationDailyQuest = InferInsertModel<typeof educationDailyQuests>;
+export type EducationQuestCompletion = InferSelectModel<typeof educationQuestCompletions>;
+export type InsertEducationQuestCompletion = InferInsertModel<typeof educationQuestCompletions>;
+
+// DTOs
+const educationArchetypeDTOKeys = ["id", "name", "slug", "createdAt", "updatedAt", "description"] as const;
+
+export interface EducationArchetypeDTO
+  extends Pick<EducationArchetype, (typeof educationArchetypeDTOKeys)[number]> {}
+
+export const toEducationArchetypeDTO = (educationArchetype: EducationArchetype): EducationArchetypeDTO =>
+  pickDTOFields(educationArchetype, educationArchetypeDTOKeys);
+
+
+const educationContentDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt"] as const;
+
+export interface EducationContentDTO
+  extends Pick<EducationContent, (typeof educationContentDTOKeys)[number]> {}
+
+export const toEducationContentDTO = (educationContent: EducationContent): EducationContentDTO =>
+  pickDTOFields(educationContent, educationContentDTOKeys);
+
+
+const educationQuizDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt", "description", "quizType"] as const;
+
+export interface EducationQuizDTO
+  extends Pick<EducationQuiz, (typeof educationQuizDTOKeys)[number]> {}
+
+export const toEducationQuizDTO = (educationQuiz: EducationQuiz): EducationQuizDTO =>
+  pickDTOFields(educationQuiz, educationQuizDTOKeys);
+
+
+const educationOfferDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt", "description", "provider"] as const;
+
+export interface EducationOfferDTO
+  extends Pick<EducationOffer, (typeof educationOfferDTOKeys)[number]> {}
+
+export const toEducationOfferDTO = (educationOffer: EducationOffer): EducationOfferDTO =>
+  pickDTOFields(educationOffer, educationOfferDTOKeys);
+
+
+const educationProgressDTOKeys = ["id", "status", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface EducationProgressDTO
+  extends Pick<EducationProgress, (typeof educationProgressDTOKeys)[number]> {}
+
+export const toEducationProgressDTO = (educationProgress: EducationProgress): EducationProgressDTO =>
+  pickDTOFields(educationProgress, educationProgressDTOKeys);
+
+
+const educationGamificationDTOKeys = ["id", "sessionId", "userId", "level", "createdAt", "updatedAt"] as const;
+
+export interface EducationGamificationDTO
+  extends Pick<EducationGamification, (typeof educationGamificationDTOKeys)[number]> {}
+
+export const toEducationGamificationDTO = (educationGamification: EducationGamification): EducationGamificationDTO =>
+  pickDTOFields(educationGamification, educationGamificationDTOKeys);
+
+
+const educationQuizResultDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface EducationQuizResultDTO
+  extends Pick<EducationQuizResult, (typeof educationQuizResultDTOKeys)[number]> {}
+
+export const toEducationQuizResultDTO = (educationQuizResult: EducationQuizResult): EducationQuizResultDTO =>
+  pickDTOFields(educationQuizResult, educationQuizResultDTOKeys);
+
+
+const educationPathDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface EducationPathDTO
+  extends Pick<EducationPath, (typeof educationPathDTOKeys)[number]> {}
+
+export const toEducationPathDTO = (educationPath: EducationPath): EducationPathDTO =>
+  pickDTOFields(educationPath, educationPathDTOKeys);
+
+
+const educationToolDTOKeys = ["id", "name", "slug", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface EducationToolDTO
+  extends Pick<EducationTool, (typeof educationToolDTOKeys)[number]> {}
+
+export const toEducationToolDTO = (educationTool: EducationTool): EducationToolDTO =>
+  pickDTOFields(educationTool, educationToolDTOKeys);
+
+
+const educationToolSessionDTOKeys = ["id", "sessionId", "userId", "createdAt", "toolId"] as const;
+
+export interface EducationToolSessionDTO
+  extends Pick<EducationToolSession, (typeof educationToolSessionDTOKeys)[number]> {}
+
+export const toEducationToolSessionDTO = (educationToolSession: EducationToolSession): EducationToolSessionDTO =>
+  pickDTOFields(educationToolSession, educationToolSessionDTOKeys);
+
+
+const educationAIChatSessionDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface EducationAIChatSessionDTO
+  extends Pick<EducationAIChatSession, (typeof educationAIChatSessionDTOKeys)[number]> {}
+
+export const toEducationAIChatSessionDTO = (educationAIChatSession: EducationAIChatSession): EducationAIChatSessionDTO =>
+  pickDTOFields(educationAIChatSession, educationAIChatSessionDTOKeys);
+
+
+const educationDailyQuestDTOKeys = ["id", "title", "category", "createdAt", "description"] as const;
+
+export interface EducationDailyQuestDTO
+  extends Pick<EducationDailyQuest, (typeof educationDailyQuestDTOKeys)[number]> {}
+
+export const toEducationDailyQuestDTO = (educationDailyQuest: EducationDailyQuest): EducationDailyQuestDTO =>
+  pickDTOFields(educationDailyQuest, educationDailyQuestDTOKeys);
+
+
+const educationQuestCompletionDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface EducationQuestCompletionDTO
+  extends Pick<EducationQuestCompletion, (typeof educationQuestCompletionDTOKeys)[number]> {}
+
+export const toEducationQuestCompletionDTO = (educationQuestCompletion: EducationQuestCompletion): EducationQuestCompletionDTO =>
+  pickDTOFields(educationQuestCompletion, educationQuestCompletionDTOKeys);
+

@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Real-Time Layout Mutation Engine Database Schema
  * Enterprise-grade tables for dynamic layout mutations and personalization
@@ -296,3 +298,82 @@ export const layoutExperiments = pgTable("layout_experiments", {
   startDateIdx: index("layout_experiments_start_date_idx").on(table.startDate),
   baselineTemplateIdx: index("layout_experiments_baseline_template_idx").on(table.baselineTemplateId),
 }));
+
+export type LayoutMutationLayoutTemplate = InferSelectModel<typeof layoutTemplates>;
+export type InsertLayoutMutationLayoutTemplate = InferInsertModel<typeof layoutTemplates>;
+export type LayoutMutationLayoutBlock = InferSelectModel<typeof layoutBlocks>;
+export type InsertLayoutMutationLayoutBlock = InferInsertModel<typeof layoutBlocks>;
+export type LayoutMutationLayoutMutation = InferSelectModel<typeof layoutMutations>;
+export type InsertLayoutMutationLayoutMutation = InferInsertModel<typeof layoutMutations>;
+export type LayoutMutationUserLayoutSession = InferSelectModel<typeof userLayoutSessions>;
+export type InsertLayoutMutationUserLayoutSession = InferInsertModel<typeof userLayoutSessions>;
+export type LayoutMutationMutationHistory = InferSelectModel<typeof mutationHistory>;
+export type InsertLayoutMutationMutationHistory = InferInsertModel<typeof mutationHistory>;
+export type LayoutMutationLayoutPerformanceAnalytic = InferSelectModel<typeof layoutPerformanceAnalytics>;
+export type InsertLayoutMutationLayoutPerformanceAnalytic = InferInsertModel<typeof layoutPerformanceAnalytics>;
+export type LayoutMutationLayoutExperiment = InferSelectModel<typeof layoutExperiments>;
+export type InsertLayoutMutationLayoutExperiment = InferInsertModel<typeof layoutExperiments>;
+
+// DTOs
+const layoutMutationLayoutTemplateDTOKeys = ["id", "status", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface LayoutMutationLayoutTemplateDTO
+  extends Pick<LayoutMutationLayoutTemplate, (typeof layoutMutationLayoutTemplateDTOKeys)[number]> {}
+
+export const toLayoutMutationLayoutTemplateDTO = (layoutMutationLayoutTemplate: LayoutMutationLayoutTemplate): LayoutMutationLayoutTemplateDTO =>
+  pickDTOFields(layoutMutationLayoutTemplate, layoutMutationLayoutTemplateDTOKeys);
+
+
+const layoutMutationLayoutBlockDTOKeys = ["id", "priority", "createdAt", "updatedAt", "version"] as const;
+
+export interface LayoutMutationLayoutBlockDTO
+  extends Pick<LayoutMutationLayoutBlock, (typeof layoutMutationLayoutBlockDTOKeys)[number]> {}
+
+export const toLayoutMutationLayoutBlockDTO = (layoutMutationLayoutBlock: LayoutMutationLayoutBlock): LayoutMutationLayoutBlockDTO =>
+  pickDTOFields(layoutMutationLayoutBlock, layoutMutationLayoutBlockDTOKeys);
+
+
+const layoutMutationLayoutMutationDTOKeys = ["id", "priority", "createdAt", "updatedAt"] as const;
+
+export interface LayoutMutationLayoutMutationDTO
+  extends Pick<LayoutMutationLayoutMutation, (typeof layoutMutationLayoutMutationDTOKeys)[number]> {}
+
+export const toLayoutMutationLayoutMutationDTO = (layoutMutationLayoutMutation: LayoutMutationLayoutMutation): LayoutMutationLayoutMutationDTO =>
+  pickDTOFields(layoutMutationLayoutMutation, layoutMutationLayoutMutationDTOKeys);
+
+
+const layoutMutationUserLayoutSessionDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface LayoutMutationUserLayoutSessionDTO
+  extends Pick<LayoutMutationUserLayoutSession, (typeof layoutMutationUserLayoutSessionDTOKeys)[number]> {}
+
+export const toLayoutMutationUserLayoutSessionDTO = (layoutMutationUserLayoutSession: LayoutMutationUserLayoutSession): LayoutMutationUserLayoutSessionDTO =>
+  pickDTOFields(layoutMutationUserLayoutSession, layoutMutationUserLayoutSessionDTOKeys);
+
+
+const layoutMutationMutationHistoryDTOKeys = ["id", "sessionId", "createdAt"] as const;
+
+export interface LayoutMutationMutationHistoryDTO
+  extends Pick<LayoutMutationMutationHistory, (typeof layoutMutationMutationHistoryDTOKeys)[number]> {}
+
+export const toLayoutMutationMutationHistoryDTO = (layoutMutationMutationHistory: LayoutMutationMutationHistory): LayoutMutationMutationHistoryDTO =>
+  pickDTOFields(layoutMutationMutationHistory, layoutMutationMutationHistoryDTOKeys);
+
+
+const layoutMutationLayoutPerformanceAnalyticDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface LayoutMutationLayoutPerformanceAnalyticDTO
+  extends Pick<LayoutMutationLayoutPerformanceAnalytic, (typeof layoutMutationLayoutPerformanceAnalyticDTOKeys)[number]> {}
+
+export const toLayoutMutationLayoutPerformanceAnalyticDTO = (layoutMutationLayoutPerformanceAnalytic: LayoutMutationLayoutPerformanceAnalytic): LayoutMutationLayoutPerformanceAnalyticDTO =>
+  pickDTOFields(layoutMutationLayoutPerformanceAnalytic, layoutMutationLayoutPerformanceAnalyticDTOKeys);
+
+
+const layoutMutationLayoutExperimentDTOKeys = ["id", "status", "createdAt", "updatedAt", "budget"] as const;
+
+export interface LayoutMutationLayoutExperimentDTO
+  extends Pick<LayoutMutationLayoutExperiment, (typeof layoutMutationLayoutExperimentDTOKeys)[number]> {}
+
+export const toLayoutMutationLayoutExperimentDTO = (layoutMutationLayoutExperiment: LayoutMutationLayoutExperiment): LayoutMutationLayoutExperimentDTO =>
+  pickDTOFields(layoutMutationLayoutExperiment, layoutMutationLayoutExperimentDTOKeys);
+

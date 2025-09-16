@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ==========================================
 // EXPORT/IMPORT BOOSTER SYSTEM TABLES
 // ==========================================
@@ -215,21 +217,103 @@ export const insertDeploymentPermissionSchema = createInsertSchema(deploymentPer
 export const insertMultiRegionConfigSchema = createInsertSchema(multiRegionConfig);
 
 // Export type definitions
-export type ExportArchive = typeof exportArchives.$inferSelect;
-export type NewExportArchive = typeof exportArchives.$inferInsert;
-export type ImportOperation = typeof importOperations.$inferSelect;
-export type NewImportOperation = typeof importOperations.$inferInsert;
-export type Deployment = typeof deployments.$inferSelect;
-export type NewDeployment = typeof deployments.$inferInsert;
-export type DeploymentStep = typeof deploymentSteps.$inferSelect;
-export type NewDeploymentStep = typeof deploymentSteps.$inferInsert;
-export type Backup = typeof backups.$inferSelect;
-export type NewBackup = typeof backups.$inferInsert;
-export type DisasterRecoveryPlan = typeof disasterRecoveryPlans.$inferSelect;
-export type NewDisasterRecoveryPlan = typeof disasterRecoveryPlans.$inferInsert;
-export type DeploymentAudit = typeof deploymentAudit.$inferSelect;
-export type NewDeploymentAudit = typeof deploymentAudit.$inferInsert;
-export type DeploymentPermission = typeof deploymentPermissions.$inferSelect;
-export type NewDeploymentPermission = typeof deploymentPermissions.$inferInsert;
-export type MultiRegionConfig = typeof multiRegionConfig.$inferSelect;
-export type NewMultiRegionConfig = typeof multiRegionConfig.$inferInsert;
+export type ExportArchive = InferSelectModel<typeof exportArchives>;
+export type NewExportArchive = InferInsertModel<typeof exportArchives>;
+export type ImportOperation = InferSelectModel<typeof importOperations>;
+export type NewImportOperation = InferInsertModel<typeof importOperations>;
+export type Deployment = InferSelectModel<typeof deployments>;
+export type NewDeployment = InferInsertModel<typeof deployments>;
+export type DeploymentStep = InferSelectModel<typeof deploymentSteps>;
+export type NewDeploymentStep = InferInsertModel<typeof deploymentSteps>;
+export type Backup = InferSelectModel<typeof backups>;
+export type NewBackup = InferInsertModel<typeof backups>;
+export type DisasterRecoveryPlan = InferSelectModel<typeof disasterRecoveryPlans>;
+export type NewDisasterRecoveryPlan = InferInsertModel<typeof disasterRecoveryPlans>;
+export type DeploymentAudit = InferSelectModel<typeof deploymentAudit>;
+export type NewDeploymentAudit = InferInsertModel<typeof deploymentAudit>;
+export type DeploymentPermission = InferSelectModel<typeof deploymentPermissions>;
+export type NewDeploymentPermission = InferInsertModel<typeof deploymentPermissions>;
+export type MultiRegionConfig = InferSelectModel<typeof multiRegionConfig>;
+export type NewMultiRegionConfig = InferInsertModel<typeof multiRegionConfig>;
+
+// DTOs
+const exportArchiveDTOKeys = ["id", "name", "status", "createdAt", "description", "version"] as const;
+
+export interface ExportArchiveDTO
+  extends Pick<ExportArchive, (typeof exportArchiveDTOKeys)[number]> {}
+
+export const toExportArchiveDTO = (exportArchive: ExportArchive): ExportArchiveDTO =>
+  pickDTOFields(exportArchive, exportArchiveDTOKeys);
+
+
+const importOperationDTOKeys = ["id", "name", "status", "createdAt"] as const;
+
+export interface ImportOperationDTO
+  extends Pick<ImportOperation, (typeof importOperationDTOKeys)[number]> {}
+
+export const toImportOperationDTO = (importOperation: ImportOperation): ImportOperationDTO =>
+  pickDTOFields(importOperation, importOperationDTOKeys);
+
+
+const deploymentDTOKeys = ["id", "name", "status", "createdAt", "version", "environment"] as const;
+
+export interface DeploymentDTO
+  extends Pick<Deployment, (typeof deploymentDTOKeys)[number]> {}
+
+export const toDeploymentDTO = (deployment: Deployment): DeploymentDTO =>
+  pickDTOFields(deployment, deploymentDTOKeys);
+
+
+const deploymentStepDTOKeys = ["id", "name", "status", "createdAt", "description"] as const;
+
+export interface DeploymentStepDTO
+  extends Pick<DeploymentStep, (typeof deploymentStepDTOKeys)[number]> {}
+
+export const toDeploymentStepDTO = (deploymentStep: DeploymentStep): DeploymentStepDTO =>
+  pickDTOFields(deploymentStep, deploymentStepDTOKeys);
+
+
+const backupDTOKeys = ["id", "name", "status", "createdAt"] as const;
+
+export interface BackupDTO
+  extends Pick<Backup, (typeof backupDTOKeys)[number]> {}
+
+export const toBackupDTO = (backup: Backup): BackupDTO =>
+  pickDTOFields(backup, backupDTOKeys);
+
+
+const disasterRecoveryPlanDTOKeys = ["id", "name", "planId", "priority", "createdAt", "updatedAt", "description"] as const;
+
+export interface DisasterRecoveryPlanDTO
+  extends Pick<DisasterRecoveryPlan, (typeof disasterRecoveryPlanDTOKeys)[number]> {}
+
+export const toDisasterRecoveryPlanDTO = (disasterRecoveryPlan: DisasterRecoveryPlan): DisasterRecoveryPlanDTO =>
+  pickDTOFields(disasterRecoveryPlan, disasterRecoveryPlanDTOKeys);
+
+
+const deploymentAuditDTOKeys = ["id", "userId", "createdAt"] as const;
+
+export interface DeploymentAuditDTO
+  extends Pick<DeploymentAudit, (typeof deploymentAuditDTOKeys)[number]> {}
+
+export const toDeploymentAuditDTO = (deploymentAudit: DeploymentAudit): DeploymentAuditDTO =>
+  pickDTOFields(deploymentAudit, deploymentAuditDTOKeys);
+
+
+const deploymentPermissionDTOKeys = ["id", "userId", "createdAt", "updatedAt", "role"] as const;
+
+export interface DeploymentPermissionDTO
+  extends Pick<DeploymentPermission, (typeof deploymentPermissionDTOKeys)[number]> {}
+
+export const toDeploymentPermissionDTO = (deploymentPermission: DeploymentPermission): DeploymentPermissionDTO =>
+  pickDTOFields(deploymentPermission, deploymentPermissionDTOKeys);
+
+
+const multiRegionConfigDTOKeys = ["id", "name", "createdAt", "updatedAt"] as const;
+
+export interface MultiRegionConfigDTO
+  extends Pick<MultiRegionConfig, (typeof multiRegionConfigDTOKeys)[number]> {}
+
+export const toMultiRegionConfigDTO = (multiRegionConfig: MultiRegionConfig): MultiRegionConfigDTO =>
+  pickDTOFields(multiRegionConfig, multiRegionConfigDTOKeys);
+

@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ================================================
 // GLOBAL DEAL SNIPER & PRICE TRACKER MODULE
 // Billion-Dollar Empire Grade, AI-First, Migration-Proof
@@ -321,21 +323,137 @@ export const insertPricePredictionSchema = createInsertSchema(pricePredictions);
 export const insertUserWishlistSchema = createInsertSchema(userWishlists);
 
 // Types
-export type ProductCatalog = typeof productCatalog.$inferSelect;
-export type NewProductCatalog = typeof productCatalog.$inferInsert;
-export type PriceHistory = typeof priceHistory.$inferSelect;
-export type NewPriceHistory = typeof priceHistory.$inferInsert;
-export type PriceAlert = typeof priceAlerts.$inferSelect;
-export type NewPriceAlert = typeof priceAlerts.$inferInsert;
-export type DealEvent = typeof dealEvents.$inferSelect;
-export type NewDealEvent = typeof dealEvents.$inferInsert;
-export type CouponCode = typeof couponCodes.$inferSelect;
-export type NewCouponCode = typeof couponCodes.$inferInsert;
-export type RetailerApi = typeof retailerApis.$inferSelect;
-export type NewRetailerApi = typeof retailerApis.$inferInsert;
-export type DealAnalytic = typeof dealAnalytics.$inferSelect;
-export type NewDealAnalytic = typeof dealAnalytics.$inferInsert;
-export type PricePrediction = typeof pricePredictions.$inferSelect;
-export type NewPricePrediction = typeof pricePredictions.$inferInsert;
-export type UserWishlist = typeof userWishlists.$inferSelect;
-export type NewUserWishlist = typeof userWishlists.$inferInsert;
+export type ProductCatalog = InferSelectModel<typeof productCatalog>;
+export type NewProductCatalog = InferInsertModel<typeof productCatalog>;
+export type PriceHistory = InferSelectModel<typeof priceHistory>;
+export type NewPriceHistory = InferInsertModel<typeof priceHistory>;
+export type PriceAlert = InferSelectModel<typeof priceAlerts>;
+export type NewPriceAlert = InferInsertModel<typeof priceAlerts>;
+export type DealEvent = InferSelectModel<typeof dealEvents>;
+export type NewDealEvent = InferInsertModel<typeof dealEvents>;
+export type CouponCode = InferSelectModel<typeof couponCodes>;
+export type NewCouponCode = InferInsertModel<typeof couponCodes>;
+export type RetailerApi = InferSelectModel<typeof retailerApis>;
+export type NewRetailerApi = InferInsertModel<typeof retailerApis>;
+export type DealAnalytic = InferSelectModel<typeof dealAnalytics>;
+export type NewDealAnalytic = InferInsertModel<typeof dealAnalytics>;
+export type PricePrediction = InferSelectModel<typeof pricePredictions>;
+export type NewPricePrediction = InferInsertModel<typeof pricePredictions>;
+export type UserWishlist = InferSelectModel<typeof userWishlists>;
+export type NewUserWishlist = InferInsertModel<typeof userWishlists>;
+
+export type DealCategory = InferSelectModel<typeof dealCategories>;
+export type InsertDealCategory = InferInsertModel<typeof dealCategories>;
+export type DealSource = InferSelectModel<typeof dealSources>;
+export type InsertDealSource = InferInsertModel<typeof dealSources>;
+export type DealInventory = InferSelectModel<typeof dealInventory>;
+export type InsertDealInventory = InferInsertModel<typeof dealInventory>;
+
+// DTOs
+const productCatalogDTOKeys = ["id", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface ProductCatalogDTO
+  extends Pick<ProductCatalog, (typeof productCatalogDTOKeys)[number]> {}
+
+export const toProductCatalogDTO = (productCatalog: ProductCatalog): ProductCatalogDTO =>
+  pickDTOFields(productCatalog, productCatalogDTOKeys);
+
+
+const priceHistoryDTOKeys = ["id", "createdAt", "productId"] as const;
+
+export interface PriceHistoryDTO
+  extends Pick<PriceHistory, (typeof priceHistoryDTOKeys)[number]> {}
+
+export const toPriceHistoryDTO = (priceHistory: PriceHistory): PriceHistoryDTO =>
+  pickDTOFields(priceHistory, priceHistoryDTOKeys);
+
+
+const priceAlertDTOKeys = ["id", "userId", "createdAt", "updatedAt", "productId"] as const;
+
+export interface PriceAlertDTO
+  extends Pick<PriceAlert, (typeof priceAlertDTOKeys)[number]> {}
+
+export const toPriceAlertDTO = (priceAlert: PriceAlert): PriceAlertDTO =>
+  pickDTOFields(priceAlert, priceAlertDTOKeys);
+
+
+const dealEventDTOKeys = ["id", "createdAt", "productId"] as const;
+
+export interface DealEventDTO
+  extends Pick<DealEvent, (typeof dealEventDTOKeys)[number]> {}
+
+export const toDealEventDTO = (dealEvent: DealEvent): DealEventDTO =>
+  pickDTOFields(dealEvent, dealEventDTOKeys);
+
+
+const couponCodeDTOKeys = ["id", "createdAt", "updatedAt", "description", "source"] as const;
+
+export interface CouponCodeDTO
+  extends Pick<CouponCode, (typeof couponCodeDTOKeys)[number]> {}
+
+export const toCouponCodeDTO = (couponCode: CouponCode): CouponCodeDTO =>
+  pickDTOFields(couponCode, couponCodeDTOKeys);
+
+
+const retailerApiDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface RetailerApiDTO
+  extends Pick<RetailerApi, (typeof retailerApiDTOKeys)[number]> {}
+
+export const toRetailerApiDTO = (retailerApi: RetailerApi): RetailerApiDTO =>
+  pickDTOFields(retailerApi, retailerApiDTOKeys);
+
+
+const dealAnalyticDTOKeys = ["id", "userId", "createdAt", "eventType", "productId"] as const;
+
+export interface DealAnalyticDTO
+  extends Pick<DealAnalytic, (typeof dealAnalyticDTOKeys)[number]> {}
+
+export const toDealAnalyticDTO = (dealAnalytic: DealAnalytic): DealAnalyticDTO =>
+  pickDTOFields(dealAnalytic, dealAnalyticDTOKeys);
+
+
+const pricePredictionDTOKeys = ["id", "createdAt", "productId"] as const;
+
+export interface PricePredictionDTO
+  extends Pick<PricePrediction, (typeof pricePredictionDTOKeys)[number]> {}
+
+export const toPricePredictionDTO = (pricePrediction: PricePrediction): PricePredictionDTO =>
+  pickDTOFields(pricePrediction, pricePredictionDTOKeys);
+
+
+const userWishlistDTOKeys = ["id", "userId", "priority", "createdAt", "updatedAt", "productId"] as const;
+
+export interface UserWishlistDTO
+  extends Pick<UserWishlist, (typeof userWishlistDTOKeys)[number]> {}
+
+export const toUserWishlistDTO = (userWishlist: UserWishlist): UserWishlistDTO =>
+  pickDTOFields(userWishlist, userWishlistDTOKeys);
+
+
+const dealCategoryDTOKeys = ["id", "priority", "createdAt", "updatedAt", "description"] as const;
+
+export interface DealCategoryDTO
+  extends Pick<DealCategory, (typeof dealCategoryDTOKeys)[number]> {}
+
+export const toDealCategoryDTO = (dealCategory: DealCategory): DealCategoryDTO =>
+  pickDTOFields(dealCategory, dealCategoryDTOKeys);
+
+
+const dealSourceDTOKeys = ["id", "priority", "createdAt", "updatedAt"] as const;
+
+export interface DealSourceDTO
+  extends Pick<DealSource, (typeof dealSourceDTOKeys)[number]> {}
+
+export const toDealSourceDTO = (dealSource: DealSource): DealSourceDTO =>
+  pickDTOFields(dealSource, dealSourceDTOKeys);
+
+
+const dealInventoryDTOKeys = ["id", "category", "createdAt", "updatedAt"] as const;
+
+export interface DealInventoryDTO
+  extends Pick<DealInventory, (typeof dealInventoryDTOKeys)[number]> {}
+
+export const toDealInventoryDTO = (dealInventory: DealInventory): DealInventoryDTO =>
+  pickDTOFields(dealInventory, dealInventoryDTOKeys);
+

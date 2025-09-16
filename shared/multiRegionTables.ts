@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Multi-Region Load Orchestrator Database Schema
  * Enterprise-grade tables for global load balancing and failover management
@@ -224,3 +226,104 @@ export const disasterRecoveryScenarios = pgTable('disaster_recovery_scenarios', 
   created_at: timestamp('created_at').defaultNow().notNull(),
   updated_at: timestamp('updated_at').defaultNow().notNull()
 });
+
+export type MultiRegionRegion = InferSelectModel<typeof regions>;
+export type InsertMultiRegionRegion = InferInsertModel<typeof regions>;
+export type MultiRegionRegionHealth = InferSelectModel<typeof regionHealth>;
+export type InsertMultiRegionRegionHealth = InferInsertModel<typeof regionHealth>;
+export type MultiRegionLoadBalancingRule = InferSelectModel<typeof loadBalancingRules>;
+export type InsertMultiRegionLoadBalancingRule = InferInsertModel<typeof loadBalancingRules>;
+export type MultiRegionTrafficDistribution = InferSelectModel<typeof trafficDistribution>;
+export type InsertMultiRegionTrafficDistribution = InferInsertModel<typeof trafficDistribution>;
+export type MultiRegionFailoverEvent = InferSelectModel<typeof failoverEvents>;
+export type InsertMultiRegionFailoverEvent = InferInsertModel<typeof failoverEvents>;
+export type MultiRegionRoutingDecision = InferSelectModel<typeof routingDecisions>;
+export type InsertMultiRegionRoutingDecision = InferInsertModel<typeof routingDecisions>;
+export type MultiRegionAutoScalingEvent = InferSelectModel<typeof autoScalingEvents>;
+export type InsertMultiRegionAutoScalingEvent = InferInsertModel<typeof autoScalingEvents>;
+export type MultiRegionGlobalPerformanceMetric = InferSelectModel<typeof globalPerformanceMetrics>;
+export type InsertMultiRegionGlobalPerformanceMetric = InferInsertModel<typeof globalPerformanceMetrics>;
+export type MultiRegionDisasterRecoveryScenario = InferSelectModel<typeof disasterRecoveryScenarios>;
+export type InsertMultiRegionDisasterRecoveryScenario = InferInsertModel<typeof disasterRecoveryScenarios>;
+
+// DTOs
+const multiRegionRegionDTOKeys = ["id", "name", "status"] as const;
+
+export interface MultiRegionRegionDTO
+  extends Pick<MultiRegionRegion, (typeof multiRegionRegionDTOKeys)[number]> {}
+
+export const toMultiRegionRegionDTO = (multiRegionRegion: MultiRegionRegion): MultiRegionRegionDTO =>
+  pickDTOFields(multiRegionRegion, multiRegionRegionDTOKeys);
+
+
+const multiRegionRegionHealthDTOKeys = ["id", "status", "region_id"] as const;
+
+export interface MultiRegionRegionHealthDTO
+  extends Pick<MultiRegionRegionHealth, (typeof multiRegionRegionHealthDTOKeys)[number]> {}
+
+export const toMultiRegionRegionHealthDTO = (multiRegionRegionHealth: MultiRegionRegionHealth): MultiRegionRegionHealthDTO =>
+  pickDTOFields(multiRegionRegionHealth, multiRegionRegionHealthDTOKeys);
+
+
+const multiRegionLoadBalancingRuleDTOKeys = ["id", "name", "type", "priority"] as const;
+
+export interface MultiRegionLoadBalancingRuleDTO
+  extends Pick<MultiRegionLoadBalancingRule, (typeof multiRegionLoadBalancingRuleDTOKeys)[number]> {}
+
+export const toMultiRegionLoadBalancingRuleDTO = (multiRegionLoadBalancingRule: MultiRegionLoadBalancingRule): MultiRegionLoadBalancingRuleDTO =>
+  pickDTOFields(multiRegionLoadBalancingRule, multiRegionLoadBalancingRuleDTOKeys);
+
+
+const multiRegionTrafficDistributionDTOKeys = ["id", "timestamp", "total_requests"] as const;
+
+export interface MultiRegionTrafficDistributionDTO
+  extends Pick<MultiRegionTrafficDistribution, (typeof multiRegionTrafficDistributionDTOKeys)[number]> {}
+
+export const toMultiRegionTrafficDistributionDTO = (multiRegionTrafficDistribution: MultiRegionTrafficDistribution): MultiRegionTrafficDistributionDTO =>
+  pickDTOFields(multiRegionTrafficDistribution, multiRegionTrafficDistributionDTOKeys);
+
+
+const multiRegionFailoverEventDTOKeys = ["id", "event_type", "trigger_reason"] as const;
+
+export interface MultiRegionFailoverEventDTO
+  extends Pick<MultiRegionFailoverEvent, (typeof multiRegionFailoverEventDTOKeys)[number]> {}
+
+export const toMultiRegionFailoverEventDTO = (multiRegionFailoverEvent: MultiRegionFailoverEvent): MultiRegionFailoverEventDTO =>
+  pickDTOFields(multiRegionFailoverEvent, multiRegionFailoverEventDTOKeys);
+
+
+const multiRegionRoutingDecisionDTOKeys = ["id", "user_id", "session_id"] as const;
+
+export interface MultiRegionRoutingDecisionDTO
+  extends Pick<MultiRegionRoutingDecision, (typeof multiRegionRoutingDecisionDTOKeys)[number]> {}
+
+export const toMultiRegionRoutingDecisionDTO = (multiRegionRoutingDecision: MultiRegionRoutingDecision): MultiRegionRoutingDecisionDTO =>
+  pickDTOFields(multiRegionRoutingDecision, multiRegionRoutingDecisionDTOKeys);
+
+
+const multiRegionAutoScalingEventDTOKeys = ["id", "region_id", "scaling_action"] as const;
+
+export interface MultiRegionAutoScalingEventDTO
+  extends Pick<MultiRegionAutoScalingEvent, (typeof multiRegionAutoScalingEventDTOKeys)[number]> {}
+
+export const toMultiRegionAutoScalingEventDTO = (multiRegionAutoScalingEvent: MultiRegionAutoScalingEvent): MultiRegionAutoScalingEventDTO =>
+  pickDTOFields(multiRegionAutoScalingEvent, multiRegionAutoScalingEventDTOKeys);
+
+
+const multiRegionGlobalPerformanceMetricDTOKeys = ["id", "timestamp", "metric_type"] as const;
+
+export interface MultiRegionGlobalPerformanceMetricDTO
+  extends Pick<MultiRegionGlobalPerformanceMetric, (typeof multiRegionGlobalPerformanceMetricDTOKeys)[number]> {}
+
+export const toMultiRegionGlobalPerformanceMetricDTO = (multiRegionGlobalPerformanceMetric: MultiRegionGlobalPerformanceMetric): MultiRegionGlobalPerformanceMetricDTO =>
+  pickDTOFields(multiRegionGlobalPerformanceMetric, multiRegionGlobalPerformanceMetricDTOKeys);
+
+
+const multiRegionDisasterRecoveryScenarioDTOKeys = ["id", "scenario_name", "scenario_type"] as const;
+
+export interface MultiRegionDisasterRecoveryScenarioDTO
+  extends Pick<MultiRegionDisasterRecoveryScenario, (typeof multiRegionDisasterRecoveryScenarioDTOKeys)[number]> {}
+
+export const toMultiRegionDisasterRecoveryScenarioDTO = (multiRegionDisasterRecoveryScenario: MultiRegionDisasterRecoveryScenario): MultiRegionDisasterRecoveryScenarioDTO =>
+  pickDTOFields(multiRegionDisasterRecoveryScenario, multiRegionDisasterRecoveryScenarioDTOKeys);
+

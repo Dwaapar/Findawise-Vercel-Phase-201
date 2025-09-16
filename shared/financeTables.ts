@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, dec
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Finance User Profiles - Track financial personas and goals
 export const financeProfiles = pgTable("finance_profiles", {
   id: serial("id").primaryKey(),
@@ -211,22 +213,104 @@ export const insertFinanceLeadMagnetSchema = createInsertSchema(financeLeadMagne
 export const insertFinancePerformanceMetricSchema = createInsertSchema(financePerformanceMetrics).omit({ id: true, createdAt: true });
 
 // Type exports
-export type InsertFinanceProfile = z.infer<typeof insertFinanceProfileSchema>;
-export type InsertFinanceQuizResult = z.infer<typeof insertFinanceQuizResultSchema>;
-export type InsertFinanceCalculatorResult = z.infer<typeof insertFinanceCalculatorResultSchema>;
-export type InsertFinanceProductOffer = z.infer<typeof insertFinanceProductOfferSchema>;
-export type InsertFinanceContent = z.infer<typeof insertFinanceContentSchema>;
-export type InsertFinanceGamification = z.infer<typeof insertFinanceGamificationSchema>;
-export type InsertFinanceAIChatSession = z.infer<typeof insertFinanceAIChatSessionSchema>;
-export type InsertFinanceLeadMagnet = z.infer<typeof insertFinanceLeadMagnetSchema>;
-export type InsertFinancePerformanceMetric = z.infer<typeof insertFinancePerformanceMetricSchema>;
+export type InsertFinanceProfile = InferInsertModel<typeof financeProfiles>;
+export type InsertFinanceQuizResult = InferInsertModel<typeof financeQuizResults>;
+export type InsertFinanceCalculatorResult = InferInsertModel<typeof financeCalculatorResults>;
+export type InsertFinanceProductOffer = InferInsertModel<typeof financeProductOffers>;
+export type InsertFinanceContent = InferInsertModel<typeof financeContent>;
+export type InsertFinanceGamification = InferInsertModel<typeof financeGamification>;
+export type InsertFinanceAIChatSession = InferInsertModel<typeof financeAIChatSessions>;
+export type InsertFinanceLeadMagnet = InferInsertModel<typeof financeLeadMagnets>;
+export type InsertFinancePerformanceMetric = InferInsertModel<typeof financePerformanceMetrics>;
 
-export type FinanceProfile = typeof financeProfiles.$inferSelect;
-export type FinanceQuizResult = typeof financeQuizResults.$inferSelect;
-export type FinanceCalculatorResult = typeof financeCalculatorResults.$inferSelect;
-export type FinanceProductOffer = typeof financeProductOffers.$inferSelect;
-export type FinanceContent = typeof financeContent.$inferSelect;
-export type FinanceGamification = typeof financeGamification.$inferSelect;
-export type FinanceAIChatSession = typeof financeAIChatSessions.$inferSelect;
-export type FinanceLeadMagnet = typeof financeLeadMagnets.$inferSelect;
-export type FinancePerformanceMetric = typeof financePerformanceMetrics.$inferSelect;
+export type FinanceProfile = InferSelectModel<typeof financeProfiles>;
+export type FinanceQuizResult = InferSelectModel<typeof financeQuizResults>;
+export type FinanceCalculatorResult = InferSelectModel<typeof financeCalculatorResults>;
+export type FinanceProductOffer = InferSelectModel<typeof financeProductOffers>;
+export type FinanceContent = InferSelectModel<typeof financeContent>;
+export type FinanceGamification = InferSelectModel<typeof financeGamification>;
+export type FinanceAIChatSession = InferSelectModel<typeof financeAIChatSessions>;
+export type FinanceLeadMagnet = InferSelectModel<typeof financeLeadMagnets>;
+export type FinancePerformanceMetric = InferSelectModel<typeof financePerformanceMetrics>;
+
+// DTOs
+const financeProfileDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface FinanceProfileDTO
+  extends Pick<FinanceProfile, (typeof financeProfileDTOKeys)[number]> {}
+
+export const toFinanceProfileDTO = (financeProfile: FinanceProfile): FinanceProfileDTO =>
+  pickDTOFields(financeProfile, financeProfileDTOKeys);
+
+
+const financeQuizResultDTOKeys = ["id", "sessionId", "userId", "createdAt", "quizType"] as const;
+
+export interface FinanceQuizResultDTO
+  extends Pick<FinanceQuizResult, (typeof financeQuizResultDTOKeys)[number]> {}
+
+export const toFinanceQuizResultDTO = (financeQuizResult: FinanceQuizResult): FinanceQuizResultDTO =>
+  pickDTOFields(financeQuizResult, financeQuizResultDTOKeys);
+
+
+const financeCalculatorResultDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface FinanceCalculatorResultDTO
+  extends Pick<FinanceCalculatorResult, (typeof financeCalculatorResultDTOKeys)[number]> {}
+
+export const toFinanceCalculatorResultDTO = (financeCalculatorResult: FinanceCalculatorResult): FinanceCalculatorResultDTO =>
+  pickDTOFields(financeCalculatorResult, financeCalculatorResultDTOKeys);
+
+
+const financeProductOfferDTOKeys = ["id", "priority", "createdAt", "updatedAt", "description"] as const;
+
+export interface FinanceProductOfferDTO
+  extends Pick<FinanceProductOffer, (typeof financeProductOfferDTOKeys)[number]> {}
+
+export const toFinanceProductOfferDTO = (financeProductOffer: FinanceProductOffer): FinanceProductOfferDTO =>
+  pickDTOFields(financeProductOffer, financeProductOfferDTOKeys);
+
+
+const financeContentDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt"] as const;
+
+export interface FinanceContentDTO
+  extends Pick<FinanceContent, (typeof financeContentDTOKeys)[number]> {}
+
+export const toFinanceContentDTO = (financeContent: FinanceContent): FinanceContentDTO =>
+  pickDTOFields(financeContent, financeContentDTOKeys);
+
+
+const financeGamificationDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface FinanceGamificationDTO
+  extends Pick<FinanceGamification, (typeof financeGamificationDTOKeys)[number]> {}
+
+export const toFinanceGamificationDTO = (financeGamification: FinanceGamification): FinanceGamificationDTO =>
+  pickDTOFields(financeGamification, financeGamificationDTOKeys);
+
+
+const financeAIChatSessionDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface FinanceAIChatSessionDTO
+  extends Pick<FinanceAIChatSession, (typeof financeAIChatSessionDTOKeys)[number]> {}
+
+export const toFinanceAIChatSessionDTO = (financeAIChatSession: FinanceAIChatSession): FinanceAIChatSessionDTO =>
+  pickDTOFields(financeAIChatSession, financeAIChatSessionDTOKeys);
+
+
+const financeLeadMagnetDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface FinanceLeadMagnetDTO
+  extends Pick<FinanceLeadMagnet, (typeof financeLeadMagnetDTOKeys)[number]> {}
+
+export const toFinanceLeadMagnetDTO = (financeLeadMagnet: FinanceLeadMagnet): FinanceLeadMagnetDTO =>
+  pickDTOFields(financeLeadMagnet, financeLeadMagnetDTOKeys);
+
+
+const financePerformanceMetricDTOKeys = ["id", "createdAt", "metricDate"] as const;
+
+export interface FinancePerformanceMetricDTO
+  extends Pick<FinancePerformanceMetric, (typeof financePerformanceMetricDTOKeys)[number]> {}
+
+export const toFinancePerformanceMetricDTO = (financePerformanceMetric: FinancePerformanceMetric): FinancePerformanceMetricDTO =>
+  pickDTOFields(financePerformanceMetric, financePerformanceMetricDTOKeys);
+

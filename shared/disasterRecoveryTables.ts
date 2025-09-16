@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Disaster Recovery Database Schema
  * Enterprise-grade tables for comprehensive disaster recovery management
@@ -23,3 +25,16 @@ export const disasterRecoveryScenarios = pgTable('disaster_recovery_scenarios', 
   created_at: timestamp('created_at').defaultNow().notNull(),
   updated_at: timestamp('updated_at').defaultNow().notNull()
 });
+
+export type DisasterRecoveryDisasterRecoveryScenario = InferSelectModel<typeof disasterRecoveryScenarios>;
+export type InsertDisasterRecoveryDisasterRecoveryScenario = InferInsertModel<typeof disasterRecoveryScenarios>;
+
+// DTOs
+const disasterRecoveryDisasterRecoveryScenarioDTOKeys = ["id", "scenario_name", "scenario_type"] as const;
+
+export interface DisasterRecoveryDisasterRecoveryScenarioDTO
+  extends Pick<DisasterRecoveryDisasterRecoveryScenario, (typeof disasterRecoveryDisasterRecoveryScenarioDTOKeys)[number]> {}
+
+export const toDisasterRecoveryDisasterRecoveryScenarioDTO = (disasterRecoveryDisasterRecoveryScenario: DisasterRecoveryDisasterRecoveryScenario): DisasterRecoveryDisasterRecoveryScenarioDTO =>
+  pickDTOFields(disasterRecoveryDisasterRecoveryScenario, disasterRecoveryDisasterRecoveryScenarioDTOKeys);
+

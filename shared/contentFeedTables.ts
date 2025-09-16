@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Content & Offer Feed Engine - Database Tables
 import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, decimal, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
@@ -249,32 +251,123 @@ export const insertContentFeedNotificationSchema = createInsertSchema(contentFee
 });
 
 // Types
-export type ContentFeedSource = typeof contentFeedSources.$inferSelect;
-export type InsertContentFeedSource = z.infer<typeof insertContentFeedSourceSchema>;
+export type ContentFeedSource = InferSelectModel<typeof contentFeedSources>;
+export type InsertContentFeedSource = InferInsertModel<typeof contentFeedSources>;
 
-export type ContentFeed = typeof contentFeed.$inferSelect;
-export type InsertContentFeed = z.infer<typeof insertContentFeedSchema>;
+export type ContentFeed = InferSelectModel<typeof contentFeed>;
+export type InsertContentFeed = InferInsertModel<typeof contentFeed>;
 
-export type ContentFeedCategory = typeof contentFeedCategories.$inferSelect;
-export type InsertContentFeedCategory = z.infer<typeof insertContentFeedCategorySchema>;
+export type ContentFeedCategory = InferSelectModel<typeof contentFeedCategories>;
+export type InsertContentFeedCategory = InferInsertModel<typeof contentFeedCategories>;
 
-export type ContentFeedSyncLog = typeof contentFeedSyncLogs.$inferSelect;
-export type InsertContentFeedSyncLog = z.infer<typeof insertContentFeedSyncLogSchema>;
+export type ContentFeedSyncLog = InferSelectModel<typeof contentFeedSyncLogs>;
+export type InsertContentFeedSyncLog = InferInsertModel<typeof contentFeedSyncLogs>;
 
-export type ContentFeedRule = typeof contentFeedRules.$inferSelect;
-export type InsertContentFeedRule = z.infer<typeof insertContentFeedRuleSchema>;
+export type ContentFeedRule = InferSelectModel<typeof contentFeedRules>;
+export type InsertContentFeedRule = InferInsertModel<typeof contentFeedRules>;
 
-export type ContentFeedAnalytics = typeof contentFeedAnalytics.$inferSelect;
-export type InsertContentFeedAnalytics = z.infer<typeof insertContentFeedAnalyticsSchema>;
+export type ContentFeedAnalytics = InferSelectModel<typeof contentFeedAnalytics>;
+export type InsertContentFeedAnalytics = InferInsertModel<typeof contentFeedAnalytics>;
 
-export type ContentFeedInteraction = typeof contentFeedInteractions.$inferSelect;
-export type InsertContentFeedInteraction = z.infer<typeof insertContentFeedInteractionSchema>;
+export type ContentFeedInteraction = InferSelectModel<typeof contentFeedInteractions>;
+export type InsertContentFeedInteraction = InferInsertModel<typeof contentFeedInteractions>;
 
-export type ContentFeedNotification = typeof contentFeedNotifications.$inferSelect;
-export type InsertContentFeedNotification = z.infer<typeof insertContentFeedNotificationSchema>;
+export type ContentFeedNotification = InferSelectModel<typeof contentFeedNotifications>;
+export type InsertContentFeedNotification = InferInsertModel<typeof contentFeedNotifications>;
 
-export type MediaContacts = typeof mediaContacts.$inferSelect;
-export type InsertMediaContacts = z.infer<typeof insertMediaContactsSchema>;
+export type MediaContacts = InferSelectModel<typeof mediaContacts>;
+export type InsertMediaContacts = InferInsertModel<typeof mediaContacts>;
 
-export type OutreachTemplates = typeof outreachTemplates.$inferSelect;
-export type InsertOutreachTemplates = z.infer<typeof insertOutreachTemplatesSchema>;
+export type OutreachTemplates = InferSelectModel<typeof outreachTemplates>;
+export type InsertOutreachTemplates = InferInsertModel<typeof outreachTemplates>;
+
+// DTOs
+const contentFeedSourceDTOKeys = ["id", "name", "createdAt", "updatedAt"] as const;
+
+export interface ContentFeedSourceDTO
+  extends Pick<ContentFeedSource, (typeof contentFeedSourceDTOKeys)[number]> {}
+
+export const toContentFeedSourceDTO = (contentFeedSource: ContentFeedSource): ContentFeedSourceDTO =>
+  pickDTOFields(contentFeedSource, contentFeedSourceDTOKeys);
+
+
+const contentFeedDTOKeys = ["id", "title", "status", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface ContentFeedDTO
+  extends Pick<ContentFeed, (typeof contentFeedDTOKeys)[number]> {}
+
+export const toContentFeedDTO = (contentFeed: ContentFeed): ContentFeedDTO =>
+  pickDTOFields(contentFeed, contentFeedDTOKeys);
+
+
+const contentFeedCategoryDTOKeys = ["id", "name", "slug", "createdAt", "description"] as const;
+
+export interface ContentFeedCategoryDTO
+  extends Pick<ContentFeedCategory, (typeof contentFeedCategoryDTOKeys)[number]> {}
+
+export const toContentFeedCategoryDTO = (contentFeedCategory: ContentFeedCategory): ContentFeedCategoryDTO =>
+  pickDTOFields(contentFeedCategory, contentFeedCategoryDTOKeys);
+
+
+const contentFeedSyncLogDTOKeys = ["id", "status", "sourceId"] as const;
+
+export interface ContentFeedSyncLogDTO
+  extends Pick<ContentFeedSyncLog, (typeof contentFeedSyncLogDTOKeys)[number]> {}
+
+export const toContentFeedSyncLogDTO = (contentFeedSyncLog: ContentFeedSyncLog): ContentFeedSyncLogDTO =>
+  pickDTOFields(contentFeedSyncLog, contentFeedSyncLogDTOKeys);
+
+
+const contentFeedRuleDTOKeys = ["id", "name", "priority", "createdAt", "updatedAt"] as const;
+
+export interface ContentFeedRuleDTO
+  extends Pick<ContentFeedRule, (typeof contentFeedRuleDTOKeys)[number]> {}
+
+export const toContentFeedRuleDTO = (contentFeedRule: ContentFeedRule): ContentFeedRuleDTO =>
+  pickDTOFields(contentFeedRule, contentFeedRuleDTOKeys);
+
+
+const contentFeedAnalyticsDTOKeys = ["id", "createdAt", "metric"] as const;
+
+export interface ContentFeedAnalyticsDTO
+  extends Pick<ContentFeedAnalytics, (typeof contentFeedAnalyticsDTOKeys)[number]> {}
+
+export const toContentFeedAnalyticsDTO = (contentFeedAnalytics: ContentFeedAnalytics): ContentFeedAnalyticsDTO =>
+  pickDTOFields(contentFeedAnalytics, contentFeedAnalyticsDTOKeys);
+
+
+const contentFeedInteractionDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface ContentFeedInteractionDTO
+  extends Pick<ContentFeedInteraction, (typeof contentFeedInteractionDTOKeys)[number]> {}
+
+export const toContentFeedInteractionDTO = (contentFeedInteraction: ContentFeedInteraction): ContentFeedInteractionDTO =>
+  pickDTOFields(contentFeedInteraction, contentFeedInteractionDTOKeys);
+
+
+const contentFeedNotificationDTOKeys = ["id", "title", "severity", "createdAt"] as const;
+
+export interface ContentFeedNotificationDTO
+  extends Pick<ContentFeedNotification, (typeof contentFeedNotificationDTOKeys)[number]> {}
+
+export const toContentFeedNotificationDTO = (contentFeedNotification: ContentFeedNotification): ContentFeedNotificationDTO =>
+  pickDTOFields(contentFeedNotification, contentFeedNotificationDTOKeys);
+
+
+const mediaContactsDTOKeys = ["id", "name", "createdAt", "updatedAt", "email"] as const;
+
+export interface MediaContactsDTO
+  extends Pick<MediaContacts, (typeof mediaContactsDTOKeys)[number]> {}
+
+export const toMediaContactsDTO = (mediaContacts: MediaContacts): MediaContactsDTO =>
+  pickDTOFields(mediaContacts, mediaContactsDTOKeys);
+
+
+const outreachTemplatesDTOKeys = ["id", "name", "type", "createdAt", "updatedAt"] as const;
+
+export interface OutreachTemplatesDTO
+  extends Pick<OutreachTemplates, (typeof outreachTemplatesDTOKeys)[number]> {}
+
+export const toOutreachTemplatesDTO = (outreachTemplates: OutreachTemplates): OutreachTemplatesDTO =>
+  pickDTOFields(outreachTemplates, outreachTemplatesDTOKeys);
+

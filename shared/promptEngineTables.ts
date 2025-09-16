@@ -1,6 +1,8 @@
 import { pgTable, serial, uuid, varchar, text, jsonb, integer, real, timestamp, boolean, index, foreignKey } from "drizzle-orm/pg-core";
 import { neurons } from "./schema";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Core Prompt Templates - Foundation of the engine
 export const promptTemplates = pgTable("prompt_templates", {
   id: serial("id").primaryKey(),
@@ -377,17 +379,81 @@ export const promptQueue = pgTable("prompt_queue", {
 }));
 
 // Export all tables and types
-export type PromptTemplate = typeof promptTemplates.$inferSelect;
-export type NewPromptTemplate = typeof promptTemplates.$inferInsert;
-export type PromptExecution = typeof promptExecutions.$inferSelect;
-export type NewPromptExecution = typeof promptExecutions.$inferInsert;
-export type PromptGraph = typeof promptGraphs.$inferSelect;
-export type NewPromptGraph = typeof promptGraphs.$inferInsert;
-export type PromptGraphExecution = typeof promptGraphExecutions.$inferSelect;
-export type NewPromptGraphExecution = typeof promptGraphExecutions.$inferInsert;
-export type PromptOptimization = typeof promptOptimizations.$inferSelect;
-export type NewPromptOptimization = typeof promptOptimizations.$inferInsert;
-export type PromptAnalytics = typeof promptAnalytics.$inferSelect;
-export type NewPromptAnalytics = typeof promptAnalytics.$inferInsert;
-export type PromptQueueItem = typeof promptQueue.$inferSelect;
-export type NewPromptQueueItem = typeof promptQueue.$inferInsert;
+export type PromptTemplate = InferSelectModel<typeof promptTemplates>;
+export type NewPromptTemplate = InferInsertModel<typeof promptTemplates>;
+export type PromptExecution = InferSelectModel<typeof promptExecutions>;
+export type NewPromptExecution = InferInsertModel<typeof promptExecutions>;
+export type PromptGraph = InferSelectModel<typeof promptGraphs>;
+export type NewPromptGraph = InferInsertModel<typeof promptGraphs>;
+export type PromptGraphExecution = InferSelectModel<typeof promptGraphExecutions>;
+export type NewPromptGraphExecution = InferInsertModel<typeof promptGraphExecutions>;
+export type PromptOptimization = InferSelectModel<typeof promptOptimizations>;
+export type NewPromptOptimization = InferInsertModel<typeof promptOptimizations>;
+export type PromptAnalytics = InferSelectModel<typeof promptAnalytics>;
+export type NewPromptAnalytics = InferInsertModel<typeof promptAnalytics>;
+export type PromptQueueItem = InferSelectModel<typeof promptQueue>;
+export type NewPromptQueueItem = InferInsertModel<typeof promptQueue>;
+
+// DTOs
+const promptTemplateDTOKeys = ["id", "name", "status", "category", "neuronId", "createdAt", "updatedAt", "description"] as const;
+
+export interface PromptTemplateDTO
+  extends Pick<PromptTemplate, (typeof promptTemplateDTOKeys)[number]> {}
+
+export const toPromptTemplateDTO = (promptTemplate: PromptTemplate): PromptTemplateDTO =>
+  pickDTOFields(promptTemplate, promptTemplateDTOKeys);
+
+
+const promptExecutionDTOKeys = ["id", "status", "sessionId", "neuronId", "userId", "createdAt"] as const;
+
+export interface PromptExecutionDTO
+  extends Pick<PromptExecution, (typeof promptExecutionDTOKeys)[number]> {}
+
+export const toPromptExecutionDTO = (promptExecution: PromptExecution): PromptExecutionDTO =>
+  pickDTOFields(promptExecution, promptExecutionDTOKeys);
+
+
+const promptGraphDTOKeys = ["id", "name", "status", "category", "neuronId", "createdAt", "updatedAt", "description"] as const;
+
+export interface PromptGraphDTO
+  extends Pick<PromptGraph, (typeof promptGraphDTOKeys)[number]> {}
+
+export const toPromptGraphDTO = (promptGraph: PromptGraph): PromptGraphDTO =>
+  pickDTOFields(promptGraph, promptGraphDTOKeys);
+
+
+const promptGraphExecutionDTOKeys = ["id", "status", "sessionId", "neuronId", "userId", "createdAt"] as const;
+
+export interface PromptGraphExecutionDTO
+  extends Pick<PromptGraphExecution, (typeof promptGraphExecutionDTOKeys)[number]> {}
+
+export const toPromptGraphExecutionDTO = (promptGraphExecution: PromptGraphExecution): PromptGraphExecutionDTO =>
+  pickDTOFields(promptGraphExecution, promptGraphExecutionDTOKeys);
+
+
+const promptOptimizationDTOKeys = ["id", "status", "createdAt", "updatedAt"] as const;
+
+export interface PromptOptimizationDTO
+  extends Pick<PromptOptimization, (typeof promptOptimizationDTOKeys)[number]> {}
+
+export const toPromptOptimizationDTO = (promptOptimization: PromptOptimization): PromptOptimizationDTO =>
+  pickDTOFields(promptOptimization, promptOptimizationDTOKeys);
+
+
+const promptAnalyticsDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface PromptAnalyticsDTO
+  extends Pick<PromptAnalytics, (typeof promptAnalyticsDTOKeys)[number]> {}
+
+export const toPromptAnalyticsDTO = (promptAnalytics: PromptAnalytics): PromptAnalyticsDTO =>
+  pickDTOFields(promptAnalytics, promptAnalyticsDTOKeys);
+
+
+const promptQueueItemDTOKeys = ["id", "status", "neuronId", "userId", "priority", "createdAt", "updatedAt"] as const;
+
+export interface PromptQueueItemDTO
+  extends Pick<PromptQueueItem, (typeof promptQueueItemDTOKeys)[number]> {}
+
+export const toPromptQueueItemDTO = (promptQueueItem: PromptQueueItem): PromptQueueItemDTO =>
+  pickDTOFields(promptQueueItem, promptQueueItemDTOKeys);
+

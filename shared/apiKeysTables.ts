@@ -2,6 +2,8 @@ import { pgTable, text, boolean, timestamp, integer } from "drizzle-orm/pg-core"
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // API Keys Management System
 export const apiKeys = pgTable("api_keys", {
   id: text("id").primaryKey(),
@@ -24,5 +26,16 @@ export const apiKeys = pgTable("api_keys", {
 export const insertApiKeySchema = createInsertSchema(apiKeys);
 export const selectApiKeySchema = createInsertSchema(apiKeys);
 
-export type InsertApiKey = z.infer<typeof insertApiKeySchema>;
+export type ApiKey = InferSelectModel<typeof apiKeys>;
+export type InsertApiKey = InferInsertModel<typeof apiKeys>;
 export type SelectApiKey = z.infer<typeof selectApiKeySchema>;
+
+// DTOs
+const apiKeyDTOKeys = ["id", "name", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface ApiKeyDTO
+  extends Pick<ApiKey, (typeof apiKeyDTOKeys)[number]> {}
+
+export const toApiKeyDTO = (apiKey: ApiKey): ApiKeyDTO =>
+  pickDTOFields(apiKey, apiKeyDTOKeys);
+

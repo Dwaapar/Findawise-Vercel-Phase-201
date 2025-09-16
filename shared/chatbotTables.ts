@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ================================================
 // REAL-TIME CHATBOT/ASSISTANT MODULE
 // Billion-Dollar Empire Grade, Migration-Proof, Full-Stack
@@ -248,25 +250,125 @@ export const insertCannedResponseSchema = createInsertSchema(cannedResponses);
 export const insertChatFeedbackSchema = createInsertSchema(chatFeedback);
 
 // Types
-export type ChatSession = typeof chatSessions.$inferSelect;
-export type NewChatSession = typeof chatSessions.$inferInsert;
-export type ChatMessage = typeof chatMessages.$inferSelect;
-export type NewChatMessage = typeof chatMessages.$inferInsert;
-export type ChatIntent = typeof chatIntents.$inferSelect;
-export type NewChatIntent = typeof chatIntents.$inferInsert;
-export type BotKnowledgeBase = typeof botKnowledgeBase.$inferSelect;
-export type NewBotKnowledgeBase = typeof botKnowledgeBase.$inferInsert;
-export type ConversationContext = typeof conversationContext.$inferSelect;
-export type NewConversationContext = typeof conversationContext.$inferInsert;
-export type ChatAnalytic = typeof chatAnalytics.$inferSelect;
-export type NewChatAnalytic = typeof chatAnalytics.$inferInsert;
-export type ChatWidget = typeof chatWidgets.$inferSelect;
-export type NewChatWidget = typeof chatWidgets.$inferInsert;
-export type HumanAgent = typeof humanAgents.$inferSelect;
-export type NewHumanAgent = typeof humanAgents.$inferInsert;
-export type ChatEscalation = typeof chatEscalations.$inferSelect;
-export type NewChatEscalation = typeof chatEscalations.$inferInsert;
-export type CannedResponse = typeof cannedResponses.$inferSelect;
-export type NewCannedResponse = typeof cannedResponses.$inferInsert;
-export type ChatFeedback = typeof chatFeedback.$inferSelect;
-export type NewChatFeedback = typeof chatFeedback.$inferInsert;
+export type ChatSession = InferSelectModel<typeof chatSessions>;
+export type NewChatSession = InferInsertModel<typeof chatSessions>;
+export type ChatMessage = InferSelectModel<typeof chatMessages>;
+export type NewChatMessage = InferInsertModel<typeof chatMessages>;
+export type ChatIntent = InferSelectModel<typeof chatIntents>;
+export type NewChatIntent = InferInsertModel<typeof chatIntents>;
+export type BotKnowledgeBase = InferSelectModel<typeof botKnowledgeBase>;
+export type NewBotKnowledgeBase = InferInsertModel<typeof botKnowledgeBase>;
+export type ConversationContext = InferSelectModel<typeof conversationContext>;
+export type NewConversationContext = InferInsertModel<typeof conversationContext>;
+export type ChatAnalytic = InferSelectModel<typeof chatAnalytics>;
+export type NewChatAnalytic = InferInsertModel<typeof chatAnalytics>;
+export type ChatWidget = InferSelectModel<typeof chatWidgets>;
+export type NewChatWidget = InferInsertModel<typeof chatWidgets>;
+export type HumanAgent = InferSelectModel<typeof humanAgents>;
+export type NewHumanAgent = InferInsertModel<typeof humanAgents>;
+export type ChatEscalation = InferSelectModel<typeof chatEscalations>;
+export type NewChatEscalation = InferInsertModel<typeof chatEscalations>;
+export type CannedResponse = InferSelectModel<typeof cannedResponses>;
+export type NewCannedResponse = InferInsertModel<typeof cannedResponses>;
+export type ChatFeedback = InferSelectModel<typeof chatFeedback>;
+export type NewChatFeedback = InferInsertModel<typeof chatFeedback>;
+
+// DTOs
+const chatSessionDTOKeys = ["id", "status", "sessionId", "userId", "language", "createdAt", "updatedAt"] as const;
+
+export interface ChatSessionDTO
+  extends Pick<ChatSession, (typeof chatSessionDTOKeys)[number]> {}
+
+export const toChatSessionDTO = (chatSession: ChatSession): ChatSessionDTO =>
+  pickDTOFields(chatSession, chatSessionDTOKeys);
+
+
+const chatMessageDTOKeys = ["id", "sessionId", "userId", "language", "createdAt", "updatedAt"] as const;
+
+export interface ChatMessageDTO
+  extends Pick<ChatMessage, (typeof chatMessageDTOKeys)[number]> {}
+
+export const toChatMessageDTO = (chatMessage: ChatMessage): ChatMessageDTO =>
+  pickDTOFields(chatMessage, chatMessageDTOKeys);
+
+
+const chatIntentDTOKeys = ["id", "priority", "createdAt", "updatedAt"] as const;
+
+export interface ChatIntentDTO
+  extends Pick<ChatIntent, (typeof chatIntentDTOKeys)[number]> {}
+
+export const toChatIntentDTO = (chatIntent: ChatIntent): ChatIntentDTO =>
+  pickDTOFields(chatIntent, chatIntentDTOKeys);
+
+
+const botKnowledgeBaseDTOKeys = ["id", "title", "category", "priority", "createdAt", "updatedAt"] as const;
+
+export interface BotKnowledgeBaseDTO
+  extends Pick<BotKnowledgeBase, (typeof botKnowledgeBaseDTOKeys)[number]> {}
+
+export const toBotKnowledgeBaseDTO = (botKnowledgeBase: BotKnowledgeBase): BotKnowledgeBaseDTO =>
+  pickDTOFields(botKnowledgeBase, botKnowledgeBaseDTOKeys);
+
+
+const conversationContextDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface ConversationContextDTO
+  extends Pick<ConversationContext, (typeof conversationContextDTOKeys)[number]> {}
+
+export const toConversationContextDTO = (conversationContext: ConversationContext): ConversationContextDTO =>
+  pickDTOFields(conversationContext, conversationContextDTOKeys);
+
+
+const chatAnalyticDTOKeys = ["id", "sessionId", "userId", "createdAt", "eventType"] as const;
+
+export interface ChatAnalyticDTO
+  extends Pick<ChatAnalytic, (typeof chatAnalyticDTOKeys)[number]> {}
+
+export const toChatAnalyticDTO = (chatAnalytic: ChatAnalytic): ChatAnalyticDTO =>
+  pickDTOFields(chatAnalytic, chatAnalyticDTOKeys);
+
+
+const chatWidgetDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface ChatWidgetDTO
+  extends Pick<ChatWidget, (typeof chatWidgetDTOKeys)[number]> {}
+
+export const toChatWidgetDTO = (chatWidget: ChatWidget): ChatWidgetDTO =>
+  pickDTOFields(chatWidget, chatWidgetDTOKeys);
+
+
+const humanAgentDTOKeys = ["id", "createdAt", "updatedAt", "email", "role"] as const;
+
+export interface HumanAgentDTO
+  extends Pick<HumanAgent, (typeof humanAgentDTOKeys)[number]> {}
+
+export const toHumanAgentDTO = (humanAgent: HumanAgent): HumanAgentDTO =>
+  pickDTOFields(humanAgent, humanAgentDTOKeys);
+
+
+const chatEscalationDTOKeys = ["id", "status", "sessionId", "priority", "createdAt", "updatedAt"] as const;
+
+export interface ChatEscalationDTO
+  extends Pick<ChatEscalation, (typeof chatEscalationDTOKeys)[number]> {}
+
+export const toChatEscalationDTO = (chatEscalation: ChatEscalation): ChatEscalationDTO =>
+  pickDTOFields(chatEscalation, chatEscalationDTOKeys);
+
+
+const cannedResponseDTOKeys = ["id", "title", "category", "createdAt", "updatedAt"] as const;
+
+export interface CannedResponseDTO
+  extends Pick<CannedResponse, (typeof cannedResponseDTOKeys)[number]> {}
+
+export const toCannedResponseDTO = (cannedResponse: CannedResponse): CannedResponseDTO =>
+  pickDTOFields(cannedResponse, cannedResponseDTOKeys);
+
+
+const chatFeedbackDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface ChatFeedbackDTO
+  extends Pick<ChatFeedback, (typeof chatFeedbackDTOKeys)[number]> {}
+
+export const toChatFeedbackDTO = (chatFeedback: ChatFeedback): ChatFeedbackDTO =>
+  pickDTOFields(chatFeedback, chatFeedbackDTOKeys);
+

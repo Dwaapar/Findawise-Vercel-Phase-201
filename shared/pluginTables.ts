@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * AI Plugin Marketplace Database Tables
  * Enterprise-grade plugin management system with comprehensive tracking
@@ -297,23 +299,87 @@ export const insertPluginMarketplaceSchema = createInsertSchema(pluginMarketplac
 });
 
 // TypeScript types
-export type PluginManifest = typeof pluginManifests.$inferSelect;
-export type InsertPluginManifest = z.infer<typeof insertPluginManifestSchema>;
+export type PluginManifest = InferSelectModel<typeof pluginManifests>;
+export type InsertPluginManifest = InferInsertModel<typeof pluginManifests>;
 
-export type PluginInstance = typeof pluginInstances.$inferSelect;
-export type InsertPluginInstance = z.infer<typeof insertPluginInstanceSchema>;
+export type PluginInstance = InferSelectModel<typeof pluginInstances>;
+export type InsertPluginInstance = InferInsertModel<typeof pluginInstances>;
 
-export type PluginExecution = typeof pluginExecutions.$inferSelect;
-export type InsertPluginExecution = z.infer<typeof insertPluginExecutionSchema>;
+export type PluginExecution = InferSelectModel<typeof pluginExecutions>;
+export type InsertPluginExecution = InferInsertModel<typeof pluginExecutions>;
 
-export type PluginReview = typeof pluginReviews.$inferSelect;
-export type InsertPluginReview = z.infer<typeof insertPluginReviewSchema>;
+export type PluginReview = InferSelectModel<typeof pluginReviews>;
+export type InsertPluginReview = InferInsertModel<typeof pluginReviews>;
 
-export type PluginAnalytics = typeof pluginAnalytics.$inferSelect;
-export type InsertPluginAnalytics = z.infer<typeof insertPluginAnalyticsSchema>;
+export type PluginAnalytics = InferSelectModel<typeof pluginAnalytics>;
+export type InsertPluginAnalytics = InferInsertModel<typeof pluginAnalytics>;
 
-export type PluginDependency = typeof pluginDependencies.$inferSelect;
-export type InsertPluginDependency = z.infer<typeof insertPluginDependencySchema>;
+export type PluginDependency = InferSelectModel<typeof pluginDependencies>;
+export type InsertPluginDependency = InferInsertModel<typeof pluginDependencies>;
 
-export type PluginMarketplace = typeof pluginMarketplace.$inferSelect;
-export type InsertPluginMarketplace = z.infer<typeof insertPluginMarketplaceSchema>;
+export type PluginMarketplace = InferSelectModel<typeof pluginMarketplace>;
+export type InsertPluginMarketplace = InferInsertModel<typeof pluginMarketplace>;
+
+// DTOs
+const pluginManifestDTOKeys = ["id", "name", "type", "category", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface PluginManifestDTO
+  extends Pick<PluginManifest, (typeof pluginManifestDTOKeys)[number]> {}
+
+export const toPluginManifestDTO = (pluginManifest: PluginManifest): PluginManifestDTO =>
+  pickDTOFields(pluginManifest, pluginManifestDTOKeys);
+
+
+const pluginInstanceDTOKeys = ["id", "status", "neuronId", "createdAt", "updatedAt", "version"] as const;
+
+export interface PluginInstanceDTO
+  extends Pick<PluginInstance, (typeof pluginInstanceDTOKeys)[number]> {}
+
+export const toPluginInstanceDTO = (pluginInstance: PluginInstance): PluginInstanceDTO =>
+  pickDTOFields(pluginInstance, pluginInstanceDTOKeys);
+
+
+const pluginExecutionDTOKeys = ["id", "status", "sessionId", "neuronId", "userId", "priority", "createdAt"] as const;
+
+export interface PluginExecutionDTO
+  extends Pick<PluginExecution, (typeof pluginExecutionDTOKeys)[number]> {}
+
+export const toPluginExecutionDTO = (pluginExecution: PluginExecution): PluginExecutionDTO =>
+  pickDTOFields(pluginExecution, pluginExecutionDTOKeys);
+
+
+const pluginReviewDTOKeys = ["id", "title", "neuronId", "userId", "language", "createdAt", "updatedAt"] as const;
+
+export interface PluginReviewDTO
+  extends Pick<PluginReview, (typeof pluginReviewDTOKeys)[number]> {}
+
+export const toPluginReviewDTO = (pluginReview: PluginReview): PluginReviewDTO =>
+  pickDTOFields(pluginReview, pluginReviewDTOKeys);
+
+
+const pluginAnalyticsDTOKeys = ["id", "sessionId", "neuronId", "userId", "region", "country", "createdAt", "eventType"] as const;
+
+export interface PluginAnalyticsDTO
+  extends Pick<PluginAnalytics, (typeof pluginAnalyticsDTOKeys)[number]> {}
+
+export const toPluginAnalyticsDTO = (pluginAnalytics: PluginAnalytics): PluginAnalyticsDTO =>
+  pickDTOFields(pluginAnalytics, pluginAnalyticsDTOKeys);
+
+
+const pluginDependencyDTOKeys = ["id", "status", "createdAt", "updatedAt"] as const;
+
+export interface PluginDependencyDTO
+  extends Pick<PluginDependency, (typeof pluginDependencyDTOKeys)[number]> {}
+
+export const toPluginDependencyDTO = (pluginDependency: PluginDependency): PluginDependencyDTO =>
+  pickDTOFields(pluginDependency, pluginDependencyDTOKeys);
+
+
+const pluginMarketplaceDTOKeys = ["id", "name", "createdAt", "updatedAt", "description"] as const;
+
+export interface PluginMarketplaceDTO
+  extends Pick<PluginMarketplace, (typeof pluginMarketplaceDTOKeys)[number]> {}
+
+export const toPluginMarketplaceDTO = (pluginMarketplace: PluginMarketplace): PluginMarketplaceDTO =>
+  pickDTOFields(pluginMarketplace, pluginMarketplaceDTOKeys);
+

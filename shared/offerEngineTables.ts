@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Offer Sources Configuration - Plugin-based integrations
 export const offerSources = pgTable("offer_sources", {
   id: serial("id").primaryKey(),
@@ -234,29 +236,111 @@ export const insertOfferAiOptimizationQueueSchema = createInsertSchema(offerAiOp
 });
 
 // Type exports
-export type OfferSource = typeof offerSources.$inferSelect;
-export type InsertOfferSource = z.infer<typeof insertOfferSourceSchema>;
+export type OfferSource = InferSelectModel<typeof offerSources>;
+export type InsertOfferSource = InferInsertModel<typeof offerSources>;
 
-export type OfferFeed = typeof offerFeed.$inferSelect;
-export type InsertOfferFeed = z.infer<typeof insertOfferFeedSchema>;
+export type OfferFeed = InferSelectModel<typeof offerFeed>;
+export type InsertOfferFeed = InferInsertModel<typeof offerFeed>;
 
-export type OfferAnalytics = typeof offerAnalytics.$inferSelect;
-export type InsertOfferAnalytics = z.infer<typeof insertOfferAnalyticsSchema>;
+export type OfferAnalytics = InferSelectModel<typeof offerAnalytics>;
+export type InsertOfferAnalytics = InferInsertModel<typeof offerAnalytics>;
 
-export type OfferPersonalizationRule = typeof offerPersonalizationRules.$inferSelect;
-export type InsertOfferPersonalizationRule = z.infer<typeof insertOfferPersonalizationRuleSchema>;
+export type OfferPersonalizationRule = InferSelectModel<typeof offerPersonalizationRules>;
+export type InsertOfferPersonalizationRule = InferInsertModel<typeof offerPersonalizationRules>;
 
-export type OfferExperiment = typeof offerExperiments.$inferSelect;
-export type InsertOfferExperiment = z.infer<typeof insertOfferExperimentSchema>;
+export type OfferExperiment = InferSelectModel<typeof offerExperiments>;
+export type InsertOfferExperiment = InferInsertModel<typeof offerExperiments>;
 
-export type OfferSyncHistory = typeof offerSyncHistory.$inferSelect;
-export type InsertOfferSyncHistory = z.infer<typeof insertOfferSyncHistorySchema>;
+export type OfferSyncHistory = InferSelectModel<typeof offerSyncHistory>;
+export type InsertOfferSyncHistory = InferInsertModel<typeof offerSyncHistory>;
 
-export type NeuronOfferAssignment = typeof neuronOfferAssignments.$inferSelect;
-export type InsertNeuronOfferAssignment = z.infer<typeof insertNeuronOfferAssignmentSchema>;
+export type NeuronOfferAssignment = InferSelectModel<typeof neuronOfferAssignments>;
+export type InsertNeuronOfferAssignment = InferInsertModel<typeof neuronOfferAssignments>;
 
-export type OfferComplianceRule = typeof offerComplianceRules.$inferSelect;
-export type InsertOfferComplianceRule = z.infer<typeof insertOfferComplianceRuleSchema>;
+export type OfferComplianceRule = InferSelectModel<typeof offerComplianceRules>;
+export type InsertOfferComplianceRule = InferInsertModel<typeof offerComplianceRules>;
 
-export type OfferAiOptimizationQueue = typeof offerAiOptimizationQueue.$inferSelect;
-export type InsertOfferAiOptimizationQueue = z.infer<typeof insertOfferAiOptimizationQueueSchema>;
+export type OfferAiOptimizationQueue = InferSelectModel<typeof offerAiOptimizationQueue>;
+export type InsertOfferAiOptimizationQueue = InferInsertModel<typeof offerAiOptimizationQueue>;
+
+// DTOs
+const offerSourceDTOKeys = ["id", "name", "slug", "type", "createdAt", "updatedAt", "description"] as const;
+
+export interface OfferSourceDTO
+  extends Pick<OfferSource, (typeof offerSourceDTOKeys)[number]> {}
+
+export const toOfferSourceDTO = (offerSource: OfferSource): OfferSourceDTO =>
+  pickDTOFields(offerSource, offerSourceDTOKeys);
+
+
+const offerFeedDTOKeys = ["id", "title", "slug", "category", "region", "priority", "createdAt", "updatedAt"] as const;
+
+export interface OfferFeedDTO
+  extends Pick<OfferFeed, (typeof offerFeedDTOKeys)[number]> {}
+
+export const toOfferFeedDTO = (offerFeed: OfferFeed): OfferFeedDTO =>
+  pickDTOFields(offerFeed, offerFeedDTOKeys);
+
+
+const offerAnalyticsDTOKeys = ["id", "sessionId", "neuronId", "userId", "offerId", "eventType"] as const;
+
+export interface OfferAnalyticsDTO
+  extends Pick<OfferAnalytics, (typeof offerAnalyticsDTOKeys)[number]> {}
+
+export const toOfferAnalyticsDTO = (offerAnalytics: OfferAnalytics): OfferAnalyticsDTO =>
+  pickDTOFields(offerAnalytics, offerAnalyticsDTOKeys);
+
+
+const offerPersonalizationRuleDTOKeys = ["id", "name", "priority", "createdAt", "updatedAt", "description"] as const;
+
+export interface OfferPersonalizationRuleDTO
+  extends Pick<OfferPersonalizationRule, (typeof offerPersonalizationRuleDTOKeys)[number]> {}
+
+export const toOfferPersonalizationRuleDTO = (offerPersonalizationRule: OfferPersonalizationRule): OfferPersonalizationRuleDTO =>
+  pickDTOFields(offerPersonalizationRule, offerPersonalizationRuleDTOKeys);
+
+
+const offerExperimentDTOKeys = ["id", "name", "status", "type", "createdAt", "updatedAt", "description"] as const;
+
+export interface OfferExperimentDTO
+  extends Pick<OfferExperiment, (typeof offerExperimentDTOKeys)[number]> {}
+
+export const toOfferExperimentDTO = (offerExperiment: OfferExperiment): OfferExperimentDTO =>
+  pickDTOFields(offerExperiment, offerExperimentDTOKeys);
+
+
+const offerSyncHistoryDTOKeys = ["id", "status", "sourceId"] as const;
+
+export interface OfferSyncHistoryDTO
+  extends Pick<OfferSyncHistory, (typeof offerSyncHistoryDTOKeys)[number]> {}
+
+export const toOfferSyncHistoryDTO = (offerSyncHistory: OfferSyncHistory): OfferSyncHistoryDTO =>
+  pickDTOFields(offerSyncHistory, offerSyncHistoryDTOKeys);
+
+
+const neuronOfferAssignmentDTOKeys = ["id", "neuronId", "offerId"] as const;
+
+export interface NeuronOfferAssignmentDTO
+  extends Pick<NeuronOfferAssignment, (typeof neuronOfferAssignmentDTOKeys)[number]> {}
+
+export const toNeuronOfferAssignmentDTO = (neuronOfferAssignment: NeuronOfferAssignment): NeuronOfferAssignmentDTO =>
+  pickDTOFields(neuronOfferAssignment, neuronOfferAssignmentDTOKeys);
+
+
+const offerComplianceRuleDTOKeys = ["id", "name", "severity", "createdAt", "description"] as const;
+
+export interface OfferComplianceRuleDTO
+  extends Pick<OfferComplianceRule, (typeof offerComplianceRuleDTOKeys)[number]> {}
+
+export const toOfferComplianceRuleDTO = (offerComplianceRule: OfferComplianceRule): OfferComplianceRuleDTO =>
+  pickDTOFields(offerComplianceRule, offerComplianceRuleDTOKeys);
+
+
+const offerAiOptimizationQueueDTOKeys = ["id", "status", "neuronId", "offerId", "priority", "createdAt"] as const;
+
+export interface OfferAiOptimizationQueueDTO
+  extends Pick<OfferAiOptimizationQueue, (typeof offerAiOptimizationQueueDTOKeys)[number]> {}
+
+export const toOfferAiOptimizationQueueDTO = (offerAiOptimizationQueue: OfferAiOptimizationQueue): OfferAiOptimizationQueueDTO =>
+  pickDTOFields(offerAiOptimizationQueue, offerAiOptimizationQueueDTOKeys);
+

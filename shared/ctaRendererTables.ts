@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // 3D/AR/VR CTA Templates - Core template definitions
 export const ctaTemplates = pgTable("cta_templates", {
   id: serial("id").primaryKey(),
@@ -287,18 +289,82 @@ export const insertCtaAssetSchema = createInsertSchema(ctaAssets);
 export const insertCtaUserSessionSchema = createInsertSchema(ctaUserSessions);
 export const insertCtaComplianceSchema = createInsertSchema(ctaCompliance);
 
-export type InsertCtaTemplate = z.infer<typeof insertCtaTemplateSchema>;
-export type InsertCtaInstance = z.infer<typeof insertCtaInstanceSchema>;
-export type InsertCtaAnalytics = z.infer<typeof insertCtaAnalyticsSchema>;
-export type InsertCtaAbTest = z.infer<typeof insertCtaAbTestSchema>;
-export type InsertCtaAsset = z.infer<typeof insertCtaAssetSchema>;
-export type InsertCtaUserSession = z.infer<typeof insertCtaUserSessionSchema>;
-export type InsertCtaCompliance = z.infer<typeof insertCtaComplianceSchema>;
+export type InsertCtaTemplate = InferInsertModel<typeof ctaTemplates>;
+export type InsertCtaInstance = InferInsertModel<typeof ctaInstances>;
+export type InsertCtaAnalytics = InferInsertModel<typeof ctaAnalytics>;
+export type InsertCtaAbTest = InferInsertModel<typeof ctaAbTests>;
+export type InsertCtaAsset = InferInsertModel<typeof ctaAssets>;
+export type InsertCtaUserSession = InferInsertModel<typeof ctaUserSessions>;
+export type InsertCtaCompliance = InferInsertModel<typeof ctaCompliance>;
 
-export type CtaTemplate = typeof ctaTemplates.$inferSelect;
-export type CtaInstance = typeof ctaInstances.$inferSelect;
-export type CtaAnalytics = typeof ctaAnalytics.$inferSelect;
-export type CtaAbTest = typeof ctaAbTests.$inferSelect;
-export type CtaAsset = typeof ctaAssets.$inferSelect;
-export type CtaUserSession = typeof ctaUserSessions.$inferSelect;
-export type CtaCompliance = typeof ctaCompliance.$inferSelect;
+export type CtaTemplate = InferSelectModel<typeof ctaTemplates>;
+export type CtaInstance = InferSelectModel<typeof ctaInstances>;
+export type CtaAnalytics = InferSelectModel<typeof ctaAnalytics>;
+export type CtaAbTest = InferSelectModel<typeof ctaAbTests>;
+export type CtaAsset = InferSelectModel<typeof ctaAssets>;
+export type CtaUserSession = InferSelectModel<typeof ctaUserSessions>;
+export type CtaCompliance = InferSelectModel<typeof ctaCompliance>;
+
+// DTOs
+const ctaTemplateDTOKeys = ["id", "name", "type", "category", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface CtaTemplateDTO
+  extends Pick<CtaTemplate, (typeof ctaTemplateDTOKeys)[number]> {}
+
+export const toCtaTemplateDTO = (ctaTemplate: CtaTemplate): CtaTemplateDTO =>
+  pickDTOFields(ctaTemplate, ctaTemplateDTOKeys);
+
+
+const ctaInstanceDTOKeys = ["id", "name", "status", "neuronId", "createdAt", "updatedAt", "description"] as const;
+
+export interface CtaInstanceDTO
+  extends Pick<CtaInstance, (typeof ctaInstanceDTOKeys)[number]> {}
+
+export const toCtaInstanceDTO = (ctaInstance: CtaInstance): CtaInstanceDTO =>
+  pickDTOFields(ctaInstance, ctaInstanceDTOKeys);
+
+
+const ctaAnalyticsDTOKeys = ["id", "sessionId", "userId", "createdAt", "eventType"] as const;
+
+export interface CtaAnalyticsDTO
+  extends Pick<CtaAnalytics, (typeof ctaAnalyticsDTOKeys)[number]> {}
+
+export const toCtaAnalyticsDTO = (ctaAnalytics: CtaAnalytics): CtaAnalyticsDTO =>
+  pickDTOFields(ctaAnalytics, ctaAnalyticsDTOKeys);
+
+
+const ctaAbTestDTOKeys = ["id", "name", "status", "createdAt", "updatedAt", "description"] as const;
+
+export interface CtaAbTestDTO
+  extends Pick<CtaAbTest, (typeof ctaAbTestDTOKeys)[number]> {}
+
+export const toCtaAbTestDTO = (ctaAbTest: CtaAbTest): CtaAbTestDTO =>
+  pickDTOFields(ctaAbTest, ctaAbTestDTOKeys);
+
+
+const ctaAssetDTOKeys = ["id", "name", "type", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface CtaAssetDTO
+  extends Pick<CtaAsset, (typeof ctaAssetDTOKeys)[number]> {}
+
+export const toCtaAssetDTO = (ctaAsset: CtaAsset): CtaAssetDTO =>
+  pickDTOFields(ctaAsset, ctaAssetDTOKeys);
+
+
+const ctaUserSessionDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface CtaUserSessionDTO
+  extends Pick<CtaUserSession, (typeof ctaUserSessionDTOKeys)[number]> {}
+
+export const toCtaUserSessionDTO = (ctaUserSession: CtaUserSession): CtaUserSessionDTO =>
+  pickDTOFields(ctaUserSession, ctaUserSessionDTOKeys);
+
+
+const ctaComplianceDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface CtaComplianceDTO
+  extends Pick<CtaCompliance, (typeof ctaComplianceDTOKeys)[number]> {}
+
+export const toCtaComplianceDTO = (ctaCompliance: CtaCompliance): CtaComplianceDTO =>
+  pickDTOFields(ctaCompliance, ctaComplianceDTOKeys);
+

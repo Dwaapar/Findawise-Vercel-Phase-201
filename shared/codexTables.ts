@@ -2,6 +2,8 @@ import { pgTable, serial, varchar, text, timestamp, jsonb, boolean, integer, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ===========================================
 // CODEX AUDIT SYSTEM TABLES
 // ===========================================
@@ -290,16 +292,71 @@ export const insertCodexReportSchema = createInsertSchema(codexReports).omit({
 // TYPE EXPORTS
 // ===========================================
 
-export type CodexAudit = typeof codexAudits.$inferSelect;
-export type CodexIssue = typeof codexIssues.$inferSelect;
-export type CodexFix = typeof codexFixes.$inferSelect;
-export type CodexLearning = typeof codexLearning.$inferSelect;
-export type CodexSchedule = typeof codexSchedules.$inferSelect;
-export type CodexReport = typeof codexReports.$inferSelect;
+export type CodexAudit = InferSelectModel<typeof codexAudits>;
+export type CodexIssue = InferSelectModel<typeof codexIssues>;
+export type CodexFix = InferSelectModel<typeof codexFixes>;
+export type CodexLearning = InferSelectModel<typeof codexLearning>;
+export type CodexSchedule = InferSelectModel<typeof codexSchedules>;
+export type CodexReport = InferSelectModel<typeof codexReports>;
 
-export type InsertCodexAudit = z.infer<typeof insertCodexAuditSchema>;
-export type InsertCodexIssue = z.infer<typeof insertCodexIssueSchema>;
-export type InsertCodexFix = z.infer<typeof insertCodexFixSchema>;
-export type InsertCodexLearning = z.infer<typeof insertCodexLearningSchema>;
-export type InsertCodexSchedule = z.infer<typeof insertCodexScheduleSchema>;
-export type InsertCodexReport = z.infer<typeof insertCodexReportSchema>;
+export type InsertCodexAudit = InferInsertModel<typeof codexAudits>;
+export type InsertCodexIssue = InferInsertModel<typeof codexIssues>;
+export type InsertCodexFix = InferInsertModel<typeof codexFixes>;
+export type InsertCodexLearning = InferInsertModel<typeof codexLearning>;
+export type InsertCodexSchedule = InferInsertModel<typeof codexSchedules>;
+export type InsertCodexReport = InferInsertModel<typeof codexReports>;
+
+// DTOs
+const codexAuditDTOKeys = ["id", "status", "priority", "createdAt", "updatedAt"] as const;
+
+export interface CodexAuditDTO
+  extends Pick<CodexAudit, (typeof codexAuditDTOKeys)[number]> {}
+
+export const toCodexAuditDTO = (codexAudit: CodexAudit): CodexAuditDTO =>
+  pickDTOFields(codexAudit, codexAuditDTOKeys);
+
+
+const codexIssueDTOKeys = ["id", "title", "status", "type", "category", "severity", "createdAt", "updatedAt"] as const;
+
+export interface CodexIssueDTO
+  extends Pick<CodexIssue, (typeof codexIssueDTOKeys)[number]> {}
+
+export const toCodexIssueDTO = (codexIssue: CodexIssue): CodexIssueDTO =>
+  pickDTOFields(codexIssue, codexIssueDTOKeys);
+
+
+const codexFixDTOKeys = ["id", "status", "createdAt", "updatedAt"] as const;
+
+export interface CodexFixDTO
+  extends Pick<CodexFix, (typeof codexFixDTOKeys)[number]> {}
+
+export const toCodexFixDTO = (codexFix: CodexFix): CodexFixDTO =>
+  pickDTOFields(codexFix, codexFixDTOKeys);
+
+
+const codexLearningDTOKeys = ["id", "category", "createdAt", "updatedAt"] as const;
+
+export interface CodexLearningDTO
+  extends Pick<CodexLearning, (typeof codexLearningDTOKeys)[number]> {}
+
+export const toCodexLearningDTO = (codexLearning: CodexLearning): CodexLearningDTO =>
+  pickDTOFields(codexLearning, codexLearningDTOKeys);
+
+
+const codexScheduleDTOKeys = ["id", "name", "createdAt", "updatedAt", "description"] as const;
+
+export interface CodexScheduleDTO
+  extends Pick<CodexSchedule, (typeof codexScheduleDTOKeys)[number]> {}
+
+export const toCodexScheduleDTO = (codexSchedule: CodexSchedule): CodexScheduleDTO =>
+  pickDTOFields(codexSchedule, codexScheduleDTOKeys);
+
+
+const codexReportDTOKeys = ["id", "status", "createdAt", "updatedAt", "summary"] as const;
+
+export interface CodexReportDTO
+  extends Pick<CodexReport, (typeof codexReportDTOKeys)[number]> {}
+
+export const toCodexReportDTO = (codexReport: CodexReport): CodexReportDTO =>
+  pickDTOFields(codexReport, codexReportDTOKeys);
+

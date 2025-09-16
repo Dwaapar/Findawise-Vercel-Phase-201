@@ -2,6 +2,8 @@ import { pgTable, text, integer, decimal, boolean, timestamp, jsonb, uuid } from
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // AI Tools Core Tables
 export const aiToolsArchetypes = pgTable('ai_tools_archetypes', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -432,20 +434,142 @@ export const insertAiToolsLeadSchema = createInsertSchema(aiToolsLeads, {
 });
 
 // Type exports
-export type AiToolsArchetype = typeof aiToolsArchetypes.$inferSelect;
-export type InsertAiToolsArchetype = z.infer<typeof insertAiToolsArchetypeSchema>;
+export type AiToolsArchetype = InferSelectModel<typeof aiToolsArchetypes>;
+export type InsertAiToolsArchetype = InferInsertModel<typeof aiToolsArchetypes>;
 
-export type AiTool = typeof aiTools.$inferSelect;
-export type InsertAiTool = z.infer<typeof insertAiToolSchema>;
+export type AiTool = InferSelectModel<typeof aiTools>;
+export type InsertAiTool = InferInsertModel<typeof aiTools>;
 
-export type AiToolsOffer = typeof aiToolsOffers.$inferSelect;
-export type InsertAiToolsOffer = z.infer<typeof insertAiToolsOfferSchema>;
+export type AiToolsOffer = InferSelectModel<typeof aiToolsOffers>;
+export type InsertAiToolsOffer = InferInsertModel<typeof aiToolsOffers>;
 
-export type AiToolsQuiz = typeof aiToolsQuizzes.$inferSelect;
-export type InsertAiToolsQuiz = z.infer<typeof insertAiToolsQuizSchema>;
+export type AiToolsQuiz = InferSelectModel<typeof aiToolsQuizzes>;
+export type InsertAiToolsQuiz = InferInsertModel<typeof aiToolsQuizzes>;
 
-export type AiToolsContent = typeof aiToolsContent.$inferSelect;
-export type InsertAiToolsContent = z.infer<typeof insertAiToolsContentSchema>;
+export type AiToolsContent = InferSelectModel<typeof aiToolsContent>;
+export type InsertAiToolsContent = InferInsertModel<typeof aiToolsContent>;
 
-export type AiToolsLead = typeof aiToolsLeads.$inferSelect;
-export type InsertAiToolsLead = z.infer<typeof insertAiToolsLeadSchema>;
+export type AiToolsLead = InferSelectModel<typeof aiToolsLeads>;
+export type InsertAiToolsLead = InferInsertModel<typeof aiToolsLeads>;
+
+export type AiToolsCategory = InferSelectModel<typeof aiToolsCategories>;
+export type InsertAiToolsCategory = InferInsertModel<typeof aiToolsCategories>;
+export type AiToolsReview = InferSelectModel<typeof aiToolsReviews>;
+export type InsertAiToolsReview = InferInsertModel<typeof aiToolsReviews>;
+export type AiToolsComparison = InferSelectModel<typeof aiToolsComparisons>;
+export type InsertAiToolsComparison = InferInsertModel<typeof aiToolsComparisons>;
+export type AiToolsQuizResult = InferSelectModel<typeof aiToolsQuizResults>;
+export type InsertAiToolsQuizResult = InferInsertModel<typeof aiToolsQuizResults>;
+export type AiToolsExperiment = InferSelectModel<typeof aiToolsExperiments>;
+export type InsertAiToolsExperiment = InferInsertModel<typeof aiToolsExperiments>;
+export type AiToolsAnalytic = InferSelectModel<typeof aiToolsAnalytics>;
+export type InsertAiToolsAnalytic = InferInsertModel<typeof aiToolsAnalytics>;
+
+// DTOs
+const aiToolsArchetypeDTOKeys = ["id", "name", "slug", "createdAt", "updatedAt", "description"] as const;
+
+export interface AiToolsArchetypeDTO
+  extends Pick<AiToolsArchetype, (typeof aiToolsArchetypeDTOKeys)[number]> {}
+
+export const toAiToolsArchetypeDTO = (aiToolsArchetype: AiToolsArchetype): AiToolsArchetypeDTO =>
+  pickDTOFields(aiToolsArchetype, aiToolsArchetypeDTOKeys);
+
+
+const aiToolDTOKeys = ["id", "name", "slug", "type", "createdAt", "updatedAt", "description"] as const;
+
+export interface AiToolDTO
+  extends Pick<AiTool, (typeof aiToolDTOKeys)[number]> {}
+
+export const toAiToolDTO = (aiTool: AiTool): AiToolDTO =>
+  pickDTOFields(aiTool, aiToolDTOKeys);
+
+
+const aiToolsOfferDTOKeys = ["id", "title", "createdAt", "updatedAt", "description", "toolId", "offerType"] as const;
+
+export interface AiToolsOfferDTO
+  extends Pick<AiToolsOffer, (typeof aiToolsOfferDTOKeys)[number]> {}
+
+export const toAiToolsOfferDTO = (aiToolsOffer: AiToolsOffer): AiToolsOfferDTO =>
+  pickDTOFields(aiToolsOffer, aiToolsOfferDTOKeys);
+
+
+const aiToolsQuizDTOKeys = ["id", "title", "type", "createdAt", "updatedAt", "description"] as const;
+
+export interface AiToolsQuizDTO
+  extends Pick<AiToolsQuiz, (typeof aiToolsQuizDTOKeys)[number]> {}
+
+export const toAiToolsQuizDTO = (aiToolsQuiz: AiToolsQuiz): AiToolsQuizDTO =>
+  pickDTOFields(aiToolsQuiz, aiToolsQuizDTOKeys);
+
+
+const aiToolsContentDTOKeys = ["id", "title", "slug", "status", "type", "createdAt", "updatedAt"] as const;
+
+export interface AiToolsContentDTO
+  extends Pick<AiToolsContent, (typeof aiToolsContentDTOKeys)[number]> {}
+
+export const toAiToolsContentDTO = (aiToolsContent: AiToolsContent): AiToolsContentDTO =>
+  pickDTOFields(aiToolsContent, aiToolsContentDTOKeys);
+
+
+const aiToolsLeadDTOKeys = ["id", "sessionId", "createdAt", "updatedAt", "email", "source"] as const;
+
+export interface AiToolsLeadDTO
+  extends Pick<AiToolsLead, (typeof aiToolsLeadDTOKeys)[number]> {}
+
+export const toAiToolsLeadDTO = (aiToolsLead: AiToolsLead): AiToolsLeadDTO =>
+  pickDTOFields(aiToolsLead, aiToolsLeadDTOKeys);
+
+
+const aiToolsCategoryDTOKeys = ["id", "name", "slug", "createdAt", "description"] as const;
+
+export interface AiToolsCategoryDTO
+  extends Pick<AiToolsCategory, (typeof aiToolsCategoryDTOKeys)[number]> {}
+
+export const toAiToolsCategoryDTO = (aiToolsCategory: AiToolsCategory): AiToolsCategoryDTO =>
+  pickDTOFields(aiToolsCategory, aiToolsCategoryDTOKeys);
+
+
+const aiToolsReviewDTOKeys = ["id", "title", "sessionId", "userId", "createdAt", "updatedAt", "toolId"] as const;
+
+export interface AiToolsReviewDTO
+  extends Pick<AiToolsReview, (typeof aiToolsReviewDTOKeys)[number]> {}
+
+export const toAiToolsReviewDTO = (aiToolsReview: AiToolsReview): AiToolsReviewDTO =>
+  pickDTOFields(aiToolsReview, aiToolsReviewDTOKeys);
+
+
+const aiToolsComparisonDTOKeys = ["id", "name", "title", "slug", "createdAt", "updatedAt", "description"] as const;
+
+export interface AiToolsComparisonDTO
+  extends Pick<AiToolsComparison, (typeof aiToolsComparisonDTOKeys)[number]> {}
+
+export const toAiToolsComparisonDTO = (aiToolsComparison: AiToolsComparison): AiToolsComparisonDTO =>
+  pickDTOFields(aiToolsComparison, aiToolsComparisonDTOKeys);
+
+
+const aiToolsQuizResultDTOKeys = ["id", "sessionId", "userId"] as const;
+
+export interface AiToolsQuizResultDTO
+  extends Pick<AiToolsQuizResult, (typeof aiToolsQuizResultDTOKeys)[number]> {}
+
+export const toAiToolsQuizResultDTO = (aiToolsQuizResult: AiToolsQuizResult): AiToolsQuizResultDTO =>
+  pickDTOFields(aiToolsQuizResult, aiToolsQuizResultDTOKeys);
+
+
+const aiToolsExperimentDTOKeys = ["id", "name", "status", "type", "createdAt", "updatedAt", "description"] as const;
+
+export interface AiToolsExperimentDTO
+  extends Pick<AiToolsExperiment, (typeof aiToolsExperimentDTOKeys)[number]> {}
+
+export const toAiToolsExperimentDTO = (aiToolsExperiment: AiToolsExperiment): AiToolsExperimentDTO =>
+  pickDTOFields(aiToolsExperiment, aiToolsExperimentDTOKeys);
+
+
+const aiToolsAnalyticDTOKeys = ["id", "sessionId", "offerId", "toolId", "source"] as const;
+
+export interface AiToolsAnalyticDTO
+  extends Pick<AiToolsAnalytic, (typeof aiToolsAnalyticDTOKeys)[number]> {}
+
+export const toAiToolsAnalyticDTO = (aiToolsAnalytic: AiToolsAnalytic): AiToolsAnalyticDTO =>
+  pickDTOFields(aiToolsAnalytic, aiToolsAnalyticDTOKeys);
+

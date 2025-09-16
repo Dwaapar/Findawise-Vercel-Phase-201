@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Smart Funnel Generator Database Schema
  * Billion-Dollar Empire Grade Universal Funnel Engine
@@ -348,23 +350,87 @@ export const selectFunnelOptimizationSchema = createSelectSchema(funnelOptimizat
 // TYPE EXPORTS
 // =====================================================
 
-export type FunnelBlueprint = typeof funnelBlueprints.$inferSelect;
-export type InsertFunnelBlueprint = typeof funnelBlueprints.$inferInsert;
+export type FunnelBlueprint = InferSelectModel<typeof funnelBlueprints>;
+export type InsertFunnelBlueprint = InferInsertModel<typeof funnelBlueprints>;
 
-export type FunnelInstance = typeof funnelInstances.$inferSelect;
-export type InsertFunnelInstance = typeof funnelInstances.$inferInsert;
+export type FunnelInstance = InferSelectModel<typeof funnelInstances>;
+export type InsertFunnelInstance = InferInsertModel<typeof funnelInstances>;
 
-export type FunnelEvent = typeof funnelEvents.$inferSelect;
-export type InsertFunnelEvent = typeof funnelEvents.$inferInsert;
+export type FunnelEvent = InferSelectModel<typeof funnelEvents>;
+export type InsertFunnelEvent = InferInsertModel<typeof funnelEvents>;
 
-export type FunnelExperiment = typeof funnelExperiments.$inferSelect;
-export type InsertFunnelExperiment = typeof funnelExperiments.$inferInsert;
+export type FunnelExperiment = InferSelectModel<typeof funnelExperiments>;
+export type InsertFunnelExperiment = InferInsertModel<typeof funnelExperiments>;
 
-export type FunnelAnalytics = typeof funnelAnalytics.$inferSelect;
-export type InsertFunnelAnalytics = typeof funnelAnalytics.$inferInsert;
+export type FunnelAnalytics = InferSelectModel<typeof funnelAnalytics>;
+export type InsertFunnelAnalytics = InferInsertModel<typeof funnelAnalytics>;
 
-export type FunnelLifecycleIntegration = typeof funnelLifecycleIntegrations.$inferSelect;
-export type InsertFunnelLifecycleIntegration = typeof funnelLifecycleIntegrations.$inferInsert;
+export type FunnelLifecycleIntegration = InferSelectModel<typeof funnelLifecycleIntegrations>;
+export type InsertFunnelLifecycleIntegration = InferInsertModel<typeof funnelLifecycleIntegrations>;
 
-export type FunnelOptimization = typeof funnelOptimizations.$inferSelect;
-export type InsertFunnelOptimization = typeof funnelOptimizations.$inferInsert;
+export type FunnelOptimization = InferSelectModel<typeof funnelOptimizations>;
+export type InsertFunnelOptimization = InferInsertModel<typeof funnelOptimizations>;
+
+// DTOs
+const funnelBlueprintDTOKeys = ["id", "name", "status", "type", "vertical", "priority", "description"] as const;
+
+export interface FunnelBlueprintDTO
+  extends Pick<FunnelBlueprint, (typeof funnelBlueprintDTOKeys)[number]> {}
+
+export const toFunnelBlueprintDTO = (funnelBlueprint: FunnelBlueprint): FunnelBlueprintDTO =>
+  pickDTOFields(funnelBlueprint, funnelBlueprintDTOKeys);
+
+
+const funnelInstanceDTOKeys = ["id", "status", "blueprint_id"] as const;
+
+export interface FunnelInstanceDTO
+  extends Pick<FunnelInstance, (typeof funnelInstanceDTOKeys)[number]> {}
+
+export const toFunnelInstanceDTO = (funnelInstance: FunnelInstance): FunnelInstanceDTO =>
+  pickDTOFields(funnelInstance, funnelInstanceDTOKeys);
+
+
+const funnelEventDTOKeys = ["id", "instance_id", "block_id"] as const;
+
+export interface FunnelEventDTO
+  extends Pick<FunnelEvent, (typeof funnelEventDTOKeys)[number]> {}
+
+export const toFunnelEventDTO = (funnelEvent: FunnelEvent): FunnelEventDTO =>
+  pickDTOFields(funnelEvent, funnelEventDTOKeys);
+
+
+const funnelExperimentDTOKeys = ["id", "name", "status", "description"] as const;
+
+export interface FunnelExperimentDTO
+  extends Pick<FunnelExperiment, (typeof funnelExperimentDTOKeys)[number]> {}
+
+export const toFunnelExperimentDTO = (funnelExperiment: FunnelExperiment): FunnelExperimentDTO =>
+  pickDTOFields(funnelExperiment, funnelExperimentDTOKeys);
+
+
+const funnelAnalyticsDTOKeys = ["id", "blueprint_id", "date"] as const;
+
+export interface FunnelAnalyticsDTO
+  extends Pick<FunnelAnalytics, (typeof funnelAnalyticsDTOKeys)[number]> {}
+
+export const toFunnelAnalyticsDTO = (funnelAnalytics: FunnelAnalytics): FunnelAnalyticsDTO =>
+  pickDTOFields(funnelAnalytics, funnelAnalyticsDTOKeys);
+
+
+const funnelLifecycleIntegrationDTOKeys = ["id", "title", "status"] as const;
+
+export interface FunnelLifecycleIntegrationDTO
+  extends Pick<FunnelLifecycleIntegration, (typeof funnelLifecycleIntegrationDTOKeys)[number]> {}
+
+export const toFunnelLifecycleIntegrationDTO = (funnelLifecycleIntegration: FunnelLifecycleIntegration): FunnelLifecycleIntegrationDTO =>
+  pickDTOFields(funnelLifecycleIntegration, funnelLifecycleIntegrationDTOKeys);
+
+
+const funnelOptimizationDTOKeys = ["id", "status", "category"] as const;
+
+export interface FunnelOptimizationDTO
+  extends Pick<FunnelOptimization, (typeof funnelOptimizationDTOKeys)[number]> {}
+
+export const toFunnelOptimizationDTO = (funnelOptimization: FunnelOptimization): FunnelOptimizationDTO =>
+  pickDTOFields(funnelOptimization, funnelOptimizationDTOKeys);
+

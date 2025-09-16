@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Vector Search + Embeddings Engine Database Schema
  * Billion-Dollar Empire Grade - Migration-Proof Architecture
@@ -253,21 +255,103 @@ export const insertVectorSearchAnalyticsSchema = createInsertSchema(vectorSearch
 export const insertVectorMigrationLogSchema = createInsertSchema(vectorMigrationLog);
 
 // Type exports
-export type VectorEmbeddingModel = typeof vectorEmbeddingModels.$inferSelect;
-export type InsertVectorEmbeddingModel = typeof vectorEmbeddingModels.$inferInsert;
-export type VectorDatabaseAdapter = typeof vectorDatabaseAdapters.$inferSelect;
-export type InsertVectorDatabaseAdapter = typeof vectorDatabaseAdapters.$inferInsert;
-export type VectorEmbedding = typeof vectorEmbeddings.$inferSelect;
-export type InsertVectorEmbedding = typeof vectorEmbeddings.$inferInsert;
-export type VectorSearchQuery = typeof vectorSearchQueries.$inferSelect;
-export type InsertVectorSearchQuery = typeof vectorSearchQueries.$inferInsert;
-export type VectorSimilarityCache = typeof vectorSimilarityCache.$inferSelect;
-export type InsertVectorSimilarityCache = typeof vectorSimilarityCache.$inferInsert;
-export type VectorRecommendation = typeof vectorRecommendations.$inferSelect;
-export type InsertVectorRecommendation = typeof vectorRecommendations.$inferInsert;
-export type VectorIndexingJob = typeof vectorIndexingJobs.$inferSelect;
-export type InsertVectorIndexingJob = typeof vectorIndexingJobs.$inferInsert;
-export type VectorSearchAnalytics = typeof vectorSearchAnalytics.$inferSelect;
-export type InsertVectorSearchAnalytics = typeof vectorSearchAnalytics.$inferInsert;
-export type VectorMigrationLog = typeof vectorMigrationLog.$inferSelect;
-export type InsertVectorMigrationLog = typeof vectorMigrationLog.$inferInsert;
+export type VectorEmbeddingModel = InferSelectModel<typeof vectorEmbeddingModels>;
+export type InsertVectorEmbeddingModel = InferInsertModel<typeof vectorEmbeddingModels>;
+export type VectorDatabaseAdapter = InferSelectModel<typeof vectorDatabaseAdapters>;
+export type InsertVectorDatabaseAdapter = InferInsertModel<typeof vectorDatabaseAdapters>;
+export type VectorEmbedding = InferSelectModel<typeof vectorEmbeddings>;
+export type InsertVectorEmbedding = InferInsertModel<typeof vectorEmbeddings>;
+export type VectorSearchQuery = InferSelectModel<typeof vectorSearchQueries>;
+export type InsertVectorSearchQuery = InferInsertModel<typeof vectorSearchQueries>;
+export type VectorSimilarityCache = InferSelectModel<typeof vectorSimilarityCache>;
+export type InsertVectorSimilarityCache = InferInsertModel<typeof vectorSimilarityCache>;
+export type VectorRecommendation = InferSelectModel<typeof vectorRecommendations>;
+export type InsertVectorRecommendation = InferInsertModel<typeof vectorRecommendations>;
+export type VectorIndexingJob = InferSelectModel<typeof vectorIndexingJobs>;
+export type InsertVectorIndexingJob = InferInsertModel<typeof vectorIndexingJobs>;
+export type VectorSearchAnalytics = InferSelectModel<typeof vectorSearchAnalytics>;
+export type InsertVectorSearchAnalytics = InferInsertModel<typeof vectorSearchAnalytics>;
+export type VectorMigrationLog = InferSelectModel<typeof vectorMigrationLog>;
+export type InsertVectorMigrationLog = InferInsertModel<typeof vectorMigrationLog>;
+
+// DTOs
+const vectorEmbeddingModelDTOKeys = ["id", "createdAt", "updatedAt", "provider"] as const;
+
+export interface VectorEmbeddingModelDTO
+  extends Pick<VectorEmbeddingModel, (typeof vectorEmbeddingModelDTOKeys)[number]> {}
+
+export const toVectorEmbeddingModelDTO = (vectorEmbeddingModel: VectorEmbeddingModel): VectorEmbeddingModelDTO =>
+  pickDTOFields(vectorEmbeddingModel, vectorEmbeddingModelDTOKeys);
+
+
+const vectorDatabaseAdapterDTOKeys = ["id", "priority", "createdAt", "updatedAt"] as const;
+
+export interface VectorDatabaseAdapterDTO
+  extends Pick<VectorDatabaseAdapter, (typeof vectorDatabaseAdapterDTOKeys)[number]> {}
+
+export const toVectorDatabaseAdapterDTO = (vectorDatabaseAdapter: VectorDatabaseAdapter): VectorDatabaseAdapterDTO =>
+  pickDTOFields(vectorDatabaseAdapter, vectorDatabaseAdapterDTOKeys);
+
+
+const vectorEmbeddingDTOKeys = ["id", "modelId", "neuronId", "language", "createdAt", "updatedAt", "version"] as const;
+
+export interface VectorEmbeddingDTO
+  extends Pick<VectorEmbedding, (typeof vectorEmbeddingDTOKeys)[number]> {}
+
+export const toVectorEmbeddingDTO = (vectorEmbedding: VectorEmbedding): VectorEmbeddingDTO =>
+  pickDTOFields(vectorEmbedding, vectorEmbeddingDTOKeys);
+
+
+const vectorSearchQueryDTOKeys = ["id", "modelId", "sessionId", "neuronId", "userId", "createdAt"] as const;
+
+export interface VectorSearchQueryDTO
+  extends Pick<VectorSearchQuery, (typeof vectorSearchQueryDTOKeys)[number]> {}
+
+export const toVectorSearchQueryDTO = (vectorSearchQuery: VectorSearchQuery): VectorSearchQueryDTO =>
+  pickDTOFields(vectorSearchQuery, vectorSearchQueryDTOKeys);
+
+
+const vectorSimilarityCacheDTOKeys = ["id", "modelId", "createdAt"] as const;
+
+export interface VectorSimilarityCacheDTO
+  extends Pick<VectorSimilarityCache, (typeof vectorSimilarityCacheDTOKeys)[number]> {}
+
+export const toVectorSimilarityCacheDTO = (vectorSimilarityCache: VectorSimilarityCache): VectorSimilarityCacheDTO =>
+  pickDTOFields(vectorSimilarityCache, vectorSimilarityCacheDTOKeys);
+
+
+const vectorRecommendationDTOKeys = ["id", "modelId", "sessionId", "neuronId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface VectorRecommendationDTO
+  extends Pick<VectorRecommendation, (typeof vectorRecommendationDTOKeys)[number]> {}
+
+export const toVectorRecommendationDTO = (vectorRecommendation: VectorRecommendation): VectorRecommendationDTO =>
+  pickDTOFields(vectorRecommendation, vectorRecommendationDTOKeys);
+
+
+const vectorIndexingJobDTOKeys = ["id", "status", "modelId", "priority", "createdAt", "updatedAt"] as const;
+
+export interface VectorIndexingJobDTO
+  extends Pick<VectorIndexingJob, (typeof vectorIndexingJobDTOKeys)[number]> {}
+
+export const toVectorIndexingJobDTO = (vectorIndexingJob: VectorIndexingJob): VectorIndexingJobDTO =>
+  pickDTOFields(vectorIndexingJob, vectorIndexingJobDTOKeys);
+
+
+const vectorSearchAnalyticsDTOKeys = ["id", "modelId", "neuronId", "createdAt", "updatedAt"] as const;
+
+export interface VectorSearchAnalyticsDTO
+  extends Pick<VectorSearchAnalytics, (typeof vectorSearchAnalyticsDTOKeys)[number]> {}
+
+export const toVectorSearchAnalyticsDTO = (vectorSearchAnalytics: VectorSearchAnalytics): VectorSearchAnalyticsDTO =>
+  pickDTOFields(vectorSearchAnalytics, vectorSearchAnalyticsDTOKeys);
+
+
+const vectorMigrationLogDTOKeys = ["id", "status", "createdAt"] as const;
+
+export interface VectorMigrationLogDTO
+  extends Pick<VectorMigrationLog, (typeof vectorMigrationLogDTOKeys)[number]> {}
+
+export const toVectorMigrationLogDTO = (vectorMigrationLog: VectorMigrationLog): VectorMigrationLogDTO =>
+  pickDTOFields(vectorMigrationLog, vectorMigrationLogDTOKeys);
+

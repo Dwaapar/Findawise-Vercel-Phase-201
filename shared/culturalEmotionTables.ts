@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Cultural Emotion Map Engine Database Schema
  * Enterprise-grade tables for cultural emotion mapping and personalization
@@ -227,3 +229,82 @@ export const culturalFeedback = pgTable("cultural_feedback", {
   validationStatusIdx: index("cultural_feedback_validation_status_idx").on(table.validationStatus),
   priorityIdx: index("cultural_feedback_priority_idx").on(table.priority),
 }));
+
+export type CulturalEmotionCulturalMapping = InferSelectModel<typeof culturalMappings>;
+export type InsertCulturalEmotionCulturalMapping = InferInsertModel<typeof culturalMappings>;
+export type CulturalEmotionEmotionProfile = InferSelectModel<typeof emotionProfiles>;
+export type InsertCulturalEmotionEmotionProfile = InferInsertModel<typeof emotionProfiles>;
+export type CulturalEmotionUserEmotionTracking = InferSelectModel<typeof userEmotionTracking>;
+export type InsertCulturalEmotionUserEmotionTracking = InferInsertModel<typeof userEmotionTracking>;
+export type CulturalEmotionCulturalABTest = InferSelectModel<typeof culturalABTests>;
+export type InsertCulturalEmotionCulturalABTest = InferInsertModel<typeof culturalABTests>;
+export type CulturalEmotionCulturalPersonalizationRule = InferSelectModel<typeof culturalPersonalizationRules>;
+export type InsertCulturalEmotionCulturalPersonalizationRule = InferInsertModel<typeof culturalPersonalizationRules>;
+export type CulturalEmotionCulturalAnalytic = InferSelectModel<typeof culturalAnalytics>;
+export type InsertCulturalEmotionCulturalAnalytic = InferInsertModel<typeof culturalAnalytics>;
+export type CulturalEmotionCulturalFeedback = InferSelectModel<typeof culturalFeedback>;
+export type InsertCulturalEmotionCulturalFeedback = InferInsertModel<typeof culturalFeedback>;
+
+// DTOs
+const culturalEmotionCulturalMappingDTOKeys = ["id", "region", "createdAt", "updatedAt"] as const;
+
+export interface CulturalEmotionCulturalMappingDTO
+  extends Pick<CulturalEmotionCulturalMapping, (typeof culturalEmotionCulturalMappingDTOKeys)[number]> {}
+
+export const toCulturalEmotionCulturalMappingDTO = (culturalEmotionCulturalMapping: CulturalEmotionCulturalMapping): CulturalEmotionCulturalMappingDTO =>
+  pickDTOFields(culturalEmotionCulturalMapping, culturalEmotionCulturalMappingDTOKeys);
+
+
+const culturalEmotionEmotionProfileDTOKeys = ["id", "category", "createdAt", "updatedAt"] as const;
+
+export interface CulturalEmotionEmotionProfileDTO
+  extends Pick<CulturalEmotionEmotionProfile, (typeof culturalEmotionEmotionProfileDTOKeys)[number]> {}
+
+export const toCulturalEmotionEmotionProfileDTO = (culturalEmotionEmotionProfile: CulturalEmotionEmotionProfile): CulturalEmotionEmotionProfileDTO =>
+  pickDTOFields(culturalEmotionEmotionProfile, culturalEmotionEmotionProfileDTOKeys);
+
+
+const culturalEmotionUserEmotionTrackingDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface CulturalEmotionUserEmotionTrackingDTO
+  extends Pick<CulturalEmotionUserEmotionTracking, (typeof culturalEmotionUserEmotionTrackingDTOKeys)[number]> {}
+
+export const toCulturalEmotionUserEmotionTrackingDTO = (culturalEmotionUserEmotionTracking: CulturalEmotionUserEmotionTracking): CulturalEmotionUserEmotionTrackingDTO =>
+  pickDTOFields(culturalEmotionUserEmotionTracking, culturalEmotionUserEmotionTrackingDTOKeys);
+
+
+const culturalEmotionCulturalABTestDTOKeys = ["id", "status", "createdAt", "updatedAt"] as const;
+
+export interface CulturalEmotionCulturalABTestDTO
+  extends Pick<CulturalEmotionCulturalABTest, (typeof culturalEmotionCulturalABTestDTOKeys)[number]> {}
+
+export const toCulturalEmotionCulturalABTestDTO = (culturalEmotionCulturalABTest: CulturalEmotionCulturalABTest): CulturalEmotionCulturalABTestDTO =>
+  pickDTOFields(culturalEmotionCulturalABTest, culturalEmotionCulturalABTestDTOKeys);
+
+
+const culturalEmotionCulturalPersonalizationRuleDTOKeys = ["id", "ruleId", "priority", "createdAt", "updatedAt"] as const;
+
+export interface CulturalEmotionCulturalPersonalizationRuleDTO
+  extends Pick<CulturalEmotionCulturalPersonalizationRule, (typeof culturalEmotionCulturalPersonalizationRuleDTOKeys)[number]> {}
+
+export const toCulturalEmotionCulturalPersonalizationRuleDTO = (culturalEmotionCulturalPersonalizationRule: CulturalEmotionCulturalPersonalizationRule): CulturalEmotionCulturalPersonalizationRuleDTO =>
+  pickDTOFields(culturalEmotionCulturalPersonalizationRule, culturalEmotionCulturalPersonalizationRuleDTOKeys);
+
+
+const culturalEmotionCulturalAnalyticDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface CulturalEmotionCulturalAnalyticDTO
+  extends Pick<CulturalEmotionCulturalAnalytic, (typeof culturalEmotionCulturalAnalyticDTOKeys)[number]> {}
+
+export const toCulturalEmotionCulturalAnalyticDTO = (culturalEmotionCulturalAnalytic: CulturalEmotionCulturalAnalytic): CulturalEmotionCulturalAnalyticDTO =>
+  pickDTOFields(culturalEmotionCulturalAnalytic, culturalEmotionCulturalAnalyticDTOKeys);
+
+
+const culturalEmotionCulturalFeedbackDTOKeys = ["id", "priority", "createdAt", "updatedAt"] as const;
+
+export interface CulturalEmotionCulturalFeedbackDTO
+  extends Pick<CulturalEmotionCulturalFeedback, (typeof culturalEmotionCulturalFeedbackDTOKeys)[number]> {}
+
+export const toCulturalEmotionCulturalFeedbackDTO = (culturalEmotionCulturalFeedback: CulturalEmotionCulturalFeedback): CulturalEmotionCulturalFeedbackDTO =>
+  pickDTOFields(culturalEmotionCulturalFeedback, culturalEmotionCulturalFeedbackDTOKeys);
+

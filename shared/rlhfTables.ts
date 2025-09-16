@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ==========================================
 // RLHF + PERSONA FUSION ENGINE TABLES
 // ==========================================
@@ -350,17 +352,81 @@ export const insertPersonaSimulationSchema = createInsertSchema(personaSimulatio
 export const insertFederationRlhfSyncSchema = createInsertSchema(federationRlhfSync);
 
 // TypeScript types
-export type RlhfFeedback = typeof rlhfFeedback.$inferSelect;
-export type NewRlhfFeedback = typeof rlhfFeedback.$inferInsert;
-export type AgentReward = typeof agentRewards.$inferSelect;
-export type NewAgentReward = typeof agentRewards.$inferInsert;
-export type PersonaProfile = typeof personaProfiles.$inferSelect;
-export type NewPersonaProfile = typeof personaProfiles.$inferInsert;
-export type PersonaEvolution = typeof personaEvolution.$inferSelect;
-export type NewPersonaEvolution = typeof personaEvolution.$inferInsert;
-export type RlhfTrainingSession = typeof rlhfTrainingSessions.$inferSelect;
-export type NewRlhfTrainingSession = typeof rlhfTrainingSessions.$inferInsert;
-export type PersonaSimulation = typeof personaSimulations.$inferSelect;
-export type NewPersonaSimulation = typeof personaSimulations.$inferInsert;
-export type FederationRlhfSync = typeof federationRlhfSync.$inferSelect;
-export type NewFederationRlhfSync = typeof federationRlhfSync.$inferInsert;
+export type RlhfFeedback = InferSelectModel<typeof rlhfFeedback>;
+export type NewRlhfFeedback = InferInsertModel<typeof rlhfFeedback>;
+export type AgentReward = InferSelectModel<typeof agentRewards>;
+export type NewAgentReward = InferInsertModel<typeof agentRewards>;
+export type PersonaProfile = InferSelectModel<typeof personaProfiles>;
+export type NewPersonaProfile = InferInsertModel<typeof personaProfiles>;
+export type PersonaEvolution = InferSelectModel<typeof personaEvolution>;
+export type NewPersonaEvolution = InferInsertModel<typeof personaEvolution>;
+export type RlhfTrainingSession = InferSelectModel<typeof rlhfTrainingSessions>;
+export type NewRlhfTrainingSession = InferInsertModel<typeof rlhfTrainingSessions>;
+export type PersonaSimulation = InferSelectModel<typeof personaSimulations>;
+export type NewPersonaSimulation = InferInsertModel<typeof personaSimulations>;
+export type FederationRlhfSync = InferSelectModel<typeof federationRlhfSync>;
+export type NewFederationRlhfSync = InferInsertModel<typeof federationRlhfSync>;
+
+// DTOs
+const rlhfFeedbackDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface RlhfFeedbackDTO
+  extends Pick<RlhfFeedback, (typeof rlhfFeedbackDTOKeys)[number]> {}
+
+export const toRlhfFeedbackDTO = (rlhfFeedback: RlhfFeedback): RlhfFeedbackDTO =>
+  pickDTOFields(rlhfFeedback, rlhfFeedbackDTOKeys);
+
+
+const agentRewardDTOKeys = ["id", "createdAt", "rewardId"] as const;
+
+export interface AgentRewardDTO
+  extends Pick<AgentReward, (typeof agentRewardDTOKeys)[number]> {}
+
+export const toAgentRewardDTO = (agentReward: AgentReward): AgentRewardDTO =>
+  pickDTOFields(agentReward, agentRewardDTOKeys);
+
+
+const personaProfileDTOKeys = ["id", "sessionId", "userId", "version"] as const;
+
+export interface PersonaProfileDTO
+  extends Pick<PersonaProfile, (typeof personaProfileDTOKeys)[number]> {}
+
+export const toPersonaProfileDTO = (personaProfile: PersonaProfile): PersonaProfileDTO =>
+  pickDTOFields(personaProfile, personaProfileDTOKeys);
+
+
+const personaEvolutionDTOKeys = ["id", "evolutionId", "evolutionType"] as const;
+
+export interface PersonaEvolutionDTO
+  extends Pick<PersonaEvolution, (typeof personaEvolutionDTOKeys)[number]> {}
+
+export const toPersonaEvolutionDTO = (personaEvolution: PersonaEvolution): PersonaEvolutionDTO =>
+  pickDTOFields(personaEvolution, personaEvolutionDTOKeys);
+
+
+const rlhfTrainingSessionDTOKeys = ["id", "status", "sessionId"] as const;
+
+export interface RlhfTrainingSessionDTO
+  extends Pick<RlhfTrainingSession, (typeof rlhfTrainingSessionDTOKeys)[number]> {}
+
+export const toRlhfTrainingSessionDTO = (rlhfTrainingSession: RlhfTrainingSession): RlhfTrainingSessionDTO =>
+  pickDTOFields(rlhfTrainingSession, rlhfTrainingSessionDTOKeys);
+
+
+const personaSimulationDTOKeys = ["id", "status", "createdAt"] as const;
+
+export interface PersonaSimulationDTO
+  extends Pick<PersonaSimulation, (typeof personaSimulationDTOKeys)[number]> {}
+
+export const toPersonaSimulationDTO = (personaSimulation: PersonaSimulation): PersonaSimulationDTO =>
+  pickDTOFields(personaSimulation, personaSimulationDTOKeys);
+
+
+const federationRlhfSyncDTOKeys = ["id", "status", "syncId"] as const;
+
+export interface FederationRlhfSyncDTO
+  extends Pick<FederationRlhfSync, (typeof federationRlhfSyncDTOKeys)[number]> {}
+
+export const toFederationRlhfSyncDTO = (federationRlhfSync: FederationRlhfSync): FederationRlhfSyncDTO =>
+  pickDTOFields(federationRlhfSync, federationRlhfSyncDTOKeys);
+

@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * EMPIRE-GRADE SECURITY TABLES
  * Billion-Dollar Migration-Proof JWT Auth + API Key Vault + CDN Cache + LLM Fallback
@@ -255,23 +257,114 @@ export const insertLlmUsageAnalyticsSchema = createInsertSchema(llmUsageAnalytic
 export const insertMigrationEventsSchema = createInsertSchema(migrationEvents);
 
 // Export types
-export type SecretsVault = typeof secretsVault.$inferSelect;
-export type InsertSecretsVault = z.infer<typeof insertSecretsVaultSchema>;
-export type SecretRotationHistory = typeof secretRotationHistory.$inferSelect;
-export type InsertSecretRotationHistory = z.infer<typeof insertSecretRotationHistorySchema>;
-export type ApiAccessTokens = typeof apiAccessTokens.$inferSelect;
-export type InsertApiAccessTokens = z.infer<typeof insertApiAccessTokensSchema>;
-export type CdnCacheConfig = typeof cdnCacheConfig.$inferSelect;
-export type InsertCdnCacheConfig = z.infer<typeof insertCdnCacheConfigSchema>;
-export type CacheInvalidationLogs = typeof cacheInvalidationLogs.$inferSelect;
-export type InsertCacheInvalidationLogs = z.infer<typeof insertCacheInvalidationLogsSchema>;
-export type CachePerformanceMetrics = typeof cachePerformanceMetrics.$inferSelect;
-export type InsertCachePerformanceMetrics = z.infer<typeof insertCachePerformanceMetricsSchema>;
-export type LlmFallbacks = typeof llmFallbacks.$inferSelect;
-export type InsertLlmFallbacks = z.infer<typeof insertLlmFallbacksSchema>;
-export type LlmFallbackEvents = typeof llmFallbackEvents.$inferSelect;
-export type InsertLlmFallbackEvents = z.infer<typeof insertLlmFallbackEventsSchema>;
-export type LlmUsageAnalytics = typeof llmUsageAnalytics.$inferSelect;
-export type InsertLlmUsageAnalytics = z.infer<typeof insertLlmUsageAnalyticsSchema>;
-export type MigrationEvents = typeof migrationEvents.$inferSelect;
-export type InsertMigrationEvents = z.infer<typeof insertMigrationEventsSchema>;
+export type SecretsVault = InferSelectModel<typeof secretsVault>;
+export type InsertSecretsVault = InferInsertModel<typeof secretsVault>;
+export type SecretRotationHistory = InferSelectModel<typeof secretRotationHistory>;
+export type InsertSecretRotationHistory = InferInsertModel<typeof secretRotationHistory>;
+export type ApiAccessTokens = InferSelectModel<typeof apiAccessTokens>;
+export type InsertApiAccessTokens = InferInsertModel<typeof apiAccessTokens>;
+export type CdnCacheConfig = InferSelectModel<typeof cdnCacheConfig>;
+export type InsertCdnCacheConfig = InferInsertModel<typeof cdnCacheConfig>;
+export type CacheInvalidationLogs = InferSelectModel<typeof cacheInvalidationLogs>;
+export type InsertCacheInvalidationLogs = InferInsertModel<typeof cacheInvalidationLogs>;
+export type CachePerformanceMetrics = InferSelectModel<typeof cachePerformanceMetrics>;
+export type InsertCachePerformanceMetrics = InferInsertModel<typeof cachePerformanceMetrics>;
+export type LlmFallbacks = InferSelectModel<typeof llmFallbacks>;
+export type InsertLlmFallbacks = InferInsertModel<typeof llmFallbacks>;
+export type LlmFallbackEvents = InferSelectModel<typeof llmFallbackEvents>;
+export type InsertLlmFallbackEvents = InferInsertModel<typeof llmFallbackEvents>;
+export type LlmUsageAnalytics = InferSelectModel<typeof llmUsageAnalytics>;
+export type InsertLlmUsageAnalytics = InferInsertModel<typeof llmUsageAnalytics>;
+export type MigrationEvents = InferSelectModel<typeof migrationEvents>;
+export type InsertMigrationEvents = InferInsertModel<typeof migrationEvents>;
+
+// DTOs
+const secretsVaultDTOKeys = ["id", "createdAt", "updatedAt", "description", "version", "environment"] as const;
+
+export interface SecretsVaultDTO
+  extends Pick<SecretsVault, (typeof secretsVaultDTOKeys)[number]> {}
+
+export const toSecretsVaultDTO = (secretsVault: SecretsVault): SecretsVaultDTO =>
+  pickDTOFields(secretsVault, secretsVaultDTOKeys);
+
+
+const secretRotationHistoryDTOKeys = ["id", "keyId", "oldValue"] as const;
+
+export interface SecretRotationHistoryDTO
+  extends Pick<SecretRotationHistory, (typeof secretRotationHistoryDTOKeys)[number]> {}
+
+export const toSecretRotationHistoryDTO = (secretRotationHistory: SecretRotationHistory): SecretRotationHistoryDTO =>
+  pickDTOFields(secretRotationHistory, secretRotationHistoryDTOKeys);
+
+
+const apiAccessTokensDTOKeys = ["id", "userId", "createdAt", "updatedAt"] as const;
+
+export interface ApiAccessTokensDTO
+  extends Pick<ApiAccessTokens, (typeof apiAccessTokensDTOKeys)[number]> {}
+
+export const toApiAccessTokensDTO = (apiAccessTokens: ApiAccessTokens): ApiAccessTokensDTO =>
+  pickDTOFields(apiAccessTokens, apiAccessTokensDTOKeys);
+
+
+const cdnCacheConfigDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface CdnCacheConfigDTO
+  extends Pick<CdnCacheConfig, (typeof cdnCacheConfigDTOKeys)[number]> {}
+
+export const toCdnCacheConfigDTO = (cdnCacheConfig: CdnCacheConfig): CdnCacheConfigDTO =>
+  pickDTOFields(cdnCacheConfig, cdnCacheConfigDTOKeys);
+
+
+const cacheInvalidationLogsDTOKeys = ["id", "routeId", "invalidationType"] as const;
+
+export interface CacheInvalidationLogsDTO
+  extends Pick<CacheInvalidationLogs, (typeof cacheInvalidationLogsDTOKeys)[number]> {}
+
+export const toCacheInvalidationLogsDTO = (cacheInvalidationLogs: CacheInvalidationLogs): CacheInvalidationLogsDTO =>
+  pickDTOFields(cacheInvalidationLogs, cacheInvalidationLogsDTOKeys);
+
+
+const cachePerformanceMetricsDTOKeys = ["id", "createdAt", "routeId"] as const;
+
+export interface CachePerformanceMetricsDTO
+  extends Pick<CachePerformanceMetrics, (typeof cachePerformanceMetricsDTOKeys)[number]> {}
+
+export const toCachePerformanceMetricsDTO = (cachePerformanceMetrics: CachePerformanceMetrics): CachePerformanceMetricsDTO =>
+  pickDTOFields(cachePerformanceMetrics, cachePerformanceMetricsDTOKeys);
+
+
+const llmFallbacksDTOKeys = ["id", "priority", "createdAt", "updatedAt", "provider"] as const;
+
+export interface LlmFallbacksDTO
+  extends Pick<LlmFallbacks, (typeof llmFallbacksDTOKeys)[number]> {}
+
+export const toLlmFallbacksDTO = (llmFallbacks: LlmFallbacks): LlmFallbacksDTO =>
+  pickDTOFields(llmFallbacks, llmFallbacksDTOKeys);
+
+
+const llmFallbackEventsDTOKeys = ["id", "sessionId", "eventType"] as const;
+
+export interface LlmFallbackEventsDTO
+  extends Pick<LlmFallbackEvents, (typeof llmFallbackEventsDTOKeys)[number]> {}
+
+export const toLlmFallbackEventsDTO = (llmFallbackEvents: LlmFallbackEvents): LlmFallbackEventsDTO =>
+  pickDTOFields(llmFallbackEvents, llmFallbackEventsDTOKeys);
+
+
+const llmUsageAnalyticsDTOKeys = ["id", "createdAt", "llmId"] as const;
+
+export interface LlmUsageAnalyticsDTO
+  extends Pick<LlmUsageAnalytics, (typeof llmUsageAnalyticsDTOKeys)[number]> {}
+
+export const toLlmUsageAnalyticsDTO = (llmUsageAnalytics: LlmUsageAnalytics): LlmUsageAnalyticsDTO =>
+  pickDTOFields(llmUsageAnalytics, llmUsageAnalyticsDTOKeys);
+
+
+const migrationEventsDTOKeys = ["id", "status", "eventType"] as const;
+
+export interface MigrationEventsDTO
+  extends Pick<MigrationEvents, (typeof migrationEventsDTOKeys)[number]> {}
+
+export const toMigrationEventsDTO = (migrationEvents: MigrationEvents): MigrationEventsDTO =>
+  pickDTOFields(migrationEvents, migrationEventsDTOKeys);
+

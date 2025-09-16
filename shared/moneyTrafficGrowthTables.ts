@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ===================================================================
 // MONEY/TRAFFIC GROWTH ENGINE TABLES - BILLION-DOLLAR EMPIRE GRADE
 // ===================================================================
@@ -504,27 +506,27 @@ export const insertConversionExperimentsSchema = createInsertSchema(conversionEx
 export const insertConversionEventsSchema = createInsertSchema(conversionEvents);
 
 // TypeScript types for all tables
-export type SeoOptimizationTask = typeof seoOptimizationTasks.$inferSelect;
-export type SeoKeywordResearch = typeof seoKeywordResearch.$inferSelect;
-export type SeoSiteAudit = typeof seoSiteAudits.$inferSelect;
-export type ContentTemplate = typeof contentTemplates.$inferSelect;
-export type ContentGeneration = typeof contentGeneration.$inferSelect;
-export type ContentPerformance = typeof contentPerformance.$inferSelect;
-export type ReferralProgram = typeof referralPrograms.$inferSelect;
-export type ReferralLink = typeof referralLinks.$inferSelect;
-export type ReferralTransaction = typeof referralTransactions.$inferSelect;
-export type BacklinkOpportunity = typeof backlinkOpportunities.$inferSelect;
-export type BacklinkOutreach = typeof backlinkOutreach.$inferSelect;
-export type BacklinkMonitoring = typeof backlinkMonitoring.$inferSelect;
-export type SocialMediaAccount = typeof socialMediaAccounts.$inferSelect;
-export type SocialMediaPost = typeof socialMediaPosts.$inferSelect;
-export type SocialMediaEngagement = typeof socialMediaEngagement.$inferSelect;
-export type EmailCampaign = typeof emailCampaigns.$inferSelect;
-export type EmailAutomation = typeof emailAutomations.$inferSelect;
-export type EmailSubscriber = typeof emailSubscribers.$inferSelect;
-export type ConversionFunnel = typeof conversionFunnels.$inferSelect;
-export type ConversionExperiment = typeof conversionExperiments.$inferSelect;
-export type ConversionEvent = typeof conversionEvents.$inferSelect;
+export type SeoOptimizationTask = InferSelectModel<typeof seoOptimizationTasks>;
+export type SeoKeywordResearch = InferSelectModel<typeof seoKeywordResearch>;
+export type SeoSiteAudit = InferSelectModel<typeof seoSiteAudits>;
+export type ContentTemplate = InferSelectModel<typeof contentTemplates>;
+export type ContentGeneration = InferSelectModel<typeof contentGeneration>;
+export type ContentPerformance = InferSelectModel<typeof contentPerformance>;
+export type ReferralProgram = InferSelectModel<typeof referralPrograms>;
+export type ReferralLink = InferSelectModel<typeof referralLinks>;
+export type ReferralTransaction = InferSelectModel<typeof referralTransactions>;
+export type BacklinkOpportunity = InferSelectModel<typeof backlinkOpportunities>;
+export type BacklinkOutreach = InferSelectModel<typeof backlinkOutreach>;
+export type BacklinkMonitoring = InferSelectModel<typeof backlinkMonitoring>;
+export type SocialMediaAccount = InferSelectModel<typeof socialMediaAccounts>;
+export type SocialMediaPost = InferSelectModel<typeof socialMediaPosts>;
+export type SocialMediaEngagement = InferSelectModel<typeof socialMediaEngagement>;
+export type EmailCampaign = InferSelectModel<typeof emailCampaigns>;
+export type EmailAutomation = InferSelectModel<typeof emailAutomations>;
+export type EmailSubscriber = InferSelectModel<typeof emailSubscribers>;
+export type ConversionFunnel = InferSelectModel<typeof conversionFunnels>;
+export type ConversionExperiment = InferSelectModel<typeof conversionExperiments>;
+export type ConversionEvent = InferSelectModel<typeof conversionEvents>;
 
 // ===================================================================
 // ADDITIONAL TRAFFIC GENERATION MODULES - BILLION-DOLLAR EMPIRE GRADE
@@ -1108,28 +1110,443 @@ export const insertPublicWidgetsSchema = createInsertSchema(publicWidgets);
 export const insertWidgetEmbedsSchema = createInsertSchema(widgetEmbeds);
 
 // TypeScript types for all new tables
-export type BlogSwarmSite = typeof blogSwarmSites.$inferSelect;
-export type BlogSwarmPost = typeof blogSwarmPosts.$inferSelect;
-export type BlogSwarmTrend = typeof blogSwarmTrends.$inferSelect;
-export type ForumCategory = typeof forumCategories.$inferSelect;
-export type ForumTopic = typeof forumTopics.$inferSelect;
-export type ForumReply = typeof forumReplies.$inferSelect;
-export type ResourceCategory = typeof resourceCategories.$inferSelect;
-export type ResourceDirectory = typeof resourceDirectory.$inferSelect;
-export type ResourceComparison = typeof resourceComparisons.$inferSelect;
-export type DataVisualizationProject = typeof dataVisualizationProjects.$inferSelect;
-export type DataVisualizationStats = typeof dataVisualizationStats.$inferSelect;
-export type NewsletterEdition = typeof newsletterEditions.$inferSelect;
-export type NewsletterSubscriber = typeof newsletterSubscribers.$inferSelect;
-export type UgcVideoSubmission = typeof ugcVideoSubmissions.$inferSelect;
-export type UgcVideoContest = typeof ugcVideoContests.$inferSelect;
-export type ViralChallenge = typeof viralChallenges.$inferSelect;
-export type ChallengeParticipant = typeof challengeParticipants.$inferSelect;
-export type ContentScrapingSource = typeof contentScrapingSources.$inferSelect;
-export type ScrapedContent = typeof scrapedContent.$inferSelect;
-export type ContentRemixProject = typeof contentRemixProjects.$inferSelect;
-export type ContentRemixDistribution = typeof contentRemixDistribution.$inferSelect;
-export type PublicApiEndpoint = typeof publicApiEndpoints.$inferSelect;
-export type PublicApiKey = typeof publicApiKeys.$inferSelect;
-export type PublicWidget = typeof publicWidgets.$inferSelect;
-export type WidgetEmbed = typeof widgetEmbeds.$inferSelect;
+export type BlogSwarmSite = InferSelectModel<typeof blogSwarmSites>;
+export type BlogSwarmPost = InferSelectModel<typeof blogSwarmPosts>;
+export type BlogSwarmTrend = InferSelectModel<typeof blogSwarmTrends>;
+export type ForumCategory = InferSelectModel<typeof forumCategories>;
+export type ForumTopic = InferSelectModel<typeof forumTopics>;
+export type ForumReply = InferSelectModel<typeof forumReplies>;
+export type ResourceCategory = InferSelectModel<typeof resourceCategories>;
+export type ResourceDirectory = InferSelectModel<typeof resourceDirectory>;
+export type ResourceComparison = InferSelectModel<typeof resourceComparisons>;
+export type DataVisualizationProject = InferSelectModel<typeof dataVisualizationProjects>;
+export type DataVisualizationStats = InferSelectModel<typeof dataVisualizationStats>;
+export type NewsletterEdition = InferSelectModel<typeof newsletterEditions>;
+export type NewsletterSubscriber = InferSelectModel<typeof newsletterSubscribers>;
+export type UgcVideoSubmission = InferSelectModel<typeof ugcVideoSubmissions>;
+export type UgcVideoContest = InferSelectModel<typeof ugcVideoContests>;
+export type ViralChallenge = InferSelectModel<typeof viralChallenges>;
+export type ChallengeParticipant = InferSelectModel<typeof challengeParticipants>;
+export type ContentScrapingSource = InferSelectModel<typeof contentScrapingSources>;
+export type ScrapedContent = InferSelectModel<typeof scrapedContent>;
+export type ContentRemixProject = InferSelectModel<typeof contentRemixProjects>;
+export type ContentRemixDistribution = InferSelectModel<typeof contentRemixDistribution>;
+export type PublicApiEndpoint = InferSelectModel<typeof publicApiEndpoints>;
+export type PublicApiKey = InferSelectModel<typeof publicApiKeys>;
+export type PublicWidget = InferSelectModel<typeof publicWidgets>;
+export type WidgetEmbed = InferSelectModel<typeof widgetEmbeds>;
+
+// DTOs
+const seoOptimizationTaskDTOKeys = ["id", "title", "status", "priority", "createdAt", "updatedAt"] as const;
+
+export interface SeoOptimizationTaskDTO
+  extends Pick<SeoOptimizationTask, (typeof seoOptimizationTaskDTOKeys)[number]> {}
+
+export const toSeoOptimizationTaskDTO = (seoOptimizationTask: SeoOptimizationTask): SeoOptimizationTaskDTO =>
+  pickDTOFields(seoOptimizationTask, seoOptimizationTaskDTOKeys);
+
+
+const seoKeywordResearchDTOKeys = ["id", "vertical", "priority", "createdAt"] as const;
+
+export interface SeoKeywordResearchDTO
+  extends Pick<SeoKeywordResearch, (typeof seoKeywordResearchDTOKeys)[number]> {}
+
+export const toSeoKeywordResearchDTO = (seoKeywordResearch: SeoKeywordResearch): SeoKeywordResearchDTO =>
+  pickDTOFields(seoKeywordResearch, seoKeywordResearchDTOKeys);
+
+
+const seoSiteAuditDTOKeys = ["id", "createdAt", "domain"] as const;
+
+export interface SeoSiteAuditDTO
+  extends Pick<SeoSiteAudit, (typeof seoSiteAuditDTOKeys)[number]> {}
+
+export const toSeoSiteAuditDTO = (seoSiteAudit: SeoSiteAudit): SeoSiteAuditDTO =>
+  pickDTOFields(seoSiteAudit, seoSiteAuditDTOKeys);
+
+
+const contentTemplateDTOKeys = ["id", "name", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface ContentTemplateDTO
+  extends Pick<ContentTemplate, (typeof contentTemplateDTOKeys)[number]> {}
+
+export const toContentTemplateDTO = (contentTemplate: ContentTemplate): ContentTemplateDTO =>
+  pickDTOFields(contentTemplate, contentTemplateDTOKeys);
+
+
+const contentGenerationDTOKeys = ["id", "title", "status", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface ContentGenerationDTO
+  extends Pick<ContentGeneration, (typeof contentGenerationDTOKeys)[number]> {}
+
+export const toContentGenerationDTO = (contentGeneration: ContentGeneration): ContentGenerationDTO =>
+  pickDTOFields(contentGeneration, contentGenerationDTOKeys);
+
+
+const contentPerformanceDTOKeys = ["id", "createdAt", "contentId"] as const;
+
+export interface ContentPerformanceDTO
+  extends Pick<ContentPerformance, (typeof contentPerformanceDTOKeys)[number]> {}
+
+export const toContentPerformanceDTO = (contentPerformance: ContentPerformance): ContentPerformanceDTO =>
+  pickDTOFields(contentPerformance, contentPerformanceDTOKeys);
+
+
+const referralProgramDTOKeys = ["id", "name", "vertical", "createdAt", "updatedAt", "description"] as const;
+
+export interface ReferralProgramDTO
+  extends Pick<ReferralProgram, (typeof referralProgramDTOKeys)[number]> {}
+
+export const toReferralProgramDTO = (referralProgram: ReferralProgram): ReferralProgramDTO =>
+  pickDTOFields(referralProgram, referralProgramDTOKeys);
+
+
+const referralLinkDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface ReferralLinkDTO
+  extends Pick<ReferralLink, (typeof referralLinkDTOKeys)[number]> {}
+
+export const toReferralLinkDTO = (referralLink: ReferralLink): ReferralLinkDTO =>
+  pickDTOFields(referralLink, referralLinkDTOKeys);
+
+
+const referralTransactionDTOKeys = ["id", "status", "createdAt"] as const;
+
+export interface ReferralTransactionDTO
+  extends Pick<ReferralTransaction, (typeof referralTransactionDTOKeys)[number]> {}
+
+export const toReferralTransactionDTO = (referralTransaction: ReferralTransaction): ReferralTransactionDTO =>
+  pickDTOFields(referralTransaction, referralTransactionDTOKeys);
+
+
+const backlinkOpportunityDTOKeys = ["id", "vertical", "priority", "createdAt", "updatedAt"] as const;
+
+export interface BacklinkOpportunityDTO
+  extends Pick<BacklinkOpportunity, (typeof backlinkOpportunityDTOKeys)[number]> {}
+
+export const toBacklinkOpportunityDTO = (backlinkOpportunity: BacklinkOpportunity): BacklinkOpportunityDTO =>
+  pickDTOFields(backlinkOpportunity, backlinkOpportunityDTOKeys);
+
+
+const backlinkOutreachDTOKeys = ["id", "createdAt", "opportunityId"] as const;
+
+export interface BacklinkOutreachDTO
+  extends Pick<BacklinkOutreach, (typeof backlinkOutreachDTOKeys)[number]> {}
+
+export const toBacklinkOutreachDTO = (backlinkOutreach: BacklinkOutreach): BacklinkOutreachDTO =>
+  pickDTOFields(backlinkOutreach, backlinkOutreachDTOKeys);
+
+
+const backlinkMonitoringDTOKeys = ["id", "createdAt", "sourceUrl"] as const;
+
+export interface BacklinkMonitoringDTO
+  extends Pick<BacklinkMonitoring, (typeof backlinkMonitoringDTOKeys)[number]> {}
+
+export const toBacklinkMonitoringDTO = (backlinkMonitoring: BacklinkMonitoring): BacklinkMonitoringDTO =>
+  pickDTOFields(backlinkMonitoring, backlinkMonitoringDTOKeys);
+
+
+const socialMediaAccountDTOKeys = ["id", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface SocialMediaAccountDTO
+  extends Pick<SocialMediaAccount, (typeof socialMediaAccountDTOKeys)[number]> {}
+
+export const toSocialMediaAccountDTO = (socialMediaAccount: SocialMediaAccount): SocialMediaAccountDTO =>
+  pickDTOFields(socialMediaAccount, socialMediaAccountDTOKeys);
+
+
+const socialMediaPostDTOKeys = ["id", "status", "createdAt", "updatedAt"] as const;
+
+export interface SocialMediaPostDTO
+  extends Pick<SocialMediaPost, (typeof socialMediaPostDTOKeys)[number]> {}
+
+export const toSocialMediaPostDTO = (socialMediaPost: SocialMediaPost): SocialMediaPostDTO =>
+  pickDTOFields(socialMediaPost, socialMediaPostDTOKeys);
+
+
+const socialMediaEngagementDTOKeys = ["id", "userId", "createdAt"] as const;
+
+export interface SocialMediaEngagementDTO
+  extends Pick<SocialMediaEngagement, (typeof socialMediaEngagementDTOKeys)[number]> {}
+
+export const toSocialMediaEngagementDTO = (socialMediaEngagement: SocialMediaEngagement): SocialMediaEngagementDTO =>
+  pickDTOFields(socialMediaEngagement, socialMediaEngagementDTOKeys);
+
+
+const emailCampaignDTOKeys = ["id", "name", "status", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface EmailCampaignDTO
+  extends Pick<EmailCampaign, (typeof emailCampaignDTOKeys)[number]> {}
+
+export const toEmailCampaignDTO = (emailCampaign: EmailCampaign): EmailCampaignDTO =>
+  pickDTOFields(emailCampaign, emailCampaignDTOKeys);
+
+
+const emailAutomationDTOKeys = ["id", "name", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface EmailAutomationDTO
+  extends Pick<EmailAutomation, (typeof emailAutomationDTOKeys)[number]> {}
+
+export const toEmailAutomationDTO = (emailAutomation: EmailAutomation): EmailAutomationDTO =>
+  pickDTOFields(emailAutomation, emailAutomationDTOKeys);
+
+
+const emailSubscriberDTOKeys = ["id", "status", "vertical", "createdAt", "updatedAt", "email"] as const;
+
+export interface EmailSubscriberDTO
+  extends Pick<EmailSubscriber, (typeof emailSubscriberDTOKeys)[number]> {}
+
+export const toEmailSubscriberDTO = (emailSubscriber: EmailSubscriber): EmailSubscriberDTO =>
+  pickDTOFields(emailSubscriber, emailSubscriberDTOKeys);
+
+
+const conversionFunnelDTOKeys = ["id", "name", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface ConversionFunnelDTO
+  extends Pick<ConversionFunnel, (typeof conversionFunnelDTOKeys)[number]> {}
+
+export const toConversionFunnelDTO = (conversionFunnel: ConversionFunnel): ConversionFunnelDTO =>
+  pickDTOFields(conversionFunnel, conversionFunnelDTOKeys);
+
+
+const conversionExperimentDTOKeys = ["id", "status", "createdAt", "updatedAt", "funnelId"] as const;
+
+export interface ConversionExperimentDTO
+  extends Pick<ConversionExperiment, (typeof conversionExperimentDTOKeys)[number]> {}
+
+export const toConversionExperimentDTO = (conversionExperiment: ConversionExperiment): ConversionExperimentDTO =>
+  pickDTOFields(conversionExperiment, conversionExperimentDTOKeys);
+
+
+const conversionEventDTOKeys = ["id", "sessionId", "userId", "createdAt", "eventType", "funnelId"] as const;
+
+export interface ConversionEventDTO
+  extends Pick<ConversionEvent, (typeof conversionEventDTOKeys)[number]> {}
+
+export const toConversionEventDTO = (conversionEvent: ConversionEvent): ConversionEventDTO =>
+  pickDTOFields(conversionEvent, conversionEventDTOKeys);
+
+
+const blogSwarmSiteDTOKeys = ["id", "status", "vertical", "createdAt"] as const;
+
+export interface BlogSwarmSiteDTO
+  extends Pick<BlogSwarmSite, (typeof blogSwarmSiteDTOKeys)[number]> {}
+
+export const toBlogSwarmSiteDTO = (blogSwarmSite: BlogSwarmSite): BlogSwarmSiteDTO =>
+  pickDTOFields(blogSwarmSite, blogSwarmSiteDTOKeys);
+
+
+const blogSwarmPostDTOKeys = ["id", "title", "slug", "status", "createdAt"] as const;
+
+export interface BlogSwarmPostDTO
+  extends Pick<BlogSwarmPost, (typeof blogSwarmPostDTOKeys)[number]> {}
+
+export const toBlogSwarmPostDTO = (blogSwarmPost: BlogSwarmPost): BlogSwarmPostDTO =>
+  pickDTOFields(blogSwarmPost, blogSwarmPostDTOKeys);
+
+
+const blogSwarmTrendDTOKeys = ["id", "vertical", "createdAt"] as const;
+
+export interface BlogSwarmTrendDTO
+  extends Pick<BlogSwarmTrend, (typeof blogSwarmTrendDTOKeys)[number]> {}
+
+export const toBlogSwarmTrendDTO = (blogSwarmTrend: BlogSwarmTrend): BlogSwarmTrendDTO =>
+  pickDTOFields(blogSwarmTrend, blogSwarmTrendDTOKeys);
+
+
+const forumCategoryDTOKeys = ["id", "name", "slug", "vertical", "createdAt", "description"] as const;
+
+export interface ForumCategoryDTO
+  extends Pick<ForumCategory, (typeof forumCategoryDTOKeys)[number]> {}
+
+export const toForumCategoryDTO = (forumCategory: ForumCategory): ForumCategoryDTO =>
+  pickDTOFields(forumCategory, forumCategoryDTOKeys);
+
+
+const forumTopicDTOKeys = ["id", "title", "slug", "createdAt", "updatedAt"] as const;
+
+export interface ForumTopicDTO
+  extends Pick<ForumTopic, (typeof forumTopicDTOKeys)[number]> {}
+
+export const toForumTopicDTO = (forumTopic: ForumTopic): ForumTopicDTO =>
+  pickDTOFields(forumTopic, forumTopicDTOKeys);
+
+
+const forumReplyDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface ForumReplyDTO
+  extends Pick<ForumReply, (typeof forumReplyDTOKeys)[number]> {}
+
+export const toForumReplyDTO = (forumReply: ForumReply): ForumReplyDTO =>
+  pickDTOFields(forumReply, forumReplyDTOKeys);
+
+
+const resourceCategoryDTOKeys = ["id", "name", "slug", "vertical", "createdAt", "description"] as const;
+
+export interface ResourceCategoryDTO
+  extends Pick<ResourceCategory, (typeof resourceCategoryDTOKeys)[number]> {}
+
+export const toResourceCategoryDTO = (resourceCategory: ResourceCategory): ResourceCategoryDTO =>
+  pickDTOFields(resourceCategory, resourceCategoryDTOKeys);
+
+
+const resourceDirectoryDTOKeys = ["id", "name", "slug", "createdAt", "description"] as const;
+
+export interface ResourceDirectoryDTO
+  extends Pick<ResourceDirectory, (typeof resourceDirectoryDTOKeys)[number]> {}
+
+export const toResourceDirectoryDTO = (resourceDirectory: ResourceDirectory): ResourceDirectoryDTO =>
+  pickDTOFields(resourceDirectory, resourceDirectoryDTOKeys);
+
+
+const resourceComparisonDTOKeys = ["id", "title", "slug", "vertical", "createdAt", "description"] as const;
+
+export interface ResourceComparisonDTO
+  extends Pick<ResourceComparison, (typeof resourceComparisonDTOKeys)[number]> {}
+
+export const toResourceComparisonDTO = (resourceComparison: ResourceComparison): ResourceComparisonDTO =>
+  pickDTOFields(resourceComparison, resourceComparisonDTOKeys);
+
+
+const dataVisualizationProjectDTOKeys = ["id", "title", "slug", "vertical", "createdAt", "updatedAt", "description"] as const;
+
+export interface DataVisualizationProjectDTO
+  extends Pick<DataVisualizationProject, (typeof dataVisualizationProjectDTOKeys)[number]> {}
+
+export const toDataVisualizationProjectDTO = (dataVisualizationProject: DataVisualizationProject): DataVisualizationProjectDTO =>
+  pickDTOFields(dataVisualizationProject, dataVisualizationProjectDTOKeys);
+
+
+const dataVisualizationStatsDTOKeys = ["id", "createdAt", "projectId"] as const;
+
+export interface DataVisualizationStatsDTO
+  extends Pick<DataVisualizationStats, (typeof dataVisualizationStatsDTOKeys)[number]> {}
+
+export const toDataVisualizationStatsDTO = (dataVisualizationStats: DataVisualizationStats): DataVisualizationStatsDTO =>
+  pickDTOFields(dataVisualizationStats, dataVisualizationStatsDTOKeys);
+
+
+const newsletterEditionDTOKeys = ["id", "title", "status", "vertical", "createdAt"] as const;
+
+export interface NewsletterEditionDTO
+  extends Pick<NewsletterEdition, (typeof newsletterEditionDTOKeys)[number]> {}
+
+export const toNewsletterEditionDTO = (newsletterEdition: NewsletterEdition): NewsletterEditionDTO =>
+  pickDTOFields(newsletterEdition, newsletterEditionDTOKeys);
+
+
+const newsletterSubscriberDTOKeys = ["id", "vertical", "createdAt", "email"] as const;
+
+export interface NewsletterSubscriberDTO
+  extends Pick<NewsletterSubscriber, (typeof newsletterSubscriberDTOKeys)[number]> {}
+
+export const toNewsletterSubscriberDTO = (newsletterSubscriber: NewsletterSubscriber): NewsletterSubscriberDTO =>
+  pickDTOFields(newsletterSubscriber, newsletterSubscriberDTOKeys);
+
+
+const ugcVideoSubmissionDTOKeys = ["id", "title", "vertical", "createdAt", "description"] as const;
+
+export interface UgcVideoSubmissionDTO
+  extends Pick<UgcVideoSubmission, (typeof ugcVideoSubmissionDTOKeys)[number]> {}
+
+export const toUgcVideoSubmissionDTO = (ugcVideoSubmission: UgcVideoSubmission): UgcVideoSubmissionDTO =>
+  pickDTOFields(ugcVideoSubmission, ugcVideoSubmissionDTOKeys);
+
+
+const ugcVideoContestDTOKeys = ["id", "title", "vertical", "createdAt", "description"] as const;
+
+export interface UgcVideoContestDTO
+  extends Pick<UgcVideoContest, (typeof ugcVideoContestDTOKeys)[number]> {}
+
+export const toUgcVideoContestDTO = (ugcVideoContest: UgcVideoContest): UgcVideoContestDTO =>
+  pickDTOFields(ugcVideoContest, ugcVideoContestDTOKeys);
+
+
+const viralChallengeDTOKeys = ["id", "title", "vertical", "createdAt", "description"] as const;
+
+export interface ViralChallengeDTO
+  extends Pick<ViralChallenge, (typeof viralChallengeDTOKeys)[number]> {}
+
+export const toViralChallengeDTO = (viralChallenge: ViralChallenge): ViralChallengeDTO =>
+  pickDTOFields(viralChallenge, viralChallengeDTOKeys);
+
+
+const challengeParticipantDTOKeys = ["id", "userId", "createdAt", "updatedAt"] as const;
+
+export interface ChallengeParticipantDTO
+  extends Pick<ChallengeParticipant, (typeof challengeParticipantDTOKeys)[number]> {}
+
+export const toChallengeParticipantDTO = (challengeParticipant: ChallengeParticipant): ChallengeParticipantDTO =>
+  pickDTOFields(challengeParticipant, challengeParticipantDTOKeys);
+
+
+const contentScrapingSourceDTOKeys = ["id", "name", "vertical", "createdAt"] as const;
+
+export interface ContentScrapingSourceDTO
+  extends Pick<ContentScrapingSource, (typeof contentScrapingSourceDTOKeys)[number]> {}
+
+export const toContentScrapingSourceDTO = (contentScrapingSource: ContentScrapingSource): ContentScrapingSourceDTO =>
+  pickDTOFields(contentScrapingSource, contentScrapingSourceDTOKeys);
+
+
+const scrapedContentDTOKeys = ["id", "title", "language", "createdAt", "summary"] as const;
+
+export interface ScrapedContentDTO
+  extends Pick<ScrapedContent, (typeof scrapedContentDTOKeys)[number]> {}
+
+export const toScrapedContentDTO = (scrapedContent: ScrapedContent): ScrapedContentDTO =>
+  pickDTOFields(scrapedContent, scrapedContentDTOKeys);
+
+
+const contentRemixProjectDTOKeys = ["id", "vertical", "createdAt"] as const;
+
+export interface ContentRemixProjectDTO
+  extends Pick<ContentRemixProject, (typeof contentRemixProjectDTOKeys)[number]> {}
+
+export const toContentRemixProjectDTO = (contentRemixProject: ContentRemixProject): ContentRemixProjectDTO =>
+  pickDTOFields(contentRemixProject, contentRemixProjectDTOKeys);
+
+
+const contentRemixDistributionDTOKeys = ["id", "status", "createdAt"] as const;
+
+export interface ContentRemixDistributionDTO
+  extends Pick<ContentRemixDistribution, (typeof contentRemixDistributionDTOKeys)[number]> {}
+
+export const toContentRemixDistributionDTO = (contentRemixDistribution: ContentRemixDistribution): ContentRemixDistributionDTO =>
+  pickDTOFields(contentRemixDistribution, contentRemixDistributionDTOKeys);
+
+
+const publicApiEndpointDTOKeys = ["id", "name", "category", "createdAt", "description"] as const;
+
+export interface PublicApiEndpointDTO
+  extends Pick<PublicApiEndpoint, (typeof publicApiEndpointDTOKeys)[number]> {}
+
+export const toPublicApiEndpointDTO = (publicApiEndpoint: PublicApiEndpoint): PublicApiEndpointDTO =>
+  pickDTOFields(publicApiEndpoint, publicApiEndpointDTOKeys);
+
+
+const publicApiKeyDTOKeys = ["id", "userId", "createdAt"] as const;
+
+export interface PublicApiKeyDTO
+  extends Pick<PublicApiKey, (typeof publicApiKeyDTOKeys)[number]> {}
+
+export const toPublicApiKeyDTO = (publicApiKey: PublicApiKey): PublicApiKeyDTO =>
+  pickDTOFields(publicApiKey, publicApiKeyDTOKeys);
+
+
+const publicWidgetDTOKeys = ["id", "name", "category", "createdAt", "description"] as const;
+
+export interface PublicWidgetDTO
+  extends Pick<PublicWidget, (typeof publicWidgetDTOKeys)[number]> {}
+
+export const toPublicWidgetDTO = (publicWidget: PublicWidget): PublicWidgetDTO =>
+  pickDTOFields(publicWidget, publicWidgetDTOKeys);
+
+
+const widgetEmbedDTOKeys = ["id", "createdAt", "widgetId"] as const;
+
+export interface WidgetEmbedDTO
+  extends Pick<WidgetEmbed, (typeof widgetEmbedDTOKeys)[number]> {}
+
+export const toWidgetEmbedDTO = (widgetEmbed: WidgetEmbed): WidgetEmbedDTO =>
+  pickDTOFields(widgetEmbed, widgetEmbedDTOKeys);
+
