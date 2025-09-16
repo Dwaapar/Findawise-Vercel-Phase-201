@@ -19,6 +19,7 @@ interface DbHealthStatus {
 interface DbConfig {
   healthCheckInterval: number;
   maxRetries: number;
+  useSupabase: boolean;
 }
 
 class UniversalDbAdapter {
@@ -31,7 +32,8 @@ class UniversalDbAdapter {
     this.storage = new DatabaseStorage();
     this.config = {
       healthCheckInterval: 30000, // 30 seconds
-      maxRetries: 3
+      maxRetries: 3,
+      useSupabase: false
     };
     
     this.healthStatus = {
@@ -71,18 +73,22 @@ class UniversalDbAdapter {
     
     // Auto-configure embedded Supabase credentials
     autoConfigureEnvironment();
-    
+
+    const useSupabase = this.hasSupabaseCredentials();
+
     try {
       // Initialize Supabase if credentials are available
-      if (this.hasSupabaseCredentials()) {
+      if (useSupabase) {
         await this.initializeSupabase();
+      } else {
+        this.config.useSupabase = false;
       }
 
       // Always initialize PostgreSQL as fallback
       await this.initializePostgreSQL();
 
       // Run Supabase migrations if Supabase is available
-      if (this.supabase) {
+      if (useSupabase && this.supabase) {
         await this.runSupabaseMigrations();
       }
 
@@ -100,8 +106,7 @@ class UniversalDbAdapter {
    * Check if Supabase credentials are available
    */
   private hasSupabaseCredentials(): boolean {
-    // Always return true since we have embedded credentials
-    return true;
+    return process.env.USE_SUPABASE === 'true';
   }
 
   /**
