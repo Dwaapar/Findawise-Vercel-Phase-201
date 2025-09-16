@@ -1,18 +1,17 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { validateRequest } from '../middleware/validation';
-import { 
-  insertAiToolsArchetypeSchema, 
-  insertAiToolSchema, 
+import {
+  insertAiToolsArchetypeSchema,
+  insertAiToolSchema,
   insertAiToolsOfferSchema,
   insertAiToolsQuizSchema,
   insertAiToolsContentSchema,
   insertAiToolsLeadSchema
 } from '@shared/aiToolsTables';
-import type { DatabaseStorage } from '../storage';
+import { storage } from '../storage';
 
-export function createAiToolsRoutes(storage: DatabaseStorage) {
-  const router = Router();
+const router = Router();
 
   // Get all AI tool archetypes
   router.get('/archetypes', async (req, res) => {
@@ -424,5 +423,5 @@ export function createAiToolsRoutes(storage: DatabaseStorage) {
     }
   });
 
-  return router;
-}
+export { router as aiToolsRoutes };
+export default router;

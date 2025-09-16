@@ -94,9 +94,9 @@ import AffiliateRedirectEngine from "./services/affiliate/affiliateRedirectEngin
 import AffiliateComplianceEngine from "./services/affiliate/affiliateComplianceEngine";
 import { semanticRoutes } from "./routes/semantic";
 import { notificationRoutes } from "./routes/notifications";
-import { createTravelRoutes } from "./routes/travel";
+import travelRoutes from "./routes/travel";
 import { registerEducationRoutes } from "./routes/education";
-import { createAiToolsRoutes } from "./routes/aiToolsRoutes";
+import aiToolsRoutes from "./routes/aiToolsRoutes";
 import federationRouterBridge from "./routes/federation";
 import federationDashboardRouter from "./routes/federation-dashboard";
 import apiNeuronsRouter from "./routes/apiNeurons";
@@ -4341,14 +4341,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerFinanceRoutes(app);
 
   // Register Travel Neuron Routes
-  const travelRouter = createTravelRoutes(storage);
-  app.use('/api/travel', travelRouter);
+  app.use('/api/travel', travelRoutes);
 
   // Register Education Neuron Routes
   registerEducationRoutes(app);
 
   // Register AI Tools Neuron Routes
-  app.use('/api/ai-tools', createAiToolsRoutes(storage));
+  app.use('/api/ai-tools', aiToolsRoutes);
   
   // AI/ML Centralization Routes
   app.use(aiMLRoutes);

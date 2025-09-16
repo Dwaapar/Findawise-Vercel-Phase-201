@@ -435,3 +435,4 @@ router.get('/backup', async (req, res) => {
 });
 
 export { router as dbHealthRouter };
+export default router;

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { z } from "zod";
-import type { DatabaseStorage } from "../storage";
+import { storage } from "../storage";
 import {
   insertTravelDestinationSchema,
   insertTravelArticleSchema,
@@ -15,8 +15,7 @@ import {
   insertTravelAnalyticsEventSchema,
 } from "@shared/schema";
 
-export function createTravelRoutes(storage: DatabaseStorage) {
-  const router = Router();
+const router = Router();
 
   // === DESTINATION ROUTES ===
   
@@ -580,5 +579,5 @@ export function createTravelRoutes(storage: DatabaseStorage) {
     }
   });
 
-  return router;
-}
+export { router as travelRoutes };
+export default router;

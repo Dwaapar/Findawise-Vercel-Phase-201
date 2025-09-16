@@ -209,3 +209,4 @@ router.post('/upgrade', async (req, res) => {
 });
 
 export { router as enterpriseRoutes };
+export default router;
