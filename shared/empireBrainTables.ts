@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Empire Brain "Throne Protocol" Database Tables
  * Billion-Dollar Empire Grade, Migration-Proof, Auto-Healing Schema
@@ -308,3 +310,115 @@ export type NewEmpireVectorMemory = z.infer<typeof createEmpireVectorMemorySchem
 export type NewIntentGraph = z.infer<typeof createIntentGraphSchema>;
 export type NewEmpireBrainConfig = z.infer<typeof createEmpireBrainConfigSchema>;
 export type NewEmpireAnalytics = z.infer<typeof createEmpireAnalyticsSchema>;
+
+export type EmpireBrainEmpireIntelligence = InferSelectModel<typeof empireIntelligence>;
+export type InsertEmpireBrainEmpireIntelligence = InferInsertModel<typeof empireIntelligence>;
+export type EmpireBrainLlmProvider = InferSelectModel<typeof llmProviders>;
+export type InsertEmpireBrainLlmProvider = InferInsertModel<typeof llmProviders>;
+export type EmpireBrainIntelligenceRoute = InferSelectModel<typeof intelligenceRoutes>;
+export type InsertEmpireBrainIntelligenceRoute = InferInsertModel<typeof intelligenceRoutes>;
+export type EmpireBrainAutonomicDecision = InferSelectModel<typeof autonomicDecisions>;
+export type InsertEmpireBrainAutonomicDecision = InferInsertModel<typeof autonomicDecisions>;
+export type EmpireBrainSystemMutation = InferSelectModel<typeof systemMutations>;
+export type InsertEmpireBrainSystemMutation = InferInsertModel<typeof systemMutations>;
+export type EmpireBrainRlhfFeedback = InferSelectModel<typeof rlhfFeedback>;
+export type InsertEmpireBrainRlhfFeedback = InferInsertModel<typeof rlhfFeedback>;
+export type EmpireBrainEmpireVectorMemory = InferSelectModel<typeof empireVectorMemory>;
+export type InsertEmpireBrainEmpireVectorMemory = InferInsertModel<typeof empireVectorMemory>;
+export type EmpireBrainIntentGraph = InferSelectModel<typeof intentGraphs>;
+export type InsertEmpireBrainIntentGraph = InferInsertModel<typeof intentGraphs>;
+export type EmpireBrainEmpireBrainConfig = InferSelectModel<typeof empireBrainConfig>;
+export type InsertEmpireBrainEmpireBrainConfig = InferInsertModel<typeof empireBrainConfig>;
+export type EmpireBrainEmpireAnalytic = InferSelectModel<typeof empireAnalytics>;
+export type InsertEmpireBrainEmpireAnalytic = InferInsertModel<typeof empireAnalytics>;
+
+// DTOs
+const empireBrainEmpireIntelligenceDTOKeys = ["id", "status", "priority", "createdAt", "updatedAt"] as const;
+
+export interface EmpireBrainEmpireIntelligenceDTO
+  extends Pick<EmpireBrainEmpireIntelligence, (typeof empireBrainEmpireIntelligenceDTOKeys)[number]> {}
+
+export const toEmpireBrainEmpireIntelligenceDTO = (empireBrainEmpireIntelligence: EmpireBrainEmpireIntelligence): EmpireBrainEmpireIntelligenceDTO =>
+  pickDTOFields(empireBrainEmpireIntelligence, empireBrainEmpireIntelligenceDTOKeys);
+
+
+const empireBrainLlmProviderDTOKeys = ["id", "priority", "createdAt", "updatedAt"] as const;
+
+export interface EmpireBrainLlmProviderDTO
+  extends Pick<EmpireBrainLlmProvider, (typeof empireBrainLlmProviderDTOKeys)[number]> {}
+
+export const toEmpireBrainLlmProviderDTO = (empireBrainLlmProvider: EmpireBrainLlmProvider): EmpireBrainLlmProviderDTO =>
+  pickDTOFields(empireBrainLlmProvider, empireBrainLlmProviderDTOKeys);
+
+
+const empireBrainIntelligenceRouteDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface EmpireBrainIntelligenceRouteDTO
+  extends Pick<EmpireBrainIntelligenceRoute, (typeof empireBrainIntelligenceRouteDTOKeys)[number]> {}
+
+export const toEmpireBrainIntelligenceRouteDTO = (empireBrainIntelligenceRoute: EmpireBrainIntelligenceRoute): EmpireBrainIntelligenceRouteDTO =>
+  pickDTOFields(empireBrainIntelligenceRoute, empireBrainIntelligenceRouteDTOKeys);
+
+
+const empireBrainAutonomicDecisionDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface EmpireBrainAutonomicDecisionDTO
+  extends Pick<EmpireBrainAutonomicDecision, (typeof empireBrainAutonomicDecisionDTOKeys)[number]> {}
+
+export const toEmpireBrainAutonomicDecisionDTO = (empireBrainAutonomicDecision: EmpireBrainAutonomicDecision): EmpireBrainAutonomicDecisionDTO =>
+  pickDTOFields(empireBrainAutonomicDecision, empireBrainAutonomicDecisionDTOKeys);
+
+
+const empireBrainSystemMutationDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface EmpireBrainSystemMutationDTO
+  extends Pick<EmpireBrainSystemMutation, (typeof empireBrainSystemMutationDTOKeys)[number]> {}
+
+export const toEmpireBrainSystemMutationDTO = (empireBrainSystemMutation: EmpireBrainSystemMutation): EmpireBrainSystemMutationDTO =>
+  pickDTOFields(empireBrainSystemMutation, empireBrainSystemMutationDTOKeys);
+
+
+const empireBrainRlhfFeedbackDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface EmpireBrainRlhfFeedbackDTO
+  extends Pick<EmpireBrainRlhfFeedback, (typeof empireBrainRlhfFeedbackDTOKeys)[number]> {}
+
+export const toEmpireBrainRlhfFeedbackDTO = (empireBrainRlhfFeedback: EmpireBrainRlhfFeedback): EmpireBrainRlhfFeedbackDTO =>
+  pickDTOFields(empireBrainRlhfFeedback, empireBrainRlhfFeedbackDTOKeys);
+
+
+const empireBrainEmpireVectorMemoryDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface EmpireBrainEmpireVectorMemoryDTO
+  extends Pick<EmpireBrainEmpireVectorMemory, (typeof empireBrainEmpireVectorMemoryDTOKeys)[number]> {}
+
+export const toEmpireBrainEmpireVectorMemoryDTO = (empireBrainEmpireVectorMemory: EmpireBrainEmpireVectorMemory): EmpireBrainEmpireVectorMemoryDTO =>
+  pickDTOFields(empireBrainEmpireVectorMemory, empireBrainEmpireVectorMemoryDTOKeys);
+
+
+const empireBrainIntentGraphDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface EmpireBrainIntentGraphDTO
+  extends Pick<EmpireBrainIntentGraph, (typeof empireBrainIntentGraphDTOKeys)[number]> {}
+
+export const toEmpireBrainIntentGraphDTO = (empireBrainIntentGraph: EmpireBrainIntentGraph): EmpireBrainIntentGraphDTO =>
+  pickDTOFields(empireBrainIntentGraph, empireBrainIntentGraphDTOKeys);
+
+
+const empireBrainEmpireBrainConfigDTOKeys = ["id", "createdAt", "updatedAt", "description"] as const;
+
+export interface EmpireBrainEmpireBrainConfigDTO
+  extends Pick<EmpireBrainEmpireBrainConfig, (typeof empireBrainEmpireBrainConfigDTOKeys)[number]> {}
+
+export const toEmpireBrainEmpireBrainConfigDTO = (empireBrainEmpireBrainConfig: EmpireBrainEmpireBrainConfig): EmpireBrainEmpireBrainConfigDTO =>
+  pickDTOFields(empireBrainEmpireBrainConfig, empireBrainEmpireBrainConfigDTOKeys);
+
+
+const empireBrainEmpireAnalyticDTOKeys = ["id", "createdAt", "metricName"] as const;
+
+export interface EmpireBrainEmpireAnalyticDTO
+  extends Pick<EmpireBrainEmpireAnalytic, (typeof empireBrainEmpireAnalyticDTOKeys)[number]> {}
+
+export const toEmpireBrainEmpireAnalyticDTO = (empireBrainEmpireAnalytic: EmpireBrainEmpireAnalytic): EmpireBrainEmpireAnalyticDTO =>
+  pickDTOFields(empireBrainEmpireAnalytic, empireBrainEmpireAnalyticDTOKeys);
+

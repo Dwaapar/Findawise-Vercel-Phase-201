@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // SaaS-specific database tables for neuron-software-saas
 import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, decimal } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
@@ -229,29 +231,111 @@ export const insertSaasContentSchema = createInsertSchema(saasContent).omit({
 });
 
 // Types
-export type SaasTool = typeof saasTools.$inferSelect;
-export type InsertSaasTool = z.infer<typeof insertSaasToolSchema>;
+export type SaasTool = InferSelectModel<typeof saasTools>;
+export type InsertSaasTool = InferInsertModel<typeof saasTools>;
 
-export type SaaSCategory = typeof saasCategories.$inferSelect;
-export type InsertSaaSCategory = z.infer<typeof insertSaasCategorySchema>;
+export type SaaSCategory = InferSelectModel<typeof saasCategories>;
+export type InsertSaaSCategory = InferInsertModel<typeof saasCategories>;
 
-export type SaaSStack = typeof saasStacks.$inferSelect;
-export type InsertSaaSStack = z.infer<typeof insertSaasStackSchema>;
+export type SaaSStack = InferSelectModel<typeof saasStacks>;
+export type InsertSaaSStack = InferInsertModel<typeof saasStacks>;
 
-export type SaaSReview = typeof saasReviews.$inferSelect;
-export type InsertSaaSReview = z.infer<typeof insertSaasReviewSchema>;
+export type SaaSReview = InferSelectModel<typeof saasReviews>;
+export type InsertSaaSReview = InferInsertModel<typeof saasReviews>;
 
-export type SaaSComparison = typeof saasComparisons.$inferSelect;
-export type InsertSaaSComparison = z.infer<typeof insertSaasComparisonSchema>;
+export type SaaSComparison = InferSelectModel<typeof saasComparisons>;
+export type InsertSaaSComparison = InferInsertModel<typeof saasComparisons>;
 
-export type SaaSDeal = typeof saasDeals.$inferSelect;
-export type InsertSaaSDeal = z.infer<typeof insertSaasDealSchema>;
+export type SaaSDeal = InferSelectModel<typeof saasDeals>;
+export type InsertSaaSDeal = InferInsertModel<typeof saasDeals>;
 
-export type SaaSQuizResult = typeof saasQuizResults.$inferSelect;
-export type InsertSaaSQuizResult = z.infer<typeof insertSaasQuizResultSchema>;
+export type SaaSQuizResult = InferSelectModel<typeof saasQuizResults>;
+export type InsertSaaSQuizResult = InferInsertModel<typeof saasQuizResults>;
 
-export type SaaSCalculatorResult = typeof saasCalculatorResults.$inferSelect;
-export type InsertSaaSCalculatorResult = z.infer<typeof insertSaasCalculatorResultSchema>;
+export type SaaSCalculatorResult = InferSelectModel<typeof saasCalculatorResults>;
+export type InsertSaaSCalculatorResult = InferInsertModel<typeof saasCalculatorResults>;
 
-export type SaaSContent = typeof saasContent.$inferSelect;
-export type InsertSaaSContent = z.infer<typeof insertSaasContentSchema>;
+export type SaaSContent = InferSelectModel<typeof saasContent>;
+export type InsertSaaSContent = InferInsertModel<typeof saasContent>;
+
+// DTOs
+const saasToolDTOKeys = ["id", "name", "slug", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface SaasToolDTO
+  extends Pick<SaasTool, (typeof saasToolDTOKeys)[number]> {}
+
+export const toSaasToolDTO = (saasTool: SaasTool): SaasToolDTO =>
+  pickDTOFields(saasTool, saasToolDTOKeys);
+
+
+const saaSCategoryDTOKeys = ["id", "name", "slug", "createdAt", "description"] as const;
+
+export interface SaaSCategoryDTO
+  extends Pick<SaaSCategory, (typeof saaSCategoryDTOKeys)[number]> {}
+
+export const toSaaSCategoryDTO = (saaSCategory: SaaSCategory): SaaSCategoryDTO =>
+  pickDTOFields(saaSCategory, saaSCategoryDTOKeys);
+
+
+const saaSStackDTOKeys = ["id", "name", "sessionId", "userId", "createdAt", "updatedAt", "description"] as const;
+
+export interface SaaSStackDTO
+  extends Pick<SaaSStack, (typeof saaSStackDTOKeys)[number]> {}
+
+export const toSaaSStackDTO = (saaSStack: SaaSStack): SaaSStackDTO =>
+  pickDTOFields(saaSStack, saaSStackDTOKeys);
+
+
+const saaSReviewDTOKeys = ["id", "title", "sessionId", "userId", "createdAt", "toolId"] as const;
+
+export interface SaaSReviewDTO
+  extends Pick<SaaSReview, (typeof saaSReviewDTOKeys)[number]> {}
+
+export const toSaaSReviewDTO = (saaSReview: SaaSReview): SaaSReviewDTO =>
+  pickDTOFields(saaSReview, saaSReviewDTOKeys);
+
+
+const saaSComparisonDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt"] as const;
+
+export interface SaaSComparisonDTO
+  extends Pick<SaaSComparison, (typeof saaSComparisonDTOKeys)[number]> {}
+
+export const toSaaSComparisonDTO = (saaSComparison: SaaSComparison): SaaSComparisonDTO =>
+  pickDTOFields(saaSComparison, saaSComparisonDTOKeys);
+
+
+const saaSDealDTOKeys = ["id", "title", "createdAt", "updatedAt", "description", "toolId"] as const;
+
+export interface SaaSDealDTO
+  extends Pick<SaaSDeal, (typeof saaSDealDTOKeys)[number]> {}
+
+export const toSaaSDealDTO = (saaSDeal: SaaSDeal): SaaSDealDTO =>
+  pickDTOFields(saaSDeal, saaSDealDTOKeys);
+
+
+const saaSQuizResultDTOKeys = ["id", "sessionId", "userId", "createdAt", "budget", "quizType"] as const;
+
+export interface SaaSQuizResultDTO
+  extends Pick<SaaSQuizResult, (typeof saaSQuizResultDTOKeys)[number]> {}
+
+export const toSaaSQuizResultDTO = (saaSQuizResult: SaaSQuizResult): SaaSQuizResultDTO =>
+  pickDTOFields(saaSQuizResult, saaSQuizResultDTOKeys);
+
+
+const saaSCalculatorResultDTOKeys = ["id", "sessionId", "createdAt"] as const;
+
+export interface SaaSCalculatorResultDTO
+  extends Pick<SaaSCalculatorResult, (typeof saaSCalculatorResultDTOKeys)[number]> {}
+
+export const toSaaSCalculatorResultDTO = (saaSCalculatorResult: SaaSCalculatorResult): SaaSCalculatorResultDTO =>
+  pickDTOFields(saaSCalculatorResult, saaSCalculatorResultDTOKeys);
+
+
+const saaSContentDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface SaaSContentDTO
+  extends Pick<SaaSContent, (typeof saaSContentDTOKeys)[number]> {}
+
+export const toSaaSContentDTO = (saaSContent: SaaSContent): SaaSContentDTO =>
+  pickDTOFields(saaSContent, saaSContentDTOKeys);
+

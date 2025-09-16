@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, dec
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Travel Destinations table
 export const travelDestinations = pgTable("travel_destinations", {
   id: serial("id").primaryKey(),
@@ -285,35 +287,135 @@ export const insertTravelAnalyticsEventSchema = createInsertSchema(travelAnalyti
 });
 
 // Type exports
-export type TravelDestination = typeof travelDestinations.$inferSelect;
-export type InsertTravelDestination = z.infer<typeof insertTravelDestinationSchema>;
+export type TravelDestination = InferSelectModel<typeof travelDestinations>;
+export type InsertTravelDestination = InferInsertModel<typeof travelDestinations>;
 
-export type TravelArticle = typeof travelArticles.$inferSelect;
-export type InsertTravelArticle = z.infer<typeof insertTravelArticleSchema>;
+export type TravelArticle = InferSelectModel<typeof travelArticles>;
+export type InsertTravelArticle = InferInsertModel<typeof travelArticles>;
 
-export type TravelArchetype = typeof travelArchetypes.$inferSelect;
-export type InsertTravelArchetype = z.infer<typeof insertTravelArchetypeSchema>;
+export type TravelArchetype = InferSelectModel<typeof travelArchetypes>;
+export type InsertTravelArchetype = InferInsertModel<typeof travelArchetypes>;
 
-export type TravelQuizQuestion = typeof travelQuizQuestions.$inferSelect;
-export type InsertTravelQuizQuestion = z.infer<typeof insertTravelQuizQuestionSchema>;
+export type TravelQuizQuestion = InferSelectModel<typeof travelQuizQuestions>;
+export type InsertTravelQuizQuestion = InferInsertModel<typeof travelQuizQuestions>;
 
-export type TravelQuizResult = typeof travelQuizResults.$inferSelect;
-export type InsertTravelQuizResult = z.infer<typeof insertTravelQuizResultSchema>;
+export type TravelQuizResult = InferSelectModel<typeof travelQuizResults>;
+export type InsertTravelQuizResult = InferInsertModel<typeof travelQuizResults>;
 
-export type TravelOffer = typeof travelOffers.$inferSelect;
-export type InsertTravelOffer = z.infer<typeof insertTravelOfferSchema>;
+export type TravelOffer = InferSelectModel<typeof travelOffers>;
+export type InsertTravelOffer = InferInsertModel<typeof travelOffers>;
 
-export type TravelItinerary = typeof travelItineraries.$inferSelect;
-export type InsertTravelItinerary = z.infer<typeof insertTravelItinerarySchema>;
+export type TravelItinerary = InferSelectModel<typeof travelItineraries>;
+export type InsertTravelItinerary = InferInsertModel<typeof travelItineraries>;
 
-export type TravelTool = typeof travelTools.$inferSelect;
-export type InsertTravelTool = z.infer<typeof insertTravelToolSchema>;
+export type TravelTool = InferSelectModel<typeof travelTools>;
+export type InsertTravelTool = InferInsertModel<typeof travelTools>;
 
-export type TravelUserSession = typeof travelUserSessions.$inferSelect;
-export type InsertTravelUserSession = z.infer<typeof insertTravelUserSessionSchema>;
+export type TravelUserSession = InferSelectModel<typeof travelUserSessions>;
+export type InsertTravelUserSession = InferInsertModel<typeof travelUserSessions>;
 
-export type TravelContentSource = typeof travelContentSources.$inferSelect;
-export type InsertTravelContentSource = z.infer<typeof insertTravelContentSourceSchema>;
+export type TravelContentSource = InferSelectModel<typeof travelContentSources>;
+export type InsertTravelContentSource = InferInsertModel<typeof travelContentSources>;
 
-export type TravelAnalyticsEvent = typeof travelAnalyticsEvents.$inferSelect;
-export type InsertTravelAnalyticsEvent = z.infer<typeof insertTravelAnalyticsEventSchema>;
+export type TravelAnalyticsEvent = InferSelectModel<typeof travelAnalyticsEvents>;
+export type InsertTravelAnalyticsEvent = InferInsertModel<typeof travelAnalyticsEvents>;
+
+// DTOs
+const travelDestinationDTOKeys = ["id", "name", "slug", "country", "language", "createdAt", "updatedAt", "description"] as const;
+
+export interface TravelDestinationDTO
+  extends Pick<TravelDestination, (typeof travelDestinationDTOKeys)[number]> {}
+
+export const toTravelDestinationDTO = (travelDestination: TravelDestination): TravelDestinationDTO =>
+  pickDTOFields(travelDestination, travelDestinationDTOKeys);
+
+
+const travelArticleDTOKeys = ["id", "title", "slug", "createdAt", "updatedAt"] as const;
+
+export interface TravelArticleDTO
+  extends Pick<TravelArticle, (typeof travelArticleDTOKeys)[number]> {}
+
+export const toTravelArticleDTO = (travelArticle: TravelArticle): TravelArticleDTO =>
+  pickDTOFields(travelArticle, travelArticleDTOKeys);
+
+
+const travelArchetypeDTOKeys = ["id", "name", "slug", "createdAt", "updatedAt", "description"] as const;
+
+export interface TravelArchetypeDTO
+  extends Pick<TravelArchetype, (typeof travelArchetypeDTOKeys)[number]> {}
+
+export const toTravelArchetypeDTO = (travelArchetype: TravelArchetype): TravelArchetypeDTO =>
+  pickDTOFields(travelArchetype, travelArchetypeDTOKeys);
+
+
+const travelQuizQuestionDTOKeys = ["id", "createdAt", "quizType"] as const;
+
+export interface TravelQuizQuestionDTO
+  extends Pick<TravelQuizQuestion, (typeof travelQuizQuestionDTOKeys)[number]> {}
+
+export const toTravelQuizQuestionDTO = (travelQuizQuestion: TravelQuizQuestion): TravelQuizQuestionDTO =>
+  pickDTOFields(travelQuizQuestion, travelQuizQuestionDTOKeys);
+
+
+const travelQuizResultDTOKeys = ["id", "sessionId", "userId", "archetypeId", "createdAt", "quizType"] as const;
+
+export interface TravelQuizResultDTO
+  extends Pick<TravelQuizResult, (typeof travelQuizResultDTOKeys)[number]> {}
+
+export const toTravelQuizResultDTO = (travelQuizResult: TravelQuizResult): TravelQuizResultDTO =>
+  pickDTOFields(travelQuizResult, travelQuizResultDTOKeys);
+
+
+const travelOfferDTOKeys = ["id", "title", "destinationId", "priority", "createdAt", "updatedAt", "description", "provider"] as const;
+
+export interface TravelOfferDTO
+  extends Pick<TravelOffer, (typeof travelOfferDTOKeys)[number]> {}
+
+export const toTravelOfferDTO = (travelOffer: TravelOffer): TravelOfferDTO =>
+  pickDTOFields(travelOffer, travelOfferDTOKeys);
+
+
+const travelItineraryDTOKeys = ["id", "title", "slug", "createdAt", "updatedAt", "description", "budget"] as const;
+
+export interface TravelItineraryDTO
+  extends Pick<TravelItinerary, (typeof travelItineraryDTOKeys)[number]> {}
+
+export const toTravelItineraryDTO = (travelItinerary: TravelItinerary): TravelItineraryDTO =>
+  pickDTOFields(travelItinerary, travelItineraryDTOKeys);
+
+
+const travelToolDTOKeys = ["id", "name", "slug", "createdAt", "updatedAt", "description"] as const;
+
+export interface TravelToolDTO
+  extends Pick<TravelTool, (typeof travelToolDTOKeys)[number]> {}
+
+export const toTravelToolDTO = (travelTool: TravelTool): TravelToolDTO =>
+  pickDTOFields(travelTool, travelToolDTOKeys);
+
+
+const travelUserSessionDTOKeys = ["id", "sessionId", "userId", "archetypeId", "createdAt", "updatedAt"] as const;
+
+export interface TravelUserSessionDTO
+  extends Pick<TravelUserSession, (typeof travelUserSessionDTOKeys)[number]> {}
+
+export const toTravelUserSessionDTO = (travelUserSession: TravelUserSession): TravelUserSessionDTO =>
+  pickDTOFields(travelUserSession, travelUserSessionDTOKeys);
+
+
+const travelContentSourceDTOKeys = ["id", "name", "priority", "createdAt", "updatedAt"] as const;
+
+export interface TravelContentSourceDTO
+  extends Pick<TravelContentSource, (typeof travelContentSourceDTOKeys)[number]> {}
+
+export const toTravelContentSourceDTO = (travelContentSource: TravelContentSource): TravelContentSourceDTO =>
+  pickDTOFields(travelContentSource, travelContentSourceDTOKeys);
+
+
+const travelAnalyticsEventDTOKeys = ["id", "sessionId", "userId", "offerId", "destinationId", "archetypeId", "createdAt", "eventType"] as const;
+
+export interface TravelAnalyticsEventDTO
+  extends Pick<TravelAnalyticsEvent, (typeof travelAnalyticsEventDTOKeys)[number]> {}
+
+export const toTravelAnalyticsEventDTO = (travelAnalyticsEvent: TravelAnalyticsEvent): TravelAnalyticsEventDTO =>
+  pickDTOFields(travelAnalyticsEvent, travelAnalyticsEventDTOKeys);
+

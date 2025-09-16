@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Real-Time Layout Mutation Engine Database Schema
  * Billion-Dollar Empire Grade - Complete table definitions for layout management
@@ -226,23 +228,87 @@ export const layoutAbTestsRelations = relations(layoutAbTests, ({ one }) => ({
 }));
 
 // Type definitions for TypeScript
-export type LayoutTemplate = typeof layoutTemplates.$inferSelect;
-export type NewLayoutTemplate = typeof layoutTemplates.$inferInsert;
+export type LayoutTemplate = InferSelectModel<typeof layoutTemplates>;
+export type NewLayoutTemplate = InferInsertModel<typeof layoutTemplates>;
 
-export type LayoutInstance = typeof layoutInstances.$inferSelect;
-export type NewLayoutInstance = typeof layoutInstances.$inferInsert;
+export type LayoutInstance = InferSelectModel<typeof layoutInstances>;
+export type NewLayoutInstance = InferInsertModel<typeof layoutInstances>;
 
-export type LayoutMutation = typeof layoutMutations.$inferSelect;
-export type NewLayoutMutation = typeof layoutMutations.$inferInsert;
+export type LayoutMutation = InferSelectModel<typeof layoutMutations>;
+export type NewLayoutMutation = InferInsertModel<typeof layoutMutations>;
 
-export type LayoutAnalytics = typeof layoutAnalytics.$inferSelect;
-export type NewLayoutAnalytics = typeof layoutAnalytics.$inferInsert;
+export type LayoutAnalytics = InferSelectModel<typeof layoutAnalytics>;
+export type NewLayoutAnalytics = InferInsertModel<typeof layoutAnalytics>;
 
-export type UserLayoutPreference = typeof userLayoutPreferences.$inferSelect;
-export type NewUserLayoutPreference = typeof userLayoutPreferences.$inferInsert;
+export type UserLayoutPreference = InferSelectModel<typeof userLayoutPreferences>;
+export type NewUserLayoutPreference = InferInsertModel<typeof userLayoutPreferences>;
 
-export type LayoutAbTest = typeof layoutAbTests.$inferSelect;
-export type NewLayoutAbTest = typeof layoutAbTests.$inferInsert;
+export type LayoutAbTest = InferSelectModel<typeof layoutAbTests>;
+export type NewLayoutAbTest = InferInsertModel<typeof layoutAbTests>;
 
-export type LayoutPersonalization = typeof layoutPersonalization.$inferSelect;
-export type NewLayoutPersonalization = typeof layoutPersonalization.$inferInsert;
+export type LayoutPersonalization = InferSelectModel<typeof layoutPersonalization>;
+export type NewLayoutPersonalization = InferInsertModel<typeof layoutPersonalization>;
+
+// DTOs
+const layoutTemplateDTOKeys = ["id", "name", "category", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface LayoutTemplateDTO
+  extends Pick<LayoutTemplate, (typeof layoutTemplateDTOKeys)[number]> {}
+
+export const toLayoutTemplateDTO = (layoutTemplate: LayoutTemplate): LayoutTemplateDTO =>
+  pickDTOFields(layoutTemplate, layoutTemplateDTOKeys);
+
+
+const layoutInstanceDTOKeys = ["id", "sessionId", "userId"] as const;
+
+export interface LayoutInstanceDTO
+  extends Pick<LayoutInstance, (typeof layoutInstanceDTOKeys)[number]> {}
+
+export const toLayoutInstanceDTO = (layoutInstance: LayoutInstance): LayoutInstanceDTO =>
+  pickDTOFields(layoutInstance, layoutInstanceDTOKeys);
+
+
+const layoutMutationDTOKeys = ["id", "instanceId", "elementId"] as const;
+
+export interface LayoutMutationDTO
+  extends Pick<LayoutMutation, (typeof layoutMutationDTOKeys)[number]> {}
+
+export const toLayoutMutationDTO = (layoutMutation: LayoutMutation): LayoutMutationDTO =>
+  pickDTOFields(layoutMutation, layoutMutationDTOKeys);
+
+
+const layoutAnalyticsDTOKeys = ["id", "sessionId", "userId"] as const;
+
+export interface LayoutAnalyticsDTO
+  extends Pick<LayoutAnalytics, (typeof layoutAnalyticsDTOKeys)[number]> {}
+
+export const toLayoutAnalyticsDTO = (layoutAnalytics: LayoutAnalytics): LayoutAnalyticsDTO =>
+  pickDTOFields(layoutAnalytics, layoutAnalyticsDTOKeys);
+
+
+const userLayoutPreferenceDTOKeys = ["id", "userId", "createdAt", "updatedAt", "source"] as const;
+
+export interface UserLayoutPreferenceDTO
+  extends Pick<UserLayoutPreference, (typeof userLayoutPreferenceDTOKeys)[number]> {}
+
+export const toUserLayoutPreferenceDTO = (userLayoutPreference: UserLayoutPreference): UserLayoutPreferenceDTO =>
+  pickDTOFields(userLayoutPreference, userLayoutPreferenceDTOKeys);
+
+
+const layoutAbTestDTOKeys = ["id", "name", "status", "createdAt", "updatedAt", "description"] as const;
+
+export interface LayoutAbTestDTO
+  extends Pick<LayoutAbTest, (typeof layoutAbTestDTOKeys)[number]> {}
+
+export const toLayoutAbTestDTO = (layoutAbTest: LayoutAbTest): LayoutAbTestDTO =>
+  pickDTOFields(layoutAbTest, layoutAbTestDTOKeys);
+
+
+const layoutPersonalizationDTOKeys = ["id", "name", "priority", "createdAt", "updatedAt", "description"] as const;
+
+export interface LayoutPersonalizationDTO
+  extends Pick<LayoutPersonalization, (typeof layoutPersonalizationDTOKeys)[number]> {}
+
+export const toLayoutPersonalizationDTO = (layoutPersonalization: LayoutPersonalization): LayoutPersonalizationDTO =>
+  pickDTOFields(layoutPersonalization, layoutPersonalizationDTOKeys);
+

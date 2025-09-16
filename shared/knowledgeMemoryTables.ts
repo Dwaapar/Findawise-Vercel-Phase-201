@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ==========================================
 // KNOWLEDGE MEMORY GRAPH TABLES
 // ==========================================
@@ -255,20 +257,20 @@ export const federationMemorySync = pgTable("federation_memory_sync", {
 }));
 
 // Type definitions for TypeScript support
-export type MemoryNode = typeof memoryNodes.$inferSelect;
-export type NewMemoryNode = typeof memoryNodes.$inferInsert;
-export type MemoryEdge = typeof memoryEdges.$inferSelect;
-export type NewMemoryEdge = typeof memoryEdges.$inferInsert;
-export type PromptOptimization = typeof promptOptimizations.$inferSelect;
-export type NewPromptOptimization = typeof promptOptimizations.$inferInsert;
-export type MemorySearchSession = typeof memorySearchSessions.$inferSelect;
-export type NewMemorySearchSession = typeof memorySearchSessions.$inferInsert;
-export type KnowledgeGraphVersion = typeof knowledgeGraphVersions.$inferSelect;
-export type NewKnowledgeGraphVersion = typeof knowledgeGraphVersions.$inferInsert;
-export type MemoryUsageAnalytics = typeof memoryUsageAnalytics.$inferSelect;
-export type NewMemoryUsageAnalytics = typeof memoryUsageAnalytics.$inferInsert;
-export type FederationMemorySync = typeof federationMemorySync.$inferSelect;
-export type NewFederationMemorySync = typeof federationMemorySync.$inferInsert;
+export type MemoryNode = InferSelectModel<typeof memoryNodes>;
+export type NewMemoryNode = InferInsertModel<typeof memoryNodes>;
+export type MemoryEdge = InferSelectModel<typeof memoryEdges>;
+export type NewMemoryEdge = InferInsertModel<typeof memoryEdges>;
+export type PromptOptimization = InferSelectModel<typeof promptOptimizations>;
+export type NewPromptOptimization = InferInsertModel<typeof promptOptimizations>;
+export type MemorySearchSession = InferSelectModel<typeof memorySearchSessions>;
+export type NewMemorySearchSession = InferInsertModel<typeof memorySearchSessions>;
+export type KnowledgeGraphVersion = InferSelectModel<typeof knowledgeGraphVersions>;
+export type NewKnowledgeGraphVersion = InferInsertModel<typeof knowledgeGraphVersions>;
+export type MemoryUsageAnalytics = InferSelectModel<typeof memoryUsageAnalytics>;
+export type NewMemoryUsageAnalytics = InferInsertModel<typeof memoryUsageAnalytics>;
+export type FederationMemorySync = InferSelectModel<typeof federationMemorySync>;
+export type NewFederationMemorySync = InferInsertModel<typeof federationMemorySync>;
 
 // Schema validations
 export const memoryNodeSchema = createInsertSchema(memoryNodes);
@@ -278,3 +280,67 @@ export const memorySearchSessionSchema = createInsertSchema(memorySearchSessions
 export const knowledgeGraphVersionSchema = createInsertSchema(knowledgeGraphVersions);
 export const memoryUsageAnalyticsSchema = createInsertSchema(memoryUsageAnalytics);
 export const federationMemorySyncSchema = createInsertSchema(federationMemorySync);
+
+// DTOs
+const memoryNodeDTOKeys = ["id", "title", "slug", "status", "createdAt", "summary", "version"] as const;
+
+export interface MemoryNodeDTO
+  extends Pick<MemoryNode, (typeof memoryNodeDTOKeys)[number]> {}
+
+export const toMemoryNodeDTO = (memoryNode: MemoryNode): MemoryNodeDTO =>
+  pickDTOFields(memoryNode, memoryNodeDTOKeys);
+
+
+const memoryEdgeDTOKeys = ["id", "status", "createdAt"] as const;
+
+export interface MemoryEdgeDTO
+  extends Pick<MemoryEdge, (typeof memoryEdgeDTOKeys)[number]> {}
+
+export const toMemoryEdgeDTO = (memoryEdge: MemoryEdge): MemoryEdgeDTO =>
+  pickDTOFields(memoryEdge, memoryEdgeDTOKeys);
+
+
+const promptOptimizationDTOKeys = ["id", "sessionId", "optimizationId"] as const;
+
+export interface PromptOptimizationDTO
+  extends Pick<PromptOptimization, (typeof promptOptimizationDTOKeys)[number]> {}
+
+export const toPromptOptimizationDTO = (promptOptimization: PromptOptimization): PromptOptimizationDTO =>
+  pickDTOFields(promptOptimization, promptOptimizationDTOKeys);
+
+
+const memorySearchSessionDTOKeys = ["id", "sessionId", "userId"] as const;
+
+export interface MemorySearchSessionDTO
+  extends Pick<MemorySearchSession, (typeof memorySearchSessionDTOKeys)[number]> {}
+
+export const toMemorySearchSessionDTO = (memorySearchSession: MemorySearchSession): MemorySearchSessionDTO =>
+  pickDTOFields(memorySearchSession, memorySearchSessionDTOKeys);
+
+
+const knowledgeGraphVersionDTOKeys = ["id", "versionId", "nodeId"] as const;
+
+export interface KnowledgeGraphVersionDTO
+  extends Pick<KnowledgeGraphVersion, (typeof knowledgeGraphVersionDTOKeys)[number]> {}
+
+export const toKnowledgeGraphVersionDTO = (knowledgeGraphVersion: KnowledgeGraphVersion): KnowledgeGraphVersionDTO =>
+  pickDTOFields(knowledgeGraphVersion, knowledgeGraphVersionDTOKeys);
+
+
+const memoryUsageAnalyticsDTOKeys = ["id", "sessionId", "userId"] as const;
+
+export interface MemoryUsageAnalyticsDTO
+  extends Pick<MemoryUsageAnalytics, (typeof memoryUsageAnalyticsDTOKeys)[number]> {}
+
+export const toMemoryUsageAnalyticsDTO = (memoryUsageAnalytics: MemoryUsageAnalytics): MemoryUsageAnalyticsDTO =>
+  pickDTOFields(memoryUsageAnalytics, memoryUsageAnalyticsDTOKeys);
+
+
+const federationMemorySyncDTOKeys = ["id", "syncId", "sourceNeuron"] as const;
+
+export interface FederationMemorySyncDTO
+  extends Pick<FederationMemorySync, (typeof federationMemorySyncDTOKeys)[number]> {}
+
+export const toFederationMemorySyncDTO = (federationMemorySync: FederationMemorySync): FederationMemorySyncDTO =>
+  pickDTOFields(federationMemorySync, federationMemorySyncDTOKeys);
+

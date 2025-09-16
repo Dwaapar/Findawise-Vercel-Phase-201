@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Semantic Graph Nodes - Core entities in the knowledge graph
 export const semanticNodes = pgTable("semantic_nodes", {
   id: serial("id").primaryKey(),
@@ -195,26 +197,99 @@ export const insertGraphAuditResultSchema = createInsertSchema(graphAuditResults
 });
 
 // Types
-export type SemanticNode = typeof semanticNodes.$inferSelect;
-export type InsertSemanticNode = z.infer<typeof insertSemanticNodeSchema>;
+export type SemanticNode = InferSelectModel<typeof semanticNodes>;
+export type InsertSemanticNode = InferInsertModel<typeof semanticNodes>;
 
-export type SemanticEdge = typeof semanticEdges.$inferSelect;
-export type InsertSemanticEdge = z.infer<typeof insertSemanticEdgeSchema>;
+export type SemanticEdge = InferSelectModel<typeof semanticEdges>;
+export type InsertSemanticEdge = InferInsertModel<typeof semanticEdges>;
 
-export type UserIntentVector = typeof userIntentVectors.$inferSelect;
-export type InsertUserIntentVector = z.infer<typeof insertUserIntentVectorSchema>;
+export type UserIntentVector = InferSelectModel<typeof userIntentVectors>;
+export type InsertUserIntentVector = InferInsertModel<typeof userIntentVectors>;
 
-export type VectorSimilarityIndex = typeof vectorSimilarityIndex.$inferSelect;
-export type InsertVectorSimilarityIndex = z.infer<typeof insertVectorSimilarityIndexSchema>;
+export type VectorSimilarityIndex = InferSelectModel<typeof vectorSimilarityIndex>;
+export type InsertVectorSimilarityIndex = InferInsertModel<typeof vectorSimilarityIndex>;
 
-export type SemanticSearchQuery = typeof semanticSearchQueries.$inferSelect;
-export type InsertSemanticSearchQuery = z.infer<typeof insertSemanticSearchQuerySchema>;
+export type SemanticSearchQuery = InferSelectModel<typeof semanticSearchQueries>;
+export type InsertSemanticSearchQuery = InferInsertModel<typeof semanticSearchQueries>;
 
-export type RealtimeRecommendation = typeof realtimeRecommendations.$inferSelect;
-export type InsertRealtimeRecommendation = z.infer<typeof insertRealtimeRecommendationSchema>;
+export type RealtimeRecommendation = InferSelectModel<typeof realtimeRecommendations>;
+export type InsertRealtimeRecommendation = InferInsertModel<typeof realtimeRecommendations>;
 
-export type GraphAnalytics = typeof graphAnalytics.$inferSelect;
-export type InsertGraphAnalytics = z.infer<typeof insertGraphAnalyticsSchema>;
+export type GraphAnalytics = InferSelectModel<typeof graphAnalytics>;
+export type InsertGraphAnalytics = InferInsertModel<typeof graphAnalytics>;
 
-export type GraphAuditResult = typeof graphAuditResults.$inferSelect;
-export type InsertGraphAuditResult = z.infer<typeof insertGraphAuditResultSchema>;
+export type GraphAuditResult = InferSelectModel<typeof graphAuditResults>;
+export type InsertGraphAuditResult = InferInsertModel<typeof graphAuditResults>;
+
+// DTOs
+const semanticNodeDTOKeys = ["id", "title", "slug", "status", "neuronId", "createdAt", "updatedAt", "description"] as const;
+
+export interface SemanticNodeDTO
+  extends Pick<SemanticNode, (typeof semanticNodeDTOKeys)[number]> {}
+
+export const toSemanticNodeDTO = (semanticNode: SemanticNode): SemanticNodeDTO =>
+  pickDTOFields(semanticNode, semanticNodeDTOKeys);
+
+
+const semanticEdgeDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface SemanticEdgeDTO
+  extends Pick<SemanticEdge, (typeof semanticEdgeDTOKeys)[number]> {}
+
+export const toSemanticEdgeDTO = (semanticEdge: SemanticEdge): SemanticEdgeDTO =>
+  pickDTOFields(semanticEdge, semanticEdgeDTOKeys);
+
+
+const userIntentVectorDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface UserIntentVectorDTO
+  extends Pick<UserIntentVector, (typeof userIntentVectorDTOKeys)[number]> {}
+
+export const toUserIntentVectorDTO = (userIntentVector: UserIntentVector): UserIntentVectorDTO =>
+  pickDTOFields(userIntentVector, userIntentVectorDTOKeys);
+
+
+const vectorSimilarityIndexDTOKeys = ["id", "nodeId", "similarNodeId"] as const;
+
+export interface VectorSimilarityIndexDTO
+  extends Pick<VectorSimilarityIndex, (typeof vectorSimilarityIndexDTOKeys)[number]> {}
+
+export const toVectorSimilarityIndexDTO = (vectorSimilarityIndex: VectorSimilarityIndex): VectorSimilarityIndexDTO =>
+  pickDTOFields(vectorSimilarityIndex, vectorSimilarityIndexDTOKeys);
+
+
+const semanticSearchQueryDTOKeys = ["id", "sessionId", "neuronId", "userId", "vertical", "createdAt"] as const;
+
+export interface SemanticSearchQueryDTO
+  extends Pick<SemanticSearchQuery, (typeof semanticSearchQueryDTOKeys)[number]> {}
+
+export const toSemanticSearchQueryDTO = (semanticSearchQuery: SemanticSearchQuery): SemanticSearchQueryDTO =>
+  pickDTOFields(semanticSearchQuery, semanticSearchQueryDTOKeys);
+
+
+const realtimeRecommendationDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface RealtimeRecommendationDTO
+  extends Pick<RealtimeRecommendation, (typeof realtimeRecommendationDTOKeys)[number]> {}
+
+export const toRealtimeRecommendationDTO = (realtimeRecommendation: RealtimeRecommendation): RealtimeRecommendationDTO =>
+  pickDTOFields(realtimeRecommendation, realtimeRecommendationDTOKeys);
+
+
+const graphAnalyticsDTOKeys = ["id", "neuronId", "vertical", "createdAt"] as const;
+
+export interface GraphAnalyticsDTO
+  extends Pick<GraphAnalytics, (typeof graphAnalyticsDTOKeys)[number]> {}
+
+export const toGraphAnalyticsDTO = (graphAnalytics: GraphAnalytics): GraphAnalyticsDTO =>
+  pickDTOFields(graphAnalytics, graphAnalyticsDTOKeys);
+
+
+const graphAuditResultDTOKeys = ["id", "severity", "createdAt"] as const;
+
+export interface GraphAuditResultDTO
+  extends Pick<GraphAuditResult, (typeof graphAuditResultDTOKeys)[number]> {}
+
+export const toGraphAuditResultDTO = (graphAuditResult: GraphAuditResult): GraphAuditResultDTO =>
+  pickDTOFields(graphAuditResult, graphAuditResultDTOKeys);
+

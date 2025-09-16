@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 /**
  * Live API Diff Tracker - Database Schema
  * Empire-Grade, Migration-Proof, Billion-Dollar Standards
@@ -428,23 +430,114 @@ export const insertApiAnalyticsSummarySchema = createInsertSchema(apiAnalyticsSu
 // TYPE EXPORTS
 // ================================
 
-export type ApiSchemaSnapshot = typeof apiSchemaSnapshots.$inferSelect;
-export type NewApiSchemaSnapshot = typeof apiSchemaSnapshots.$inferInsert;
-export type ApiEndpoint = typeof apiEndpoints.$inferSelect;
-export type NewApiEndpoint = typeof apiEndpoints.$inferInsert;
-export type ApiDiff = typeof apiDiffs.$inferSelect;
-export type NewApiDiff = typeof apiDiffs.$inferInsert;
-export type ApiChangeEvent = typeof apiChangeEvents.$inferSelect;
-export type NewApiChangeEvent = typeof apiChangeEvents.$inferInsert;
-export type ApiMonitoringRule = typeof apiMonitoringRules.$inferSelect;
-export type NewApiMonitoringRule = typeof apiMonitoringRules.$inferInsert;
-export type ApiAlertHistory = typeof apiAlertHistory.$inferSelect;
-export type NewApiAlertHistory = typeof apiAlertHistory.$inferInsert;
-export type ApiVersionHistory = typeof apiVersionHistory.$inferSelect;
-export type NewApiVersionHistory = typeof apiVersionHistory.$inferInsert;
-export type ApiRollbackOperation = typeof apiRollbackOperations.$inferSelect;
-export type NewApiRollbackOperation = typeof apiRollbackOperations.$inferInsert;
-export type ApiExportOperation = typeof apiExportOperations.$inferSelect;
-export type NewApiExportOperation = typeof apiExportOperations.$inferInsert;
-export type ApiAnalyticsSummary = typeof apiAnalyticsSummary.$inferSelect;
-export type NewApiAnalyticsSummary = typeof apiAnalyticsSummary.$inferInsert;
+export type ApiSchemaSnapshot = InferSelectModel<typeof apiSchemaSnapshots>;
+export type NewApiSchemaSnapshot = InferInsertModel<typeof apiSchemaSnapshots>;
+export type ApiEndpoint = InferSelectModel<typeof apiEndpoints>;
+export type NewApiEndpoint = InferInsertModel<typeof apiEndpoints>;
+export type ApiDiff = InferSelectModel<typeof apiDiffs>;
+export type NewApiDiff = InferInsertModel<typeof apiDiffs>;
+export type ApiChangeEvent = InferSelectModel<typeof apiChangeEvents>;
+export type NewApiChangeEvent = InferInsertModel<typeof apiChangeEvents>;
+export type ApiMonitoringRule = InferSelectModel<typeof apiMonitoringRules>;
+export type NewApiMonitoringRule = InferInsertModel<typeof apiMonitoringRules>;
+export type ApiAlertHistory = InferSelectModel<typeof apiAlertHistory>;
+export type NewApiAlertHistory = InferInsertModel<typeof apiAlertHistory>;
+export type ApiVersionHistory = InferSelectModel<typeof apiVersionHistory>;
+export type NewApiVersionHistory = InferInsertModel<typeof apiVersionHistory>;
+export type ApiRollbackOperation = InferSelectModel<typeof apiRollbackOperations>;
+export type NewApiRollbackOperation = InferInsertModel<typeof apiRollbackOperations>;
+export type ApiExportOperation = InferSelectModel<typeof apiExportOperations>;
+export type NewApiExportOperation = InferInsertModel<typeof apiExportOperations>;
+export type ApiAnalyticsSummary = InferSelectModel<typeof apiAnalyticsSummary>;
+export type NewApiAnalyticsSummary = InferInsertModel<typeof apiAnalyticsSummary>;
+
+// DTOs
+const apiSchemaSnapshotDTOKeys = ["id", "version", "environment"] as const;
+
+export interface ApiSchemaSnapshotDTO
+  extends Pick<ApiSchemaSnapshot, (typeof apiSchemaSnapshotDTOKeys)[number]> {}
+
+export const toApiSchemaSnapshotDTO = (apiSchemaSnapshot: ApiSchemaSnapshot): ApiSchemaSnapshotDTO =>
+  pickDTOFields(apiSchemaSnapshot, apiSchemaSnapshotDTOKeys);
+
+
+const apiEndpointDTOKeys = ["id", "description", "endpoint_hash"] as const;
+
+export interface ApiEndpointDTO
+  extends Pick<ApiEndpoint, (typeof apiEndpointDTOKeys)[number]> {}
+
+export const toApiEndpointDTO = (apiEndpoint: ApiEndpoint): ApiEndpointDTO =>
+  pickDTOFields(apiEndpoint, apiEndpointDTOKeys);
+
+
+const apiDiffDTOKeys = ["id", "diff_hash", "from_snapshot_id"] as const;
+
+export interface ApiDiffDTO
+  extends Pick<ApiDiff, (typeof apiDiffDTOKeys)[number]> {}
+
+export const toApiDiffDTO = (apiDiff: ApiDiff): ApiDiffDTO =>
+  pickDTOFields(apiDiff, apiDiffDTOKeys);
+
+
+const apiChangeEventDTOKeys = ["id", "title", "severity", "description"] as const;
+
+export interface ApiChangeEventDTO
+  extends Pick<ApiChangeEvent, (typeof apiChangeEventDTOKeys)[number]> {}
+
+export const toApiChangeEventDTO = (apiChangeEvent: ApiChangeEvent): ApiChangeEventDTO =>
+  pickDTOFields(apiChangeEvent, apiChangeEventDTOKeys);
+
+
+const apiMonitoringRuleDTOKeys = ["id", "rule_name", "module_filter"] as const;
+
+export interface ApiMonitoringRuleDTO
+  extends Pick<ApiMonitoringRule, (typeof apiMonitoringRuleDTOKeys)[number]> {}
+
+export const toApiMonitoringRuleDTO = (apiMonitoringRule: ApiMonitoringRule): ApiMonitoringRuleDTO =>
+  pickDTOFields(apiMonitoringRule, apiMonitoringRuleDTOKeys);
+
+
+const apiAlertHistoryDTOKeys = ["id", "title", "severity"] as const;
+
+export interface ApiAlertHistoryDTO
+  extends Pick<ApiAlertHistory, (typeof apiAlertHistoryDTOKeys)[number]> {}
+
+export const toApiAlertHistoryDTO = (apiAlertHistory: ApiAlertHistory): ApiAlertHistoryDTO =>
+  pickDTOFields(apiAlertHistory, apiAlertHistoryDTOKeys);
+
+
+const apiVersionHistoryDTOKeys = ["id", "version", "version_id"] as const;
+
+export interface ApiVersionHistoryDTO
+  extends Pick<ApiVersionHistory, (typeof apiVersionHistoryDTOKeys)[number]> {}
+
+export const toApiVersionHistoryDTO = (apiVersionHistory: ApiVersionHistory): ApiVersionHistoryDTO =>
+  pickDTOFields(apiVersionHistory, apiVersionHistoryDTOKeys);
+
+
+const apiRollbackOperationDTOKeys = ["id", "status", "operation_id"] as const;
+
+export interface ApiRollbackOperationDTO
+  extends Pick<ApiRollbackOperation, (typeof apiRollbackOperationDTOKeys)[number]> {}
+
+export const toApiRollbackOperationDTO = (apiRollbackOperation: ApiRollbackOperation): ApiRollbackOperationDTO =>
+  pickDTOFields(apiRollbackOperation, apiRollbackOperationDTOKeys);
+
+
+const apiExportOperationDTOKeys = ["id", "status", "export_id"] as const;
+
+export interface ApiExportOperationDTO
+  extends Pick<ApiExportOperation, (typeof apiExportOperationDTOKeys)[number]> {}
+
+export const toApiExportOperationDTO = (apiExportOperation: ApiExportOperation): ApiExportOperationDTO =>
+  pickDTOFields(apiExportOperation, apiExportOperationDTOKeys);
+
+
+const apiAnalyticsSummaryDTOKeys = ["id", "summary_id", "period_type"] as const;
+
+export interface ApiAnalyticsSummaryDTO
+  extends Pick<ApiAnalyticsSummary, (typeof apiAnalyticsSummaryDTOKeys)[number]> {}
+
+export const toApiAnalyticsSummaryDTO = (apiAnalyticsSummary: ApiAnalyticsSummary): ApiAnalyticsSummaryDTO =>
+  pickDTOFields(apiAnalyticsSummary, apiAnalyticsSummaryDTOKeys);
+

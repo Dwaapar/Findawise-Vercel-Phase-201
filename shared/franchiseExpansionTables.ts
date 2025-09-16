@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ================================================
 // CONTENT FRANCHISE EXPANSION KIT MODULE
 // Billion-Dollar Empire Grade, Infinite Scaling, Migration-Proof
@@ -290,19 +292,104 @@ export const insertFranchiseBackupSchema = createInsertSchema(franchiseBackups);
 export const insertFranchiseManagementDashboardSchema = createInsertSchema(franchiseManagementDashboard);
 
 // Types
-export type FranchiseTemplate = typeof franchiseTemplates.$inferSelect;
-export type NewFranchiseTemplate = typeof franchiseTemplates.$inferInsert;
-export type FranchiseInstance = typeof franchiseInstances.$inferSelect;
-export type NewFranchiseInstance = typeof franchiseInstances.$inferInsert;
-export type FranchiseDeployment = typeof franchiseDeployments.$inferSelect;
-export type NewFranchiseDeployment = typeof franchiseDeployments.$inferInsert;
-export type CrossPromotionLink = typeof crossPromotionLinks.$inferSelect;
-export type NewCrossPromotionLink = typeof crossPromotionLinks.$inferInsert;
-export type FranchiseAnalytic = typeof franchiseAnalytics.$inferSelect;
-export type NewFranchiseAnalytic = typeof franchiseAnalytics.$inferInsert;
-export type FranchiseUpdate = typeof franchiseUpdates.$inferSelect;
-export type NewFranchiseUpdate = typeof franchiseUpdates.$inferInsert;
-export type FranchiseBackup = typeof franchiseBackups.$inferSelect;
-export type NewFranchiseBackup = typeof franchiseBackups.$inferInsert;
-export type FranchiseManagementDashboard = typeof franchiseManagementDashboard.$inferSelect;
-export type NewFranchiseManagementDashboard = typeof franchiseManagementDashboard.$inferInsert;
+export type FranchiseTemplate = InferSelectModel<typeof franchiseTemplates>;
+export type NewFranchiseTemplate = InferInsertModel<typeof franchiseTemplates>;
+export type FranchiseInstance = InferSelectModel<typeof franchiseInstances>;
+export type NewFranchiseInstance = InferInsertModel<typeof franchiseInstances>;
+export type FranchiseDeployment = InferSelectModel<typeof franchiseDeployments>;
+export type NewFranchiseDeployment = InferInsertModel<typeof franchiseDeployments>;
+export type CrossPromotionLink = InferSelectModel<typeof crossPromotionLinks>;
+export type NewCrossPromotionLink = InferInsertModel<typeof crossPromotionLinks>;
+export type FranchiseAnalytic = InferSelectModel<typeof franchiseAnalytics>;
+export type NewFranchiseAnalytic = InferInsertModel<typeof franchiseAnalytics>;
+export type FranchiseUpdate = InferSelectModel<typeof franchiseUpdates>;
+export type NewFranchiseUpdate = InferInsertModel<typeof franchiseUpdates>;
+export type FranchiseBackup = InferSelectModel<typeof franchiseBackups>;
+export type NewFranchiseBackup = InferInsertModel<typeof franchiseBackups>;
+export type FranchiseManagementDashboard = InferSelectModel<typeof franchiseManagementDashboard>;
+export type NewFranchiseManagementDashboard = InferInsertModel<typeof franchiseManagementDashboard>;
+
+export type FranchiseOpportunity = InferSelectModel<typeof franchiseOpportunities>;
+export type InsertFranchiseOpportunity = InferInsertModel<typeof franchiseOpportunities>;
+
+// DTOs
+const franchiseTemplateDTOKeys = ["id", "category", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface FranchiseTemplateDTO
+  extends Pick<FranchiseTemplate, (typeof franchiseTemplateDTOKeys)[number]> {}
+
+export const toFranchiseTemplateDTO = (franchiseTemplate: FranchiseTemplate): FranchiseTemplateDTO =>
+  pickDTOFields(franchiseTemplate, franchiseTemplateDTOKeys);
+
+
+const franchiseInstanceDTOKeys = ["id", "status", "region", "language", "createdAt", "updatedAt"] as const;
+
+export interface FranchiseInstanceDTO
+  extends Pick<FranchiseInstance, (typeof franchiseInstanceDTOKeys)[number]> {}
+
+export const toFranchiseInstanceDTO = (franchiseInstance: FranchiseInstance): FranchiseInstanceDTO =>
+  pickDTOFields(franchiseInstance, franchiseInstanceDTOKeys);
+
+
+const franchiseDeploymentDTOKeys = ["id", "createdAt", "version"] as const;
+
+export interface FranchiseDeploymentDTO
+  extends Pick<FranchiseDeployment, (typeof franchiseDeploymentDTOKeys)[number]> {}
+
+export const toFranchiseDeploymentDTO = (franchiseDeployment: FranchiseDeployment): FranchiseDeploymentDTO =>
+  pickDTOFields(franchiseDeployment, franchiseDeploymentDTOKeys);
+
+
+const crossPromotionLinkDTOKeys = ["id", "priority", "createdAt", "updatedAt"] as const;
+
+export interface CrossPromotionLinkDTO
+  extends Pick<CrossPromotionLink, (typeof crossPromotionLinkDTOKeys)[number]> {}
+
+export const toCrossPromotionLinkDTO = (crossPromotionLink: CrossPromotionLink): CrossPromotionLinkDTO =>
+  pickDTOFields(crossPromotionLink, crossPromotionLinkDTOKeys);
+
+
+const franchiseAnalyticDTOKeys = ["id", "createdAt", "franchiseId"] as const;
+
+export interface FranchiseAnalyticDTO
+  extends Pick<FranchiseAnalytic, (typeof franchiseAnalyticDTOKeys)[number]> {}
+
+export const toFranchiseAnalyticDTO = (franchiseAnalytic: FranchiseAnalytic): FranchiseAnalyticDTO =>
+  pickDTOFields(franchiseAnalytic, franchiseAnalyticDTOKeys);
+
+
+const franchiseUpdateDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface FranchiseUpdateDTO
+  extends Pick<FranchiseUpdate, (typeof franchiseUpdateDTOKeys)[number]> {}
+
+export const toFranchiseUpdateDTO = (franchiseUpdate: FranchiseUpdate): FranchiseUpdateDTO =>
+  pickDTOFields(franchiseUpdate, franchiseUpdateDTOKeys);
+
+
+const franchiseBackupDTOKeys = ["id", "createdAt", "franchiseId"] as const;
+
+export interface FranchiseBackupDTO
+  extends Pick<FranchiseBackup, (typeof franchiseBackupDTOKeys)[number]> {}
+
+export const toFranchiseBackupDTO = (franchiseBackup: FranchiseBackup): FranchiseBackupDTO =>
+  pickDTOFields(franchiseBackup, franchiseBackupDTOKeys);
+
+
+const franchiseManagementDashboardDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface FranchiseManagementDashboardDTO
+  extends Pick<FranchiseManagementDashboard, (typeof franchiseManagementDashboardDTOKeys)[number]> {}
+
+export const toFranchiseManagementDashboardDTO = (franchiseManagementDashboard: FranchiseManagementDashboard): FranchiseManagementDashboardDTO =>
+  pickDTOFields(franchiseManagementDashboard, franchiseManagementDashboardDTOKeys);
+
+
+const franchiseOpportunityDTOKeys = ["id", "region", "country", "priority", "createdAt", "updatedAt"] as const;
+
+export interface FranchiseOpportunityDTO
+  extends Pick<FranchiseOpportunity, (typeof franchiseOpportunityDTOKeys)[number]> {}
+
+export const toFranchiseOpportunityDTO = (franchiseOpportunity: FranchiseOpportunity): FranchiseOpportunityDTO =>
+  pickDTOFields(franchiseOpportunity, franchiseOpportunityDTOKeys);
+

@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ================================================
 // AI CONTENT DEFENDER & PLAGIARISM WATCHDOG MODULE
 // Billion-Dollar Empire Grade, Migration-Proof, DMCA-Ready
@@ -219,19 +221,92 @@ export const insertSeoCounterAttackSchema = createInsertSchema(seoCounterAttacks
 export const insertContentDefenseAnalyticsSchema = createInsertSchema(contentDefenseAnalytics);
 
 // Types
-export type ContentInventory = typeof contentInventory.$inferSelect;
-export type NewContentInventory = typeof contentInventory.$inferInsert;
-export type PlagiarismDetection = typeof plagiarismDetections.$inferSelect;
-export type NewPlagiarismDetection = typeof plagiarismDetections.$inferInsert;
-export type DmcaRequest = typeof dmcaRequests.$inferSelect;
-export type NewDmcaRequest = typeof dmcaRequests.$inferInsert;
-export type ContentRefresh = typeof contentRefreshes.$inferSelect;
-export type NewContentRefresh = typeof contentRefreshes.$inferInsert;
-export type ScraperDetection = typeof scraperDetections.$inferSelect;
-export type NewScraperDetection = typeof scraperDetections.$inferInsert;
-export type ContentMonitoringJob = typeof contentMonitoringJobs.$inferSelect;
-export type NewContentMonitoringJob = typeof contentMonitoringJobs.$inferInsert;
-export type SeoCounterAttack = typeof seoCounterAttacks.$inferSelect;
-export type NewSeoCounterAttack = typeof seoCounterAttacks.$inferInsert;
-export type ContentDefenseAnalytic = typeof contentDefenseAnalytics.$inferSelect;
-export type NewContentDefenseAnalytic = typeof contentDefenseAnalytics.$inferInsert;
+export type ContentInventory = InferSelectModel<typeof contentInventory>;
+export type NewContentInventory = InferInsertModel<typeof contentInventory>;
+export type PlagiarismDetection = InferSelectModel<typeof plagiarismDetections>;
+export type NewPlagiarismDetection = InferInsertModel<typeof plagiarismDetections>;
+export type DmcaRequest = InferSelectModel<typeof dmcaRequests>;
+export type NewDmcaRequest = InferInsertModel<typeof dmcaRequests>;
+export type ContentRefresh = InferSelectModel<typeof contentRefreshes>;
+export type NewContentRefresh = InferInsertModel<typeof contentRefreshes>;
+export type ScraperDetection = InferSelectModel<typeof scraperDetections>;
+export type NewScraperDetection = InferInsertModel<typeof scraperDetections>;
+export type ContentMonitoringJob = InferSelectModel<typeof contentMonitoringJobs>;
+export type NewContentMonitoringJob = InferInsertModel<typeof contentMonitoringJobs>;
+export type SeoCounterAttack = InferSelectModel<typeof seoCounterAttacks>;
+export type NewSeoCounterAttack = InferInsertModel<typeof seoCounterAttacks>;
+export type ContentDefenseAnalytic = InferSelectModel<typeof contentDefenseAnalytics>;
+export type NewContentDefenseAnalytic = InferInsertModel<typeof contentDefenseAnalytics>;
+
+// DTOs
+const contentInventoryDTOKeys = ["id", "neuronId", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface ContentInventoryDTO
+  extends Pick<ContentInventory, (typeof contentInventoryDTOKeys)[number]> {}
+
+export const toContentInventoryDTO = (contentInventory: ContentInventory): ContentInventoryDTO =>
+  pickDTOFields(contentInventory, contentInventoryDTOKeys);
+
+
+const plagiarismDetectionDTOKeys = ["id", "status", "priority", "createdAt", "updatedAt"] as const;
+
+export interface PlagiarismDetectionDTO
+  extends Pick<PlagiarismDetection, (typeof plagiarismDetectionDTOKeys)[number]> {}
+
+export const toPlagiarismDetectionDTO = (plagiarismDetection: PlagiarismDetection): PlagiarismDetectionDTO =>
+  pickDTOFields(plagiarismDetection, plagiarismDetectionDTOKeys);
+
+
+const dmcaRequestDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface DmcaRequestDTO
+  extends Pick<DmcaRequest, (typeof dmcaRequestDTOKeys)[number]> {}
+
+export const toDmcaRequestDTO = (dmcaRequest: DmcaRequest): DmcaRequestDTO =>
+  pickDTOFields(dmcaRequest, dmcaRequestDTOKeys);
+
+
+const contentRefreshDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface ContentRefreshDTO
+  extends Pick<ContentRefresh, (typeof contentRefreshDTOKeys)[number]> {}
+
+export const toContentRefreshDTO = (contentRefresh: ContentRefresh): ContentRefreshDTO =>
+  pickDTOFields(contentRefresh, contentRefreshDTOKeys);
+
+
+const scraperDetectionDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface ScraperDetectionDTO
+  extends Pick<ScraperDetection, (typeof scraperDetectionDTOKeys)[number]> {}
+
+export const toScraperDetectionDTO = (scraperDetection: ScraperDetection): ScraperDetectionDTO =>
+  pickDTOFields(scraperDetection, scraperDetectionDTOKeys);
+
+
+const contentMonitoringJobDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface ContentMonitoringJobDTO
+  extends Pick<ContentMonitoringJob, (typeof contentMonitoringJobDTOKeys)[number]> {}
+
+export const toContentMonitoringJobDTO = (contentMonitoringJob: ContentMonitoringJob): ContentMonitoringJobDTO =>
+  pickDTOFields(contentMonitoringJob, contentMonitoringJobDTOKeys);
+
+
+const seoCounterAttackDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface SeoCounterAttackDTO
+  extends Pick<SeoCounterAttack, (typeof seoCounterAttackDTOKeys)[number]> {}
+
+export const toSeoCounterAttackDTO = (seoCounterAttack: SeoCounterAttack): SeoCounterAttackDTO =>
+  pickDTOFields(seoCounterAttack, seoCounterAttackDTOKeys);
+
+
+const contentDefenseAnalyticDTOKeys = ["id", "createdAt", "eventType"] as const;
+
+export interface ContentDefenseAnalyticDTO
+  extends Pick<ContentDefenseAnalytic, (typeof contentDefenseAnalyticDTOKeys)[number]> {}
+
+export const toContentDefenseAnalyticDTO = (contentDefenseAnalytic: ContentDefenseAnalytic): ContentDefenseAnalyticDTO =>
+  pickDTOFields(contentDefenseAnalytic, contentDefenseAnalyticDTOKeys);
+

@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, dec
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // AI/ML Model Registry - Track all ML models and their performance
 export const aiMLModels = pgTable("ai_ml_models", {
   id: serial("id").primaryKey(),
@@ -280,32 +282,123 @@ export const insertAiMLAuditTrailSchema = createInsertSchema(aiMLAuditTrail).omi
 });
 
 // Types
-export type InsertAiMLModel = z.infer<typeof insertAiMLModelSchema>;
-export type AiMLModel = typeof aiMLModels.$inferSelect;
+export type InsertAiMLModel = InferInsertModel<typeof aiMLModels>;
+export type AiMLModel = InferSelectModel<typeof aiMLModels>;
 
-export type InsertLearningCycle = z.infer<typeof insertLearningCycleSchema>;
-export type LearningCycle = typeof learningCycles.$inferSelect;
+export type InsertLearningCycle = InferInsertModel<typeof learningCycles>;
+export type LearningCycle = InferSelectModel<typeof learningCycles>;
 
-export type InsertPersonalizationRule = z.infer<typeof insertPersonalizationRuleSchema>;
-export type PersonalizationRule = typeof personalizationRules.$inferSelect;
+export type InsertPersonalizationRule = InferInsertModel<typeof personalizationRules>;
+export type PersonalizationRule = InferSelectModel<typeof personalizationRules>;
 
-export type InsertNeuronDataPipeline = z.infer<typeof insertNeuronDataPipelineSchema>;
-export type NeuronDataPipeline = typeof neuronDataPipelines.$inferSelect;
+export type InsertNeuronDataPipeline = InferInsertModel<typeof neuronDataPipelines>;
+export type NeuronDataPipeline = InferSelectModel<typeof neuronDataPipelines>;
 
-export type InsertAiMLExperiment = z.infer<typeof insertAiMLExperimentSchema>;
-export type AiMLExperiment = typeof aiMLExperiments.$inferSelect;
+export type InsertAiMLExperiment = InferInsertModel<typeof aiMLExperiments>;
+export type AiMLExperiment = InferSelectModel<typeof aiMLExperiments>;
 
-export type InsertContentOptimizationLog = z.infer<typeof insertContentOptimizationLogSchema>;
-export type ContentOptimizationLog = typeof contentOptimizationLogs.$inferSelect;
+export type InsertContentOptimizationLog = InferInsertModel<typeof contentOptimizationLogs>;
+export type ContentOptimizationLog = InferSelectModel<typeof contentOptimizationLogs>;
 
-export type InsertAiMLAnalytics = z.infer<typeof insertAiMLAnalyticsSchema>;
-export type AiMLAnalytics = typeof aiMLAnalytics.$inferSelect;
+export type InsertAiMLAnalytics = InferInsertModel<typeof aiMLAnalytics>;
+export type AiMLAnalytics = InferSelectModel<typeof aiMLAnalytics>;
 
-export type InsertModelTrainingJob = z.infer<typeof insertModelTrainingJobSchema>;
-export type ModelTrainingJob = typeof modelTrainingJobs.$inferSelect;
+export type InsertModelTrainingJob = InferInsertModel<typeof modelTrainingJobs>;
+export type ModelTrainingJob = InferSelectModel<typeof modelTrainingJobs>;
 
-export type InsertEmpireBrainConfig = z.infer<typeof insertEmpireBrainConfigSchema>;
-export type EmpireBrainConfig = typeof empireBrainConfig.$inferSelect;
+export type InsertEmpireBrainConfig = InferInsertModel<typeof empireBrainConfig>;
+export type EmpireBrainConfig = InferSelectModel<typeof empireBrainConfig>;
 
-export type InsertAiMLAuditTrail = z.infer<typeof insertAiMLAuditTrailSchema>;
-export type AiMLAuditTrail = typeof aiMLAuditTrail.$inferSelect;
+export type InsertAiMLAuditTrail = InferInsertModel<typeof aiMLAuditTrail>;
+export type AiMLAuditTrail = InferSelectModel<typeof aiMLAuditTrail>;
+
+// DTOs
+const aiMLModelDTOKeys = ["id", "name", "modelId", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface AiMLModelDTO
+  extends Pick<AiMLModel, (typeof aiMLModelDTOKeys)[number]> {}
+
+export const toAiMLModelDTO = (aiMLModel: AiMLModel): AiMLModelDTO =>
+  pickDTOFields(aiMLModel, aiMLModelDTOKeys);
+
+
+const learningCycleDTOKeys = ["id", "status", "type", "createdAt"] as const;
+
+export interface LearningCycleDTO
+  extends Pick<LearningCycle, (typeof learningCycleDTOKeys)[number]> {}
+
+export const toLearningCycleDTO = (learningCycle: LearningCycle): LearningCycleDTO =>
+  pickDTOFields(learningCycle, learningCycleDTOKeys);
+
+
+const personalizationRuleDTOKeys = ["id", "name", "ruleId", "vertical", "priority", "createdAt", "updatedAt", "description"] as const;
+
+export interface PersonalizationRuleDTO
+  extends Pick<PersonalizationRule, (typeof personalizationRuleDTOKeys)[number]> {}
+
+export const toPersonalizationRuleDTO = (personalizationRule: PersonalizationRule): PersonalizationRuleDTO =>
+  pickDTOFields(personalizationRule, personalizationRuleDTOKeys);
+
+
+const neuronDataPipelineDTOKeys = ["id", "type", "neuronId", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface NeuronDataPipelineDTO
+  extends Pick<NeuronDataPipeline, (typeof neuronDataPipelineDTOKeys)[number]> {}
+
+export const toNeuronDataPipelineDTO = (neuronDataPipeline: NeuronDataPipeline): NeuronDataPipelineDTO =>
+  pickDTOFields(neuronDataPipeline, neuronDataPipelineDTOKeys);
+
+
+const aiMLExperimentDTOKeys = ["id", "name", "status", "type", "modelId", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface AiMLExperimentDTO
+  extends Pick<AiMLExperiment, (typeof aiMLExperimentDTOKeys)[number]> {}
+
+export const toAiMLExperimentDTO = (aiMLExperiment: AiMLExperiment): AiMLExperimentDTO =>
+  pickDTOFields(aiMLExperiment, aiMLExperimentDTOKeys);
+
+
+const contentOptimizationLogDTOKeys = ["id", "vertical", "createdAt"] as const;
+
+export interface ContentOptimizationLogDTO
+  extends Pick<ContentOptimizationLog, (typeof contentOptimizationLogDTOKeys)[number]> {}
+
+export const toContentOptimizationLogDTO = (contentOptimizationLog: ContentOptimizationLog): ContentOptimizationLogDTO =>
+  pickDTOFields(contentOptimizationLog, contentOptimizationLogDTOKeys);
+
+
+const aiMLAnalyticsDTOKeys = ["id", "neuronId", "vertical", "createdAt"] as const;
+
+export interface AiMLAnalyticsDTO
+  extends Pick<AiMLAnalytics, (typeof aiMLAnalyticsDTOKeys)[number]> {}
+
+export const toAiMLAnalyticsDTO = (aiMLAnalytics: AiMLAnalytics): AiMLAnalyticsDTO =>
+  pickDTOFields(aiMLAnalytics, aiMLAnalyticsDTOKeys);
+
+
+const modelTrainingJobDTOKeys = ["id", "status", "modelId", "createdAt", "updatedAt"] as const;
+
+export interface ModelTrainingJobDTO
+  extends Pick<ModelTrainingJob, (typeof modelTrainingJobDTOKeys)[number]> {}
+
+export const toModelTrainingJobDTO = (modelTrainingJob: ModelTrainingJob): ModelTrainingJobDTO =>
+  pickDTOFields(modelTrainingJob, modelTrainingJobDTOKeys);
+
+
+const empireBrainConfigDTOKeys = ["id", "category", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface EmpireBrainConfigDTO
+  extends Pick<EmpireBrainConfig, (typeof empireBrainConfigDTOKeys)[number]> {}
+
+export const toEmpireBrainConfigDTO = (empireBrainConfig: EmpireBrainConfig): EmpireBrainConfigDTO =>
+  pickDTOFields(empireBrainConfig, empireBrainConfigDTOKeys);
+
+
+const aiMLAuditTrailDTOKeys = ["id", "sessionId", "userId"] as const;
+
+export interface AiMLAuditTrailDTO
+  extends Pick<AiMLAuditTrail, (typeof aiMLAuditTrailDTOKeys)[number]> {}
+
+export const toAiMLAuditTrailDTO = (aiMLAuditTrail: AiMLAuditTrail): AiMLAuditTrailDTO =>
+  pickDTOFields(aiMLAuditTrail, aiMLAuditTrailDTOKeys);
+

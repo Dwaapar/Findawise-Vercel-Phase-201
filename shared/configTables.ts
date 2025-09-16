@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, uui
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ==========================================
 // CENTRAL CONFIG ENGINE - ENTERPRISE SCHEMA
 // ==========================================
@@ -313,26 +315,99 @@ export const insertConfigAiMetadataSchema = createInsertSchema(configAiMetadata)
 // TYPE EXPORTS
 // ==========================================
 
-export type ConfigRegistry = typeof configRegistry.$inferSelect;
-export type InsertConfigRegistry = z.infer<typeof insertConfigRegistrySchema>;
+export type ConfigRegistry = InferSelectModel<typeof configRegistry>;
+export type InsertConfigRegistry = InferInsertModel<typeof configRegistry>;
 
-export type ConfigChangeHistory = typeof configChangeHistory.$inferSelect;
-export type InsertConfigChangeHistory = z.infer<typeof insertConfigChangeHistorySchema>;
+export type ConfigChangeHistory = InferSelectModel<typeof configChangeHistory>;
+export type InsertConfigChangeHistory = InferInsertModel<typeof configChangeHistory>;
 
-export type ConfigSnapshot = typeof configSnapshots.$inferSelect;
-export type InsertConfigSnapshot = z.infer<typeof insertConfigSnapshotSchema>;
+export type ConfigSnapshot = InferSelectModel<typeof configSnapshots>;
+export type InsertConfigSnapshot = InferInsertModel<typeof configSnapshots>;
 
-export type ConfigPermission = typeof configPermissions.$inferSelect;
-export type InsertConfigPermission = z.infer<typeof insertConfigPermissionSchema>;
+export type ConfigPermission = InferSelectModel<typeof configPermissions>;
+export type InsertConfigPermission = InferInsertModel<typeof configPermissions>;
 
-export type ConfigFederationSync = typeof configFederationSync.$inferSelect;
-export type InsertConfigFederationSync = z.infer<typeof insertConfigFederationSyncSchema>;
+export type ConfigFederationSync = InferSelectModel<typeof configFederationSync>;
+export type InsertConfigFederationSync = InferInsertModel<typeof configFederationSync>;
 
-export type ConfigPerformanceMetric = typeof configPerformanceMetrics.$inferSelect;
-export type InsertConfigPerformanceMetric = z.infer<typeof insertConfigPerformanceMetricSchema>;
+export type ConfigPerformanceMetric = InferSelectModel<typeof configPerformanceMetrics>;
+export type InsertConfigPerformanceMetric = InferInsertModel<typeof configPerformanceMetrics>;
 
-export type ConfigValidationRule = typeof configValidationRules.$inferSelect;
-export type InsertConfigValidationRule = z.infer<typeof insertConfigValidationRuleSchema>;
+export type ConfigValidationRule = InferSelectModel<typeof configValidationRules>;
+export type InsertConfigValidationRule = InferInsertModel<typeof configValidationRules>;
 
-export type ConfigAiMetadata = typeof configAiMetadata.$inferSelect;
-export type InsertConfigAiMetadata = z.infer<typeof insertConfigAiMetadataSchema>;
+export type ConfigAiMetadata = InferSelectModel<typeof configAiMetadata>;
+export type InsertConfigAiMetadata = InferInsertModel<typeof configAiMetadata>;
+
+// DTOs
+const configRegistryDTOKeys = ["id", "title", "category", "vertical", "locale", "createdAt", "updatedAt", "description"] as const;
+
+export interface ConfigRegistryDTO
+  extends Pick<ConfigRegistry, (typeof configRegistryDTOKeys)[number]> {}
+
+export const toConfigRegistryDTO = (configRegistry: ConfigRegistry): ConfigRegistryDTO =>
+  pickDTOFields(configRegistry, configRegistryDTOKeys);
+
+
+const configChangeHistoryDTOKeys = ["id", "userId", "createdAt", "source"] as const;
+
+export interface ConfigChangeHistoryDTO
+  extends Pick<ConfigChangeHistory, (typeof configChangeHistoryDTOKeys)[number]> {}
+
+export const toConfigChangeHistoryDTO = (configChangeHistory: ConfigChangeHistory): ConfigChangeHistoryDTO =>
+  pickDTOFields(configChangeHistory, configChangeHistoryDTOKeys);
+
+
+const configSnapshotDTOKeys = ["id", "createdAt", "description", "version"] as const;
+
+export interface ConfigSnapshotDTO
+  extends Pick<ConfigSnapshot, (typeof configSnapshotDTOKeys)[number]> {}
+
+export const toConfigSnapshotDTO = (configSnapshot: ConfigSnapshot): ConfigSnapshotDTO =>
+  pickDTOFields(configSnapshot, configSnapshotDTOKeys);
+
+
+const configPermissionDTOKeys = ["id", "userId", "createdAt", "updatedAt", "teamId"] as const;
+
+export interface ConfigPermissionDTO
+  extends Pick<ConfigPermission, (typeof configPermissionDTOKeys)[number]> {}
+
+export const toConfigPermissionDTO = (configPermission: ConfigPermission): ConfigPermissionDTO =>
+  pickDTOFields(configPermission, configPermissionDTOKeys);
+
+
+const configFederationSyncDTOKeys = ["id", "neuronId", "syncId"] as const;
+
+export interface ConfigFederationSyncDTO
+  extends Pick<ConfigFederationSync, (typeof configFederationSyncDTOKeys)[number]> {}
+
+export const toConfigFederationSyncDTO = (configFederationSync: ConfigFederationSync): ConfigFederationSyncDTO =>
+  pickDTOFields(configFederationSync, configFederationSyncDTOKeys);
+
+
+const configPerformanceMetricDTOKeys = ["id", "region", "environment"] as const;
+
+export interface ConfigPerformanceMetricDTO
+  extends Pick<ConfigPerformanceMetric, (typeof configPerformanceMetricDTOKeys)[number]> {}
+
+export const toConfigPerformanceMetricDTO = (configPerformanceMetric: ConfigPerformanceMetric): ConfigPerformanceMetricDTO =>
+  pickDTOFields(configPerformanceMetric, configPerformanceMetricDTOKeys);
+
+
+const configValidationRuleDTOKeys = ["id", "name", "category", "ruleId", "severity", "createdAt", "updatedAt", "description"] as const;
+
+export interface ConfigValidationRuleDTO
+  extends Pick<ConfigValidationRule, (typeof configValidationRuleDTOKeys)[number]> {}
+
+export const toConfigValidationRuleDTO = (configValidationRule: ConfigValidationRule): ConfigValidationRuleDTO =>
+  pickDTOFields(configValidationRule, configValidationRuleDTOKeys);
+
+
+const configAiMetadataDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface ConfigAiMetadataDTO
+  extends Pick<ConfigAiMetadata, (typeof configAiMetadataDTOKeys)[number]> {}
+
+export const toConfigAiMetadataDTO = (configAiMetadata: ConfigAiMetadata): ConfigAiMetadataDTO =>
+  pickDTOFields(configAiMetadata, configAiMetadataDTOKeys);
+

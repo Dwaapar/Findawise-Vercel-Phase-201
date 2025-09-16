@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Funnel Templates - Core funnel definitions
 export const funnelTemplates = pgTable("funnel_templates", {
   id: serial("id").primaryKey(),
@@ -317,26 +319,99 @@ export const insertFunnelIntegrationSchema = createInsertSchema(funnelIntegratio
 });
 
 // Type exports
-export type FunnelTemplate = typeof funnelTemplates.$inferSelect;
-export type InsertFunnelTemplate = z.infer<typeof insertFunnelTemplateSchema>;
+export type FunnelTemplate = InferSelectModel<typeof funnelTemplates>;
+export type InsertFunnelTemplate = InferInsertModel<typeof funnelTemplates>;
 
-export type FunnelBlock = typeof funnelBlocks.$inferSelect;
-export type InsertFunnelBlock = z.infer<typeof insertFunnelBlockSchema>;
+export type FunnelBlock = InferSelectModel<typeof funnelBlocks>;
+export type InsertFunnelBlock = InferInsertModel<typeof funnelBlocks>;
 
-export type UserFunnelSession = typeof userFunnelSessions.$inferSelect;
-export type InsertUserFunnelSession = z.infer<typeof insertUserFunnelSessionSchema>;
+export type UserFunnelSession = InferSelectModel<typeof userFunnelSessions>;
+export type InsertUserFunnelSession = InferInsertModel<typeof userFunnelSessions>;
 
-export type FunnelEvent = typeof funnelEvents.$inferSelect;
-export type InsertFunnelEvent = z.infer<typeof insertFunnelEventSchema>;
+export type FunnelEvent = InferSelectModel<typeof funnelEvents>;
+export type InsertFunnelEvent = InferInsertModel<typeof funnelEvents>;
 
-export type FunnelAnalytics = typeof funnelAnalytics.$inferSelect;
-export type InsertFunnelAnalytics = z.infer<typeof insertFunnelAnalyticsSchema>;
+export type FunnelAnalytics = InferSelectModel<typeof funnelAnalytics>;
+export type InsertFunnelAnalytics = InferInsertModel<typeof funnelAnalytics>;
 
-export type FunnelABTest = typeof funnelABTests.$inferSelect;
-export type InsertFunnelABTest = z.infer<typeof insertFunnelABTestSchema>;
+export type FunnelABTest = InferSelectModel<typeof funnelABTests>;
+export type InsertFunnelABTest = InferInsertModel<typeof funnelABTests>;
 
-export type FunnelTrigger = typeof funnelTriggers.$inferSelect;
-export type InsertFunnelTrigger = z.infer<typeof insertFunnelTriggerSchema>;
+export type FunnelTrigger = InferSelectModel<typeof funnelTriggers>;
+export type InsertFunnelTrigger = InferInsertModel<typeof funnelTriggers>;
 
-export type FunnelIntegration = typeof funnelIntegrations.$inferSelect;
-export type InsertFunnelIntegration = z.infer<typeof insertFunnelIntegrationSchema>;
+export type FunnelIntegration = InferSelectModel<typeof funnelIntegrations>;
+export type InsertFunnelIntegration = InferInsertModel<typeof funnelIntegrations>;
+
+// DTOs
+const funnelTemplateDTOKeys = ["id", "name", "slug", "category", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface FunnelTemplateDTO
+  extends Pick<FunnelTemplate, (typeof funnelTemplateDTOKeys)[number]> {}
+
+export const toFunnelTemplateDTO = (funnelTemplate: FunnelTemplate): FunnelTemplateDTO =>
+  pickDTOFields(funnelTemplate, funnelTemplateDTOKeys);
+
+
+const funnelBlockDTOKeys = ["id", "name", "slug", "type", "category", "createdAt", "updatedAt"] as const;
+
+export interface FunnelBlockDTO
+  extends Pick<FunnelBlock, (typeof funnelBlockDTOKeys)[number]> {}
+
+export const toFunnelBlockDTO = (funnelBlock: FunnelBlock): FunnelBlockDTO =>
+  pickDTOFields(funnelBlock, funnelBlockDTOKeys);
+
+
+const userFunnelSessionDTOKeys = ["id", "status", "sessionId", "userId", "funnelId"] as const;
+
+export interface UserFunnelSessionDTO
+  extends Pick<UserFunnelSession, (typeof userFunnelSessionDTOKeys)[number]> {}
+
+export const toUserFunnelSessionDTO = (userFunnelSession: UserFunnelSession): UserFunnelSessionDTO =>
+  pickDTOFields(userFunnelSession, userFunnelSessionDTOKeys);
+
+
+const funnelEventDTOKeys = ["id", "sessionId", "eventType"] as const;
+
+export interface FunnelEventDTO
+  extends Pick<FunnelEvent, (typeof funnelEventDTOKeys)[number]> {}
+
+export const toFunnelEventDTO = (funnelEvent: FunnelEvent): FunnelEventDTO =>
+  pickDTOFields(funnelEvent, funnelEventDTOKeys);
+
+
+const funnelAnalyticsDTOKeys = ["id", "segment", "funnelId"] as const;
+
+export interface FunnelAnalyticsDTO
+  extends Pick<FunnelAnalytics, (typeof funnelAnalyticsDTOKeys)[number]> {}
+
+export const toFunnelAnalyticsDTO = (funnelAnalytics: FunnelAnalytics): FunnelAnalyticsDTO =>
+  pickDTOFields(funnelAnalytics, funnelAnalyticsDTOKeys);
+
+
+const funnelABTestDTOKeys = ["id", "name", "status", "createdAt", "updatedAt", "funnelId"] as const;
+
+export interface FunnelABTestDTO
+  extends Pick<FunnelABTest, (typeof funnelABTestDTOKeys)[number]> {}
+
+export const toFunnelABTestDTO = (funnelABTest: FunnelABTest): FunnelABTestDTO =>
+  pickDTOFields(funnelABTest, funnelABTestDTOKeys);
+
+
+const funnelTriggerDTOKeys = ["id", "name", "priority", "createdAt", "updatedAt", "funnelId"] as const;
+
+export interface FunnelTriggerDTO
+  extends Pick<FunnelTrigger, (typeof funnelTriggerDTOKeys)[number]> {}
+
+export const toFunnelTriggerDTO = (funnelTrigger: FunnelTrigger): FunnelTriggerDTO =>
+  pickDTOFields(funnelTrigger, funnelTriggerDTOKeys);
+
+
+const funnelIntegrationDTOKeys = ["id", "name", "type", "createdAt", "updatedAt"] as const;
+
+export interface FunnelIntegrationDTO
+  extends Pick<FunnelIntegration, (typeof funnelIntegrationDTOKeys)[number]> {}
+
+export const toFunnelIntegrationDTO = (funnelIntegration: FunnelIntegration): FunnelIntegrationDTO =>
+  pickDTOFields(funnelIntegration, funnelIntegrationDTOKeys);
+

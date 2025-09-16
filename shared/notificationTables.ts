@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Notification Templates - Core templates for all channels
 export const notificationTemplates = pgTable("notification_templates", {
   id: serial("id").primaryKey(),
@@ -357,22 +359,86 @@ export const insertNotificationChannelSchema = createInsertSchema(notificationCh
 });
 
 // Type exports
-export type NotificationTemplate = typeof notificationTemplates.$inferSelect;
-export type InsertNotificationTemplate = z.infer<typeof insertNotificationTemplateSchema>;
+export type NotificationTemplate = InferSelectModel<typeof notificationTemplates>;
+export type InsertNotificationTemplate = InferInsertModel<typeof notificationTemplates>;
 
-export type NotificationTrigger = typeof notificationTriggers.$inferSelect;
-export type InsertNotificationTrigger = z.infer<typeof insertNotificationTriggerSchema>;
+export type NotificationTrigger = InferSelectModel<typeof notificationTriggers>;
+export type InsertNotificationTrigger = InferInsertModel<typeof notificationTriggers>;
 
-export type NotificationCampaign = typeof notificationCampaigns.$inferSelect;
-export type InsertNotificationCampaign = z.infer<typeof insertNotificationCampaignSchema>;
+export type NotificationCampaign = InferSelectModel<typeof notificationCampaigns>;
+export type InsertNotificationCampaign = InferInsertModel<typeof notificationCampaigns>;
 
-export type NotificationQueue = typeof notificationQueue.$inferSelect;
-export type InsertNotificationQueue = z.infer<typeof insertNotificationQueueSchema>;
+export type NotificationQueue = InferSelectModel<typeof notificationQueue>;
+export type InsertNotificationQueue = InferInsertModel<typeof notificationQueue>;
 
-export type UserNotificationPreferences = typeof userNotificationPreferences.$inferSelect;
-export type InsertUserNotificationPreferences = z.infer<typeof insertUserNotificationPreferencesSchema>;
+export type UserNotificationPreferences = InferSelectModel<typeof userNotificationPreferences>;
+export type InsertUserNotificationPreferences = InferInsertModel<typeof userNotificationPreferences>;
 
-export type NotificationChannel = typeof notificationChannels.$inferSelect;
-export type InsertNotificationChannel = z.infer<typeof insertNotificationChannelSchema>;
+export type NotificationChannel = InferSelectModel<typeof notificationChannels>;
+export type InsertNotificationChannel = InferInsertModel<typeof notificationChannels>;
 
-export type NotificationAnalytics = typeof notificationAnalytics.$inferSelect;
+export type NotificationAnalytics = InferSelectModel<typeof notificationAnalytics>;
+
+// DTOs
+const notificationTemplateDTOKeys = ["id", "name", "slug", "type", "locale", "segment", "channel", "priority", "createdAt", "updatedAt"] as const;
+
+export interface NotificationTemplateDTO
+  extends Pick<NotificationTemplate, (typeof notificationTemplateDTOKeys)[number]> {}
+
+export const toNotificationTemplateDTO = (notificationTemplate: NotificationTemplate): NotificationTemplateDTO =>
+  pickDTOFields(notificationTemplate, notificationTemplateDTOKeys);
+
+
+const notificationTriggerDTOKeys = ["id", "name", "slug", "priority", "createdAt", "updatedAt", "description"] as const;
+
+export interface NotificationTriggerDTO
+  extends Pick<NotificationTrigger, (typeof notificationTriggerDTOKeys)[number]> {}
+
+export const toNotificationTriggerDTO = (notificationTrigger: NotificationTrigger): NotificationTriggerDTO =>
+  pickDTOFields(notificationTrigger, notificationTriggerDTOKeys);
+
+
+const notificationCampaignDTOKeys = ["id", "name", "slug", "status", "type", "createdAt", "updatedAt", "description"] as const;
+
+export interface NotificationCampaignDTO
+  extends Pick<NotificationCampaign, (typeof notificationCampaignDTOKeys)[number]> {}
+
+export const toNotificationCampaignDTO = (notificationCampaign: NotificationCampaign): NotificationCampaignDTO =>
+  pickDTOFields(notificationCampaign, notificationCampaignDTOKeys);
+
+
+const notificationQueueDTOKeys = ["id", "status", "sessionId", "userId", "campaignId", "channel", "priority", "createdAt", "updatedAt"] as const;
+
+export interface NotificationQueueDTO
+  extends Pick<NotificationQueue, (typeof notificationQueueDTOKeys)[number]> {}
+
+export const toNotificationQueueDTO = (notificationQueue: NotificationQueue): NotificationQueueDTO =>
+  pickDTOFields(notificationQueue, notificationQueueDTOKeys);
+
+
+const userNotificationPreferencesDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt", "email"] as const;
+
+export interface UserNotificationPreferencesDTO
+  extends Pick<UserNotificationPreferences, (typeof userNotificationPreferencesDTOKeys)[number]> {}
+
+export const toUserNotificationPreferencesDTO = (userNotificationPreferences: UserNotificationPreferences): UserNotificationPreferencesDTO =>
+  pickDTOFields(userNotificationPreferences, userNotificationPreferencesDTOKeys);
+
+
+const notificationChannelDTOKeys = ["id", "channel", "priority", "createdAt", "updatedAt", "provider"] as const;
+
+export interface NotificationChannelDTO
+  extends Pick<NotificationChannel, (typeof notificationChannelDTOKeys)[number]> {}
+
+export const toNotificationChannelDTO = (notificationChannel: NotificationChannel): NotificationChannelDTO =>
+  pickDTOFields(notificationChannel, notificationChannelDTOKeys);
+
+
+const notificationAnalyticsDTOKeys = ["id", "campaignId", "segment", "channel", "createdAt"] as const;
+
+export interface NotificationAnalyticsDTO
+  extends Pick<NotificationAnalytics, (typeof notificationAnalyticsDTOKeys)[number]> {}
+
+export const toNotificationAnalyticsDTO = (notificationAnalytics: NotificationAnalytics): NotificationAnalyticsDTO =>
+  pickDTOFields(notificationAnalytics, notificationAnalyticsDTOKeys);
+

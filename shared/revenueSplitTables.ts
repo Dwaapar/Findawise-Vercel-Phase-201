@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Revenue Split Partners - Partner/Affiliate management with custom split configurations
 export const revenueSplitPartners = pgTable("revenue_split_partners", {
   id: serial("id").primaryKey(),
@@ -356,17 +358,81 @@ export const insertProfitForecastSchema = createInsertSchema(profitForecasts);
 export const insertRevenueSplitAnalyticsSchema = createInsertSchema(revenueSplitAnalytics);
 
 // TypeScript types
-export type RevenueSplitPartner = typeof revenueSplitPartners.$inferSelect;
-export type InsertRevenueSplitPartner = z.infer<typeof insertRevenueSplitPartnerSchema>;
-export type RevenueSplitRule = typeof revenueSplitRules.$inferSelect;
-export type InsertRevenueSplitRule = z.infer<typeof insertRevenueSplitRuleSchema>;
-export type RevenueSplitTransaction = typeof revenueSplitTransactions.$inferSelect;
-export type InsertRevenueSplitTransaction = z.infer<typeof insertRevenueSplitTransactionSchema>;
-export type RevenueSplitPayout = typeof revenueSplitPayouts.$inferSelect;
-export type InsertRevenueSplitPayout = z.infer<typeof insertRevenueSplitPayoutSchema>;
-export type ProfitForecastModel = typeof profitForecastModels.$inferSelect;
-export type InsertProfitForecastModel = z.infer<typeof insertProfitForecastModelSchema>;
-export type ProfitForecast = typeof profitForecasts.$inferSelect;
-export type InsertProfitForecast = z.infer<typeof insertProfitForecastSchema>;
-export type RevenueSplitAnalytics = typeof revenueSplitAnalytics.$inferSelect;
-export type InsertRevenueSplitAnalytics = z.infer<typeof insertRevenueSplitAnalyticsSchema>;
+export type RevenueSplitPartner = InferSelectModel<typeof revenueSplitPartners>;
+export type InsertRevenueSplitPartner = InferInsertModel<typeof revenueSplitPartners>;
+export type RevenueSplitRule = InferSelectModel<typeof revenueSplitRules>;
+export type InsertRevenueSplitRule = InferInsertModel<typeof revenueSplitRules>;
+export type RevenueSplitTransaction = InferSelectModel<typeof revenueSplitTransactions>;
+export type InsertRevenueSplitTransaction = InferInsertModel<typeof revenueSplitTransactions>;
+export type RevenueSplitPayout = InferSelectModel<typeof revenueSplitPayouts>;
+export type InsertRevenueSplitPayout = InferInsertModel<typeof revenueSplitPayouts>;
+export type ProfitForecastModel = InferSelectModel<typeof profitForecastModels>;
+export type InsertProfitForecastModel = InferInsertModel<typeof profitForecastModels>;
+export type ProfitForecast = InferSelectModel<typeof profitForecasts>;
+export type InsertProfitForecast = InferInsertModel<typeof profitForecasts>;
+export type RevenueSplitAnalytics = InferSelectModel<typeof revenueSplitAnalytics>;
+export type InsertRevenueSplitAnalytics = InferInsertModel<typeof revenueSplitAnalytics>;
+
+// DTOs
+const revenueSplitPartnerDTOKeys = ["id", "status", "createdAt", "updatedAt"] as const;
+
+export interface RevenueSplitPartnerDTO
+  extends Pick<RevenueSplitPartner, (typeof revenueSplitPartnerDTOKeys)[number]> {}
+
+export const toRevenueSplitPartnerDTO = (revenueSplitPartner: RevenueSplitPartner): RevenueSplitPartnerDTO =>
+  pickDTOFields(revenueSplitPartner, revenueSplitPartnerDTOKeys);
+
+
+const revenueSplitRuleDTOKeys = ["id", "ruleId", "vertical", "priority", "createdAt", "updatedAt"] as const;
+
+export interface RevenueSplitRuleDTO
+  extends Pick<RevenueSplitRule, (typeof revenueSplitRuleDTOKeys)[number]> {}
+
+export const toRevenueSplitRuleDTO = (revenueSplitRule: RevenueSplitRule): RevenueSplitRuleDTO =>
+  pickDTOFields(revenueSplitRule, revenueSplitRuleDTOKeys);
+
+
+const revenueSplitTransactionDTOKeys = ["id", "status", "ruleId", "vertical", "createdAt", "productId"] as const;
+
+export interface RevenueSplitTransactionDTO
+  extends Pick<RevenueSplitTransaction, (typeof revenueSplitTransactionDTOKeys)[number]> {}
+
+export const toRevenueSplitTransactionDTO = (revenueSplitTransaction: RevenueSplitTransaction): RevenueSplitTransactionDTO =>
+  pickDTOFields(revenueSplitTransaction, revenueSplitTransactionDTOKeys);
+
+
+const revenueSplitPayoutDTOKeys = ["id", "status", "createdAt"] as const;
+
+export interface RevenueSplitPayoutDTO
+  extends Pick<RevenueSplitPayout, (typeof revenueSplitPayoutDTOKeys)[number]> {}
+
+export const toRevenueSplitPayoutDTO = (revenueSplitPayout: RevenueSplitPayout): RevenueSplitPayoutDTO =>
+  pickDTOFields(revenueSplitPayout, revenueSplitPayoutDTOKeys);
+
+
+const profitForecastModelDTOKeys = ["id", "status", "modelId", "createdAt", "updatedAt", "version"] as const;
+
+export interface ProfitForecastModelDTO
+  extends Pick<ProfitForecastModel, (typeof profitForecastModelDTOKeys)[number]> {}
+
+export const toProfitForecastModelDTO = (profitForecastModel: ProfitForecastModel): ProfitForecastModelDTO =>
+  pickDTOFields(profitForecastModel, profitForecastModelDTOKeys);
+
+
+const profitForecastDTOKeys = ["id", "status", "modelId", "createdAt"] as const;
+
+export interface ProfitForecastDTO
+  extends Pick<ProfitForecast, (typeof profitForecastDTOKeys)[number]> {}
+
+export const toProfitForecastDTO = (profitForecast: ProfitForecast): ProfitForecastDTO =>
+  pickDTOFields(profitForecast, profitForecastDTOKeys);
+
+
+const revenueSplitAnalyticsDTOKeys = ["id", "vertical", "createdAt"] as const;
+
+export interface RevenueSplitAnalyticsDTO
+  extends Pick<RevenueSplitAnalytics, (typeof revenueSplitAnalyticsDTOKeys)[number]> {}
+
+export const toRevenueSplitAnalyticsDTO = (revenueSplitAnalytics: RevenueSplitAnalytics): RevenueSplitAnalyticsDTO =>
+  pickDTOFields(revenueSplitAnalytics, revenueSplitAnalyticsDTOKeys);
+

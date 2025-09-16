@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // PWA Installation tracking
 export const pwaInstalls = pgTable("pwa_installs", {
   id: serial("id").primaryKey(),
@@ -266,36 +268,148 @@ export const insertPWAPerformanceMetricsSchema = createInsertSchema(pwaPerforman
 });
 
 // Type exports
-export type PWAInstall = typeof pwaInstalls.$inferSelect;
-export type InsertPWAInstall = z.infer<typeof insertPWAInstallSchema>;
+export type PWAInstall = InferSelectModel<typeof pwaInstalls>;
+export type InsertPWAInstall = InferInsertModel<typeof pwaInstalls>;
 
-export type PushSubscription = typeof pushSubscriptions.$inferSelect;
-export type InsertPushSubscription = z.infer<typeof insertPushSubscriptionSchema>;
+export type PushSubscription = InferSelectModel<typeof pushSubscriptions>;
+export type InsertPushSubscription = InferInsertModel<typeof pushSubscriptions>;
 
-export type PWANotificationCampaign = typeof pwaNotificationCampaigns.$inferSelect;
-export type InsertPWANotificationCampaign = z.infer<typeof insertPWANotificationCampaignSchema>;
+export type PWANotificationCampaign = InferSelectModel<typeof pwaNotificationCampaigns>;
+export type InsertPWANotificationCampaign = InferInsertModel<typeof pwaNotificationCampaigns>;
 
-export type PWAUsageStats = typeof pwaUsageStats.$inferSelect;
-export type InsertPWAUsageStats = z.infer<typeof insertPWAUsageStatsSchema>;
+export type PWAUsageStats = InferSelectModel<typeof pwaUsageStats>;
+export type InsertPWAUsageStats = InferInsertModel<typeof pwaUsageStats>;
 
-export type OfflineQueueItem = typeof offlineQueue.$inferSelect;
-export type InsertOfflineQueueItem = z.infer<typeof insertOfflineQueueSchema>;
+export type OfflineQueueItem = InferSelectModel<typeof offlineQueue>;
+export type InsertOfflineQueueItem = InferInsertModel<typeof offlineQueue>;
 
 // New empire-grade types
-export type PWAAsoMetrics = typeof pwaAsoMetrics.$inferSelect;
-export type InsertPWAAsoMetrics = z.infer<typeof insertPWAAsoMetricsSchema>;
+export type PWAAsoMetrics = InferSelectModel<typeof pwaAsoMetrics>;
+export type InsertPWAAsoMetrics = InferInsertModel<typeof pwaAsoMetrics>;
 
-export type DeviceCapabilities = typeof deviceCapabilities.$inferSelect;
-export type InsertDeviceCapabilities = z.infer<typeof insertDeviceCapabilitiesSchema>;
+export type DeviceCapabilities = InferSelectModel<typeof deviceCapabilities>;
+export type InsertDeviceCapabilities = InferInsertModel<typeof deviceCapabilities>;
 
-export type DeepLinkAnalytics = typeof deepLinkAnalytics.$inferSelect;
-export type InsertDeepLinkAnalytics = z.infer<typeof insertDeepLinkAnalyticsSchema>;
+export type DeepLinkAnalytics = InferSelectModel<typeof deepLinkAnalytics>;
+export type InsertDeepLinkAnalytics = InferInsertModel<typeof deepLinkAnalytics>;
 
-export type MobileAppConfig = typeof mobileAppConfigs.$inferSelect;
-export type InsertMobileAppConfig = z.infer<typeof insertMobileAppConfigSchema>;
+export type MobileAppConfig = InferSelectModel<typeof mobileAppConfigs>;
+export type InsertMobileAppConfig = InferInsertModel<typeof mobileAppConfigs>;
 
-export type PushPersonalization = typeof pushPersonalization.$inferSelect;
-export type InsertPushPersonalization = z.infer<typeof insertPushPersonalizationSchema>;
+export type PushPersonalization = InferSelectModel<typeof pushPersonalization>;
+export type InsertPushPersonalization = InferInsertModel<typeof pushPersonalization>;
 
-export type PWAPerformanceMetrics = typeof pwaPerformanceMetrics.$inferSelect;
-export type InsertPWAPerformanceMetrics = z.infer<typeof insertPWAPerformanceMetricsSchema>;
+export type PWAPerformanceMetrics = InferSelectModel<typeof pwaPerformanceMetrics>;
+export type InsertPWAPerformanceMetrics = InferInsertModel<typeof pwaPerformanceMetrics>;
+
+export type PwaConfig = InferSelectModel<typeof pwaConfig>;
+export type InsertPwaConfig = InferInsertModel<typeof pwaConfig>;
+
+// DTOs
+const pWAInstallDTOKeys = ["id", "sessionId", "userAgent"] as const;
+
+export interface PWAInstallDTO
+  extends Pick<PWAInstall, (typeof pWAInstallDTOKeys)[number]> {}
+
+export const toPWAInstallDTO = (pWAInstall: PWAInstall): PWAInstallDTO =>
+  pickDTOFields(pWAInstall, pWAInstallDTOKeys);
+
+
+const pushSubscriptionDTOKeys = ["id", "sessionId", "createdAt", "updatedAt"] as const;
+
+export interface PushSubscriptionDTO
+  extends Pick<PushSubscription, (typeof pushSubscriptionDTOKeys)[number]> {}
+
+export const toPushSubscriptionDTO = (pushSubscription: PushSubscription): PushSubscriptionDTO =>
+  pickDTOFields(pushSubscription, pushSubscriptionDTOKeys);
+
+
+const pWANotificationCampaignDTOKeys = ["id", "title", "status", "createdAt"] as const;
+
+export interface PWANotificationCampaignDTO
+  extends Pick<PWANotificationCampaign, (typeof pWANotificationCampaignDTOKeys)[number]> {}
+
+export const toPWANotificationCampaignDTO = (pWANotificationCampaign: PWANotificationCampaign): PWANotificationCampaignDTO =>
+  pickDTOFields(pWANotificationCampaign, pWANotificationCampaignDTOKeys);
+
+
+const pWAUsageStatsDTOKeys = ["id", "sessionId", "date"] as const;
+
+export interface PWAUsageStatsDTO
+  extends Pick<PWAUsageStats, (typeof pWAUsageStatsDTOKeys)[number]> {}
+
+export const toPWAUsageStatsDTO = (pWAUsageStats: PWAUsageStats): PWAUsageStatsDTO =>
+  pickDTOFields(pWAUsageStats, pWAUsageStatsDTOKeys);
+
+
+const offlineQueueItemDTOKeys = ["id", "status", "sessionId", "createdAt"] as const;
+
+export interface OfflineQueueItemDTO
+  extends Pick<OfflineQueueItem, (typeof offlineQueueItemDTOKeys)[number]> {}
+
+export const toOfflineQueueItemDTO = (offlineQueueItem: OfflineQueueItem): OfflineQueueItemDTO =>
+  pickDTOFields(offlineQueueItem, offlineQueueItemDTOKeys);
+
+
+const pWAAsoMetricsDTOKeys = ["id", "appName", "platform"] as const;
+
+export interface PWAAsoMetricsDTO
+  extends Pick<PWAAsoMetrics, (typeof pWAAsoMetricsDTOKeys)[number]> {}
+
+export const toPWAAsoMetricsDTO = (pWAAsoMetrics: PWAAsoMetrics): PWAAsoMetricsDTO =>
+  pickDTOFields(pWAAsoMetrics, pWAAsoMetricsDTOKeys);
+
+
+const deviceCapabilitiesDTOKeys = ["id", "sessionId", "createdAt", "updatedAt"] as const;
+
+export interface DeviceCapabilitiesDTO
+  extends Pick<DeviceCapabilities, (typeof deviceCapabilitiesDTOKeys)[number]> {}
+
+export const toDeviceCapabilitiesDTO = (deviceCapabilities: DeviceCapabilities): DeviceCapabilitiesDTO =>
+  pickDTOFields(deviceCapabilities, deviceCapabilitiesDTOKeys);
+
+
+const deepLinkAnalyticsDTOKeys = ["id", "sessionId", "linkType"] as const;
+
+export interface DeepLinkAnalyticsDTO
+  extends Pick<DeepLinkAnalytics, (typeof deepLinkAnalyticsDTOKeys)[number]> {}
+
+export const toDeepLinkAnalyticsDTO = (deepLinkAnalytics: DeepLinkAnalytics): DeepLinkAnalyticsDTO =>
+  pickDTOFields(deepLinkAnalytics, deepLinkAnalyticsDTOKeys);
+
+
+const mobileAppConfigDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface MobileAppConfigDTO
+  extends Pick<MobileAppConfig, (typeof mobileAppConfigDTOKeys)[number]> {}
+
+export const toMobileAppConfigDTO = (mobileAppConfig: MobileAppConfig): MobileAppConfigDTO =>
+  pickDTOFields(mobileAppConfig, mobileAppConfigDTOKeys);
+
+
+const pushPersonalizationDTOKeys = ["id", "sessionId", "createdAt", "updatedAt"] as const;
+
+export interface PushPersonalizationDTO
+  extends Pick<PushPersonalization, (typeof pushPersonalizationDTOKeys)[number]> {}
+
+export const toPushPersonalizationDTO = (pushPersonalization: PushPersonalization): PushPersonalizationDTO =>
+  pickDTOFields(pushPersonalization, pushPersonalizationDTOKeys);
+
+
+const pWAPerformanceMetricsDTOKeys = ["id", "sessionId", "deviceId"] as const;
+
+export interface PWAPerformanceMetricsDTO
+  extends Pick<PWAPerformanceMetrics, (typeof pWAPerformanceMetricsDTOKeys)[number]> {}
+
+export const toPWAPerformanceMetricsDTO = (pWAPerformanceMetrics: PWAPerformanceMetrics): PWAPerformanceMetricsDTO =>
+  pickDTOFields(pWAPerformanceMetrics, pWAPerformanceMetricsDTOKeys);
+
+
+const pwaConfigDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface PwaConfigDTO
+  extends Pick<PwaConfig, (typeof pwaConfigDTOKeys)[number]> {}
+
+export const toPwaConfigDTO = (pwaConfig: PwaConfig): PwaConfigDTO =>
+  pickDTOFields(pwaConfig, pwaConfigDTOKeys);
+

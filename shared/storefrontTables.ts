@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Digital Products table - Core product catalog
 export const digitalProducts = pgTable("digital_products", {
   id: serial("id").primaryKey(),
@@ -440,22 +442,122 @@ export const insertAffiliatePartnerSchema = createInsertSchema(affiliatePartners
 });
 
 // Type exports
-export type InsertDigitalProduct = z.infer<typeof insertDigitalProductSchema>;
-export type DigitalProduct = typeof digitalProducts.$inferSelect;
+export type InsertDigitalProduct = InferInsertModel<typeof digitalProducts>;
+export type DigitalProduct = InferSelectModel<typeof digitalProducts>;
 
-export type InsertOrder = z.infer<typeof insertOrderSchema>;
-export type Order = typeof orders.$inferSelect;
+export type InsertOrder = InferInsertModel<typeof orders>;
+export type Order = InferSelectModel<typeof orders>;
 
-export type InsertPromoCode = z.infer<typeof insertPromoCodeSchema>;
-export type PromoCode = typeof promoCodes.$inferSelect;
+export type InsertPromoCode = InferInsertModel<typeof promoCodes>;
+export type PromoCode = InferSelectModel<typeof promoCodes>;
 
-export type InsertAffiliatePartner = z.infer<typeof insertAffiliatePartnerSchema>;
-export type AffiliatePartner = typeof affiliatePartners.$inferSelect;
+export type InsertAffiliatePartner = InferInsertModel<typeof affiliatePartners>;
+export type AffiliatePartner = InferSelectModel<typeof affiliatePartners>;
 
-export type ProductVariant = typeof productVariants.$inferSelect;
-export type ShoppingCart = typeof shoppingCarts.$inferSelect;
-export type ProductLicense = typeof productLicenses.$inferSelect;
-export type ProductReview = typeof productReviews.$inferSelect;
-export type AffiliateTracking = typeof affiliateTracking.$inferSelect;
-export type StorefrontAnalytics = typeof storefrontAnalytics.$inferSelect;
-export type StorefrontABTest = typeof storefrontABTests.$inferSelect;
+export type ProductVariant = InferSelectModel<typeof productVariants>;
+export type ShoppingCart = InferSelectModel<typeof shoppingCarts>;
+export type ProductLicense = InferSelectModel<typeof productLicenses>;
+export type ProductReview = InferSelectModel<typeof productReviews>;
+export type AffiliateTracking = InferSelectModel<typeof affiliateTracking>;
+export type StorefrontAnalytics = InferSelectModel<typeof storefrontAnalytics>;
+export type StorefrontABTest = InferSelectModel<typeof storefrontABTests>;
+
+// DTOs
+const digitalProductDTOKeys = ["id", "title", "slug", "status", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface DigitalProductDTO
+  extends Pick<DigitalProduct, (typeof digitalProductDTOKeys)[number]> {}
+
+export const toDigitalProductDTO = (digitalProduct: DigitalProduct): DigitalProductDTO =>
+  pickDTOFields(digitalProduct, digitalProductDTOKeys);
+
+
+const orderDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt", "email"] as const;
+
+export interface OrderDTO
+  extends Pick<Order, (typeof orderDTOKeys)[number]> {}
+
+export const toOrderDTO = (order: Order): OrderDTO =>
+  pickDTOFields(order, orderDTOKeys);
+
+
+const promoCodeDTOKeys = ["id", "name", "code", "createdAt", "updatedAt", "description"] as const;
+
+export interface PromoCodeDTO
+  extends Pick<PromoCode, (typeof promoCodeDTOKeys)[number]> {}
+
+export const toPromoCodeDTO = (promoCode: PromoCode): PromoCodeDTO =>
+  pickDTOFields(promoCode, promoCodeDTOKeys);
+
+
+const affiliatePartnerDTOKeys = ["id", "name", "status", "createdAt", "updatedAt", "email", "phone"] as const;
+
+export interface AffiliatePartnerDTO
+  extends Pick<AffiliatePartner, (typeof affiliatePartnerDTOKeys)[number]> {}
+
+export const toAffiliatePartnerDTO = (affiliatePartner: AffiliatePartner): AffiliatePartnerDTO =>
+  pickDTOFields(affiliatePartner, affiliatePartnerDTOKeys);
+
+
+const productVariantDTOKeys = ["id", "name", "createdAt", "productId"] as const;
+
+export interface ProductVariantDTO
+  extends Pick<ProductVariant, (typeof productVariantDTOKeys)[number]> {}
+
+export const toProductVariantDTO = (productVariant: ProductVariant): ProductVariantDTO =>
+  pickDTOFields(productVariant, productVariantDTOKeys);
+
+
+const shoppingCartDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface ShoppingCartDTO
+  extends Pick<ShoppingCart, (typeof shoppingCartDTOKeys)[number]> {}
+
+export const toShoppingCartDTO = (shoppingCart: ShoppingCart): ShoppingCartDTO =>
+  pickDTOFields(shoppingCart, shoppingCartDTOKeys);
+
+
+const productLicenseDTOKeys = ["id", "status", "userId", "createdAt", "updatedAt", "productId"] as const;
+
+export interface ProductLicenseDTO
+  extends Pick<ProductLicense, (typeof productLicenseDTOKeys)[number]> {}
+
+export const toProductLicenseDTO = (productLicense: ProductLicense): ProductLicenseDTO =>
+  pickDTOFields(productLicense, productLicenseDTOKeys);
+
+
+const productReviewDTOKeys = ["id", "title", "status", "userId", "createdAt", "updatedAt", "email", "productId"] as const;
+
+export interface ProductReviewDTO
+  extends Pick<ProductReview, (typeof productReviewDTOKeys)[number]> {}
+
+export const toProductReviewDTO = (productReview: ProductReview): ProductReviewDTO =>
+  pickDTOFields(productReview, productReviewDTOKeys);
+
+
+const affiliateTrackingDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt", "productId", "source"] as const;
+
+export interface AffiliateTrackingDTO
+  extends Pick<AffiliateTracking, (typeof affiliateTrackingDTOKeys)[number]> {}
+
+export const toAffiliateTrackingDTO = (affiliateTracking: AffiliateTracking): AffiliateTrackingDTO =>
+  pickDTOFields(affiliateTracking, affiliateTrackingDTOKeys);
+
+
+const storefrontAnalyticsDTOKeys = ["id", "sessionId", "userId", "createdAt", "eventType", "productId"] as const;
+
+export interface StorefrontAnalyticsDTO
+  extends Pick<StorefrontAnalytics, (typeof storefrontAnalyticsDTOKeys)[number]> {}
+
+export const toStorefrontAnalyticsDTO = (storefrontAnalytics: StorefrontAnalytics): StorefrontAnalyticsDTO =>
+  pickDTOFields(storefrontAnalytics, storefrontAnalyticsDTOKeys);
+
+
+const storefrontABTestDTOKeys = ["id", "name", "status", "createdAt", "updatedAt", "description"] as const;
+
+export interface StorefrontABTestDTO
+  extends Pick<StorefrontABTest, (typeof storefrontABTestDTOKeys)[number]> {}
+
+export const toStorefrontABTestDTO = (storefrontABTest: StorefrontABTest): StorefrontABTestDTO =>
+  pickDTOFields(storefrontABTest, storefrontABTestDTOKeys);
+

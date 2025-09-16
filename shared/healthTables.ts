@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Health & Wellness User Archetypes
 export const healthArchetypes = pgTable("health_archetypes", {
   id: serial("id").primaryKey(),
@@ -205,25 +207,125 @@ export const insertHealthQuestCompletionSchema = createInsertSchema(healthQuestC
 export const insertHealthContentPerformanceSchema = createInsertSchema(healthContentPerformance);
 
 // Type exports
-export type HealthArchetype = typeof healthArchetypes.$inferSelect;
-export type InsertHealthArchetype = z.infer<typeof insertHealthArchetypeSchema>;
-export type HealthTool = typeof healthTools.$inferSelect;
-export type InsertHealthTool = z.infer<typeof insertHealthToolSchema>;
-export type HealthToolSession = typeof healthToolSessions.$inferSelect;
-export type InsertHealthToolSession = z.infer<typeof insertHealthToolSessionSchema>;
-export type HealthQuiz = typeof healthQuizzes.$inferSelect;
-export type InsertHealthQuiz = z.infer<typeof insertHealthQuizSchema>;
-export type HealthQuizResult = typeof healthQuizResults.$inferSelect;
-export type InsertHealthQuizResult = z.infer<typeof insertHealthQuizResultSchema>;
-export type HealthContent = typeof healthContent.$inferSelect;
-export type InsertHealthContent = z.infer<typeof insertHealthContentSchema>;
-export type HealthLeadMagnet = typeof healthLeadMagnets.$inferSelect;
-export type InsertHealthLeadMagnet = z.infer<typeof insertHealthLeadMagnetSchema>;
-export type HealthGamification = typeof healthGamification.$inferSelect;
-export type InsertHealthGamification = z.infer<typeof insertHealthGamificationSchema>;
-export type HealthDailyQuest = typeof healthDailyQuests.$inferSelect;
-export type InsertHealthDailyQuest = z.infer<typeof insertHealthDailyQuestSchema>;
-export type HealthQuestCompletion = typeof healthQuestCompletions.$inferSelect;
-export type InsertHealthQuestCompletion = z.infer<typeof insertHealthQuestCompletionSchema>;
-export type HealthContentPerformance = typeof healthContentPerformance.$inferSelect;
-export type InsertHealthContentPerformance = z.infer<typeof insertHealthContentPerformanceSchema>;
+export type HealthArchetype = InferSelectModel<typeof healthArchetypes>;
+export type InsertHealthArchetype = InferInsertModel<typeof healthArchetypes>;
+export type HealthTool = InferSelectModel<typeof healthTools>;
+export type InsertHealthTool = InferInsertModel<typeof healthTools>;
+export type HealthToolSession = InferSelectModel<typeof healthToolSessions>;
+export type InsertHealthToolSession = InferInsertModel<typeof healthToolSessions>;
+export type HealthQuiz = InferSelectModel<typeof healthQuizzes>;
+export type InsertHealthQuiz = InferInsertModel<typeof healthQuizzes>;
+export type HealthQuizResult = InferSelectModel<typeof healthQuizResults>;
+export type InsertHealthQuizResult = InferInsertModel<typeof healthQuizResults>;
+export type HealthContent = InferSelectModel<typeof healthContent>;
+export type InsertHealthContent = InferInsertModel<typeof healthContent>;
+export type HealthLeadMagnet = InferSelectModel<typeof healthLeadMagnets>;
+export type InsertHealthLeadMagnet = InferInsertModel<typeof healthLeadMagnets>;
+export type HealthGamification = InferSelectModel<typeof healthGamification>;
+export type InsertHealthGamification = InferInsertModel<typeof healthGamification>;
+export type HealthDailyQuest = InferSelectModel<typeof healthDailyQuests>;
+export type InsertHealthDailyQuest = InferInsertModel<typeof healthDailyQuests>;
+export type HealthQuestCompletion = InferSelectModel<typeof healthQuestCompletions>;
+export type InsertHealthQuestCompletion = InferInsertModel<typeof healthQuestCompletions>;
+export type HealthContentPerformance = InferSelectModel<typeof healthContentPerformance>;
+export type InsertHealthContentPerformance = InferInsertModel<typeof healthContentPerformance>;
+
+// DTOs
+const healthArchetypeDTOKeys = ["id", "name", "slug", "createdAt", "updatedAt", "description"] as const;
+
+export interface HealthArchetypeDTO
+  extends Pick<HealthArchetype, (typeof healthArchetypeDTOKeys)[number]> {}
+
+export const toHealthArchetypeDTO = (healthArchetype: HealthArchetype): HealthArchetypeDTO =>
+  pickDTOFields(healthArchetype, healthArchetypeDTOKeys);
+
+
+const healthToolDTOKeys = ["id", "name", "slug", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface HealthToolDTO
+  extends Pick<HealthTool, (typeof healthToolDTOKeys)[number]> {}
+
+export const toHealthToolDTO = (healthTool: HealthTool): HealthToolDTO =>
+  pickDTOFields(healthTool, healthToolDTOKeys);
+
+
+const healthToolSessionDTOKeys = ["id", "sessionId", "userId", "createdAt", "toolId"] as const;
+
+export interface HealthToolSessionDTO
+  extends Pick<HealthToolSession, (typeof healthToolSessionDTOKeys)[number]> {}
+
+export const toHealthToolSessionDTO = (healthToolSession: HealthToolSession): HealthToolSessionDTO =>
+  pickDTOFields(healthToolSession, healthToolSessionDTOKeys);
+
+
+const healthQuizDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface HealthQuizDTO
+  extends Pick<HealthQuiz, (typeof healthQuizDTOKeys)[number]> {}
+
+export const toHealthQuizDTO = (healthQuiz: HealthQuiz): HealthQuizDTO =>
+  pickDTOFields(healthQuiz, healthQuizDTOKeys);
+
+
+const healthQuizResultDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface HealthQuizResultDTO
+  extends Pick<HealthQuizResult, (typeof healthQuizResultDTOKeys)[number]> {}
+
+export const toHealthQuizResultDTO = (healthQuizResult: HealthQuizResult): HealthQuizResultDTO =>
+  pickDTOFields(healthQuizResult, healthQuizResultDTOKeys);
+
+
+const healthContentDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt"] as const;
+
+export interface HealthContentDTO
+  extends Pick<HealthContent, (typeof healthContentDTOKeys)[number]> {}
+
+export const toHealthContentDTO = (healthContent: HealthContent): HealthContentDTO =>
+  pickDTOFields(healthContent, healthContentDTOKeys);
+
+
+const healthLeadMagnetDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface HealthLeadMagnetDTO
+  extends Pick<HealthLeadMagnet, (typeof healthLeadMagnetDTOKeys)[number]> {}
+
+export const toHealthLeadMagnetDTO = (healthLeadMagnet: HealthLeadMagnet): HealthLeadMagnetDTO =>
+  pickDTOFields(healthLeadMagnet, healthLeadMagnetDTOKeys);
+
+
+const healthGamificationDTOKeys = ["id", "sessionId", "userId", "createdAt", "updatedAt"] as const;
+
+export interface HealthGamificationDTO
+  extends Pick<HealthGamification, (typeof healthGamificationDTOKeys)[number]> {}
+
+export const toHealthGamificationDTO = (healthGamification: HealthGamification): HealthGamificationDTO =>
+  pickDTOFields(healthGamification, healthGamificationDTOKeys);
+
+
+const healthDailyQuestDTOKeys = ["id", "title", "slug", "category", "createdAt", "updatedAt", "description"] as const;
+
+export interface HealthDailyQuestDTO
+  extends Pick<HealthDailyQuest, (typeof healthDailyQuestDTOKeys)[number]> {}
+
+export const toHealthDailyQuestDTO = (healthDailyQuest: HealthDailyQuest): HealthDailyQuestDTO =>
+  pickDTOFields(healthDailyQuest, healthDailyQuestDTOKeys);
+
+
+const healthQuestCompletionDTOKeys = ["id", "sessionId", "userId", "createdAt"] as const;
+
+export interface HealthQuestCompletionDTO
+  extends Pick<HealthQuestCompletion, (typeof healthQuestCompletionDTOKeys)[number]> {}
+
+export const toHealthQuestCompletionDTO = (healthQuestCompletion: HealthQuestCompletion): HealthQuestCompletionDTO =>
+  pickDTOFields(healthQuestCompletion, healthQuestCompletionDTOKeys);
+
+
+const healthContentPerformanceDTOKeys = ["id", "createdAt", "contentId"] as const;
+
+export interface HealthContentPerformanceDTO
+  extends Pick<HealthContentPerformance, (typeof healthContentPerformanceDTOKeys)[number]> {}
+
+export const toHealthContentPerformanceDTO = (healthContentPerformance: HealthContentPerformance): HealthContentPerformanceDTO =>
+  pickDTOFields(healthContentPerformance, healthContentPerformanceDTOKeys);
+

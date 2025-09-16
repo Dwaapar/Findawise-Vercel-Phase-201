@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ===== PROGRAMMATIC BLOG SWARM TABLES =====
 
 export const blogSwarmPosts = pgTable("blog_swarm_posts", {
@@ -499,3 +501,214 @@ export const insertDataVisualizationSchema = createInsertSchema(dataVisualizatio
 export const insertPublicApiSchema = createInsertSchema(publicApis);
 export const insertApiKeySchema = createInsertSchema(apiKeys);
 export const insertPublicWidgetSchema = createInsertSchema(publicWidgets);
+
+export type TrafficGeneratorBlogSwarmPost = InferSelectModel<typeof blogSwarmPosts>;
+export type InsertTrafficGeneratorBlogSwarmPost = InferInsertModel<typeof blogSwarmPosts>;
+export type TrafficGeneratorBlogSwarmTemplate = InferSelectModel<typeof blogSwarmTemplates>;
+export type InsertTrafficGeneratorBlogSwarmTemplate = InferInsertModel<typeof blogSwarmTemplates>;
+export type TrafficGeneratorBlogSwarmKeyword = InferSelectModel<typeof blogSwarmKeywords>;
+export type InsertTrafficGeneratorBlogSwarmKeyword = InferInsertModel<typeof blogSwarmKeywords>;
+export type TrafficGeneratorBlogSwarmAnalytic = InferSelectModel<typeof blogSwarmAnalytics>;
+export type InsertTrafficGeneratorBlogSwarmAnalytic = InferInsertModel<typeof blogSwarmAnalytics>;
+export type TrafficGeneratorNewsletterCampaign = InferSelectModel<typeof newsletterCampaigns>;
+export type InsertTrafficGeneratorNewsletterCampaign = InferInsertModel<typeof newsletterCampaigns>;
+export type TrafficGeneratorNewsletterSubscriber = InferSelectModel<typeof newsletterSubscribers>;
+export type InsertTrafficGeneratorNewsletterSubscriber = InferInsertModel<typeof newsletterSubscribers>;
+export type TrafficGeneratorNewsletterAnalytic = InferSelectModel<typeof newsletterAnalytics>;
+export type InsertTrafficGeneratorNewsletterAnalytic = InferInsertModel<typeof newsletterAnalytics>;
+export type TrafficGeneratorForumCategory = InferSelectModel<typeof forumCategories>;
+export type InsertTrafficGeneratorForumCategory = InferInsertModel<typeof forumCategories>;
+export type TrafficGeneratorForumPost = InferSelectModel<typeof forumPosts>;
+export type InsertTrafficGeneratorForumPost = InferInsertModel<typeof forumPosts>;
+export type TrafficGeneratorForumAnswer = InferSelectModel<typeof forumAnswers>;
+export type InsertTrafficGeneratorForumAnswer = InferInsertModel<typeof forumAnswers>;
+export type TrafficGeneratorResourceCategory = InferSelectModel<typeof resourceCategories>;
+export type InsertTrafficGeneratorResourceCategory = InferInsertModel<typeof resourceCategories>;
+export type TrafficGeneratorResourceDirectory = InferSelectModel<typeof resourceDirectory>;
+export type InsertTrafficGeneratorResourceDirectory = InferInsertModel<typeof resourceDirectory>;
+export type TrafficGeneratorResourceReview = InferSelectModel<typeof resourceReviews>;
+export type InsertTrafficGeneratorResourceReview = InferInsertModel<typeof resourceReviews>;
+export type TrafficGeneratorDataVisualization = InferSelectModel<typeof dataVisualizations>;
+export type InsertTrafficGeneratorDataVisualization = InferInsertModel<typeof dataVisualizations>;
+export type TrafficGeneratorDataVisualizationAnalytic = InferSelectModel<typeof dataVisualizationAnalytics>;
+export type InsertTrafficGeneratorDataVisualizationAnalytic = InferInsertModel<typeof dataVisualizationAnalytics>;
+export type TrafficGeneratorPublicApi = InferSelectModel<typeof publicApis>;
+export type InsertTrafficGeneratorPublicApi = InferInsertModel<typeof publicApis>;
+export type TrafficGeneratorApiKey = InferSelectModel<typeof apiKeys>;
+export type InsertTrafficGeneratorApiKey = InferInsertModel<typeof apiKeys>;
+export type TrafficGeneratorApiUsageAnalytic = InferSelectModel<typeof apiUsageAnalytics>;
+export type InsertTrafficGeneratorApiUsageAnalytic = InferInsertModel<typeof apiUsageAnalytics>;
+export type TrafficGeneratorPublicWidget = InferSelectModel<typeof publicWidgets>;
+export type InsertTrafficGeneratorPublicWidget = InferInsertModel<typeof publicWidgets>;
+
+// DTOs
+const trafficGeneratorBlogSwarmPostDTOKeys = ["id", "title", "slug", "status", "state", "type", "category", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface TrafficGeneratorBlogSwarmPostDTO
+  extends Pick<TrafficGeneratorBlogSwarmPost, (typeof trafficGeneratorBlogSwarmPostDTOKeys)[number]> {}
+
+export const toTrafficGeneratorBlogSwarmPostDTO = (trafficGeneratorBlogSwarmPost: TrafficGeneratorBlogSwarmPost): TrafficGeneratorBlogSwarmPostDTO =>
+  pickDTOFields(trafficGeneratorBlogSwarmPost, trafficGeneratorBlogSwarmPostDTOKeys);
+
+
+const trafficGeneratorBlogSwarmTemplateDTOKeys = ["id", "name", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface TrafficGeneratorBlogSwarmTemplateDTO
+  extends Pick<TrafficGeneratorBlogSwarmTemplate, (typeof trafficGeneratorBlogSwarmTemplateDTOKeys)[number]> {}
+
+export const toTrafficGeneratorBlogSwarmTemplateDTO = (trafficGeneratorBlogSwarmTemplate: TrafficGeneratorBlogSwarmTemplate): TrafficGeneratorBlogSwarmTemplateDTO =>
+  pickDTOFields(trafficGeneratorBlogSwarmTemplate, trafficGeneratorBlogSwarmTemplateDTOKeys);
+
+
+const trafficGeneratorBlogSwarmKeywordDTOKeys = ["id", "vertical", "createdAt"] as const;
+
+export interface TrafficGeneratorBlogSwarmKeywordDTO
+  extends Pick<TrafficGeneratorBlogSwarmKeyword, (typeof trafficGeneratorBlogSwarmKeywordDTOKeys)[number]> {}
+
+export const toTrafficGeneratorBlogSwarmKeywordDTO = (trafficGeneratorBlogSwarmKeyword: TrafficGeneratorBlogSwarmKeyword): TrafficGeneratorBlogSwarmKeywordDTO =>
+  pickDTOFields(trafficGeneratorBlogSwarmKeyword, trafficGeneratorBlogSwarmKeywordDTOKeys);
+
+
+const trafficGeneratorBlogSwarmAnalyticDTOKeys = ["id", "createdAt", "postId"] as const;
+
+export interface TrafficGeneratorBlogSwarmAnalyticDTO
+  extends Pick<TrafficGeneratorBlogSwarmAnalytic, (typeof trafficGeneratorBlogSwarmAnalyticDTOKeys)[number]> {}
+
+export const toTrafficGeneratorBlogSwarmAnalyticDTO = (trafficGeneratorBlogSwarmAnalytic: TrafficGeneratorBlogSwarmAnalytic): TrafficGeneratorBlogSwarmAnalyticDTO =>
+  pickDTOFields(trafficGeneratorBlogSwarmAnalytic, trafficGeneratorBlogSwarmAnalyticDTOKeys);
+
+
+const trafficGeneratorNewsletterCampaignDTOKeys = ["id", "name", "status", "type", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface TrafficGeneratorNewsletterCampaignDTO
+  extends Pick<TrafficGeneratorNewsletterCampaign, (typeof trafficGeneratorNewsletterCampaignDTOKeys)[number]> {}
+
+export const toTrafficGeneratorNewsletterCampaignDTO = (trafficGeneratorNewsletterCampaign: TrafficGeneratorNewsletterCampaign): TrafficGeneratorNewsletterCampaignDTO =>
+  pickDTOFields(trafficGeneratorNewsletterCampaign, trafficGeneratorNewsletterCampaignDTOKeys);
+
+
+const trafficGeneratorNewsletterSubscriberDTOKeys = ["id", "status", "vertical", "language", "createdAt", "updatedAt", "email", "source"] as const;
+
+export interface TrafficGeneratorNewsletterSubscriberDTO
+  extends Pick<TrafficGeneratorNewsletterSubscriber, (typeof trafficGeneratorNewsletterSubscriberDTOKeys)[number]> {}
+
+export const toTrafficGeneratorNewsletterSubscriberDTO = (trafficGeneratorNewsletterSubscriber: TrafficGeneratorNewsletterSubscriber): TrafficGeneratorNewsletterSubscriberDTO =>
+  pickDTOFields(trafficGeneratorNewsletterSubscriber, trafficGeneratorNewsletterSubscriberDTOKeys);
+
+
+const trafficGeneratorNewsletterAnalyticDTOKeys = ["id", "state", "campaignId", "country"] as const;
+
+export interface TrafficGeneratorNewsletterAnalyticDTO
+  extends Pick<TrafficGeneratorNewsletterAnalytic, (typeof trafficGeneratorNewsletterAnalyticDTOKeys)[number]> {}
+
+export const toTrafficGeneratorNewsletterAnalyticDTO = (trafficGeneratorNewsletterAnalytic: TrafficGeneratorNewsletterAnalytic): TrafficGeneratorNewsletterAnalyticDTO =>
+  pickDTOFields(trafficGeneratorNewsletterAnalytic, trafficGeneratorNewsletterAnalyticDTOKeys);
+
+
+const trafficGeneratorForumCategoryDTOKeys = ["id", "name", "slug", "vertical", "createdAt", "updatedAt", "description"] as const;
+
+export interface TrafficGeneratorForumCategoryDTO
+  extends Pick<TrafficGeneratorForumCategory, (typeof trafficGeneratorForumCategoryDTOKeys)[number]> {}
+
+export const toTrafficGeneratorForumCategoryDTO = (trafficGeneratorForumCategory: TrafficGeneratorForumCategory): TrafficGeneratorForumCategoryDTO =>
+  pickDTOFields(trafficGeneratorForumCategory, trafficGeneratorForumCategoryDTOKeys);
+
+
+const trafficGeneratorForumPostDTOKeys = ["id", "title", "slug", "status", "type", "createdAt", "updatedAt"] as const;
+
+export interface TrafficGeneratorForumPostDTO
+  extends Pick<TrafficGeneratorForumPost, (typeof trafficGeneratorForumPostDTOKeys)[number]> {}
+
+export const toTrafficGeneratorForumPostDTO = (trafficGeneratorForumPost: TrafficGeneratorForumPost): TrafficGeneratorForumPostDTO =>
+  pickDTOFields(trafficGeneratorForumPost, trafficGeneratorForumPostDTOKeys);
+
+
+const trafficGeneratorForumAnswerDTOKeys = ["id", "createdAt", "updatedAt"] as const;
+
+export interface TrafficGeneratorForumAnswerDTO
+  extends Pick<TrafficGeneratorForumAnswer, (typeof trafficGeneratorForumAnswerDTOKeys)[number]> {}
+
+export const toTrafficGeneratorForumAnswerDTO = (trafficGeneratorForumAnswer: TrafficGeneratorForumAnswer): TrafficGeneratorForumAnswerDTO =>
+  pickDTOFields(trafficGeneratorForumAnswer, trafficGeneratorForumAnswerDTOKeys);
+
+
+const trafficGeneratorResourceCategoryDTOKeys = ["id", "name", "slug", "vertical", "createdAt", "updatedAt", "description"] as const;
+
+export interface TrafficGeneratorResourceCategoryDTO
+  extends Pick<TrafficGeneratorResourceCategory, (typeof trafficGeneratorResourceCategoryDTOKeys)[number]> {}
+
+export const toTrafficGeneratorResourceCategoryDTO = (trafficGeneratorResourceCategory: TrafficGeneratorResourceCategory): TrafficGeneratorResourceCategoryDTO =>
+  pickDTOFields(trafficGeneratorResourceCategory, trafficGeneratorResourceCategoryDTOKeys);
+
+
+const trafficGeneratorResourceDirectoryDTOKeys = ["id", "name", "slug", "status", "type", "createdAt", "updatedAt", "description"] as const;
+
+export interface TrafficGeneratorResourceDirectoryDTO
+  extends Pick<TrafficGeneratorResourceDirectory, (typeof trafficGeneratorResourceDirectoryDTOKeys)[number]> {}
+
+export const toTrafficGeneratorResourceDirectoryDTO = (trafficGeneratorResourceDirectory: TrafficGeneratorResourceDirectory): TrafficGeneratorResourceDirectoryDTO =>
+  pickDTOFields(trafficGeneratorResourceDirectory, trafficGeneratorResourceDirectoryDTOKeys);
+
+
+const trafficGeneratorResourceReviewDTOKeys = ["id", "title", "status", "createdAt", "updatedAt"] as const;
+
+export interface TrafficGeneratorResourceReviewDTO
+  extends Pick<TrafficGeneratorResourceReview, (typeof trafficGeneratorResourceReviewDTOKeys)[number]> {}
+
+export const toTrafficGeneratorResourceReviewDTO = (trafficGeneratorResourceReview: TrafficGeneratorResourceReview): TrafficGeneratorResourceReviewDTO =>
+  pickDTOFields(trafficGeneratorResourceReview, trafficGeneratorResourceReviewDTOKeys);
+
+
+const trafficGeneratorDataVisualizationDTOKeys = ["id", "title", "slug", "status", "type", "vertical", "createdAt", "description"] as const;
+
+export interface TrafficGeneratorDataVisualizationDTO
+  extends Pick<TrafficGeneratorDataVisualization, (typeof trafficGeneratorDataVisualizationDTOKeys)[number]> {}
+
+export const toTrafficGeneratorDataVisualizationDTO = (trafficGeneratorDataVisualization: TrafficGeneratorDataVisualization): TrafficGeneratorDataVisualizationDTO =>
+  pickDTOFields(trafficGeneratorDataVisualization, trafficGeneratorDataVisualizationDTOKeys);
+
+
+const trafficGeneratorDataVisualizationAnalyticDTOKeys = ["id", "createdAt", "visualizationId"] as const;
+
+export interface TrafficGeneratorDataVisualizationAnalyticDTO
+  extends Pick<TrafficGeneratorDataVisualizationAnalytic, (typeof trafficGeneratorDataVisualizationAnalyticDTOKeys)[number]> {}
+
+export const toTrafficGeneratorDataVisualizationAnalyticDTO = (trafficGeneratorDataVisualizationAnalytic: TrafficGeneratorDataVisualizationAnalytic): TrafficGeneratorDataVisualizationAnalyticDTO =>
+  pickDTOFields(trafficGeneratorDataVisualizationAnalytic, trafficGeneratorDataVisualizationAnalyticDTOKeys);
+
+
+const trafficGeneratorPublicApiDTOKeys = ["id", "name", "slug", "status", "category", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface TrafficGeneratorPublicApiDTO
+  extends Pick<TrafficGeneratorPublicApi, (typeof trafficGeneratorPublicApiDTOKeys)[number]> {}
+
+export const toTrafficGeneratorPublicApiDTO = (trafficGeneratorPublicApi: TrafficGeneratorPublicApi): TrafficGeneratorPublicApiDTO =>
+  pickDTOFields(trafficGeneratorPublicApi, trafficGeneratorPublicApiDTOKeys);
+
+
+const trafficGeneratorApiKeyDTOKeys = ["id", "name", "createdAt", "email"] as const;
+
+export interface TrafficGeneratorApiKeyDTO
+  extends Pick<TrafficGeneratorApiKey, (typeof trafficGeneratorApiKeyDTOKeys)[number]> {}
+
+export const toTrafficGeneratorApiKeyDTO = (trafficGeneratorApiKey: TrafficGeneratorApiKey): TrafficGeneratorApiKeyDTO =>
+  pickDTOFields(trafficGeneratorApiKey, trafficGeneratorApiKeyDTOKeys);
+
+
+const trafficGeneratorApiUsageAnalyticDTOKeys = ["id", "apiId", "keyId"] as const;
+
+export interface TrafficGeneratorApiUsageAnalyticDTO
+  extends Pick<TrafficGeneratorApiUsageAnalytic, (typeof trafficGeneratorApiUsageAnalyticDTOKeys)[number]> {}
+
+export const toTrafficGeneratorApiUsageAnalyticDTO = (trafficGeneratorApiUsageAnalytic: TrafficGeneratorApiUsageAnalytic): TrafficGeneratorApiUsageAnalyticDTO =>
+  pickDTOFields(trafficGeneratorApiUsageAnalytic, trafficGeneratorApiUsageAnalyticDTOKeys);
+
+
+const trafficGeneratorPublicWidgetDTOKeys = ["id", "name", "slug", "type", "category", "vertical", "createdAt", "updatedAt"] as const;
+
+export interface TrafficGeneratorPublicWidgetDTO
+  extends Pick<TrafficGeneratorPublicWidget, (typeof trafficGeneratorPublicWidgetDTOKeys)[number]> {}
+
+export const toTrafficGeneratorPublicWidgetDTO = (trafficGeneratorPublicWidget: TrafficGeneratorPublicWidget): TrafficGeneratorPublicWidgetDTO =>
+  pickDTOFields(trafficGeneratorPublicWidget, trafficGeneratorPublicWidgetDTOKeys);
+

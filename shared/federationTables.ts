@@ -1,6 +1,7 @@
 import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, real, uuid } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import { neurons } from "./schema";
+import { pickDTOFields } from "./dtoHelpers";
 
 // ===========================================
 // BILLION-DOLLAR FEDERATION BRIDGE TABLES
@@ -226,12 +227,94 @@ export const federationSecurityTokensRelations = relations(federationSecurityTok
 // TYPES
 // ===========================================
 
-export type FederationEvent = typeof federationEvents.$inferSelect;
-export type FederationSyncJob = typeof federationSyncJobs.$inferSelect;
-export type FederationConfigVersion = typeof federationConfigVersions.$inferSelect;
-export type FederationHotReload = typeof federationHotReloads.$inferSelect;
-export type FederationHealthCheck = typeof federationHealthChecks.$inferSelect;
-export type FederationConflict = typeof federationConflicts.$inferSelect;
-export type FederationMigration = typeof federationMigrations.$inferSelect;
-export type FederationAnalytic = typeof federationAnalytics.$inferSelect;
-export type FederationSecurityToken = typeof federationSecurityTokens.$inferSelect;
+export type FederationEvent = InferSelectModel<typeof federationEvents>;
+export type FederationSyncJob = InferSelectModel<typeof federationSyncJobs>;
+export type FederationConfigVersion = InferSelectModel<typeof federationConfigVersions>;
+export type FederationHotReload = InferSelectModel<typeof federationHotReloads>;
+export type FederationHealthCheck = InferSelectModel<typeof federationHealthChecks>;
+export type FederationConflict = InferSelectModel<typeof federationConflicts>;
+export type FederationMigration = InferSelectModel<typeof federationMigrations>;
+export type FederationAnalytic = InferSelectModel<typeof federationAnalytics>;
+export type FederationSecurityToken = InferSelectModel<typeof federationSecurityTokens>;
+
+// DTOs
+const federationEventDTOKeys = ["id", "neuronId", "eventType"] as const;
+
+export interface FederationEventDTO
+  extends Pick<FederationEvent, (typeof federationEventDTOKeys)[number]> {}
+
+export const toFederationEventDTO = (federationEvent: FederationEvent): FederationEventDTO =>
+  pickDTOFields(federationEvent, federationEventDTOKeys);
+
+
+const federationSyncJobDTOKeys = ["id", "status", "createdAt"] as const;
+
+export interface FederationSyncJobDTO
+  extends Pick<FederationSyncJob, (typeof federationSyncJobDTOKeys)[number]> {}
+
+export const toFederationSyncJobDTO = (federationSyncJob: FederationSyncJob): FederationSyncJobDTO =>
+  pickDTOFields(federationSyncJob, federationSyncJobDTOKeys);
+
+
+const federationConfigVersionDTOKeys = ["id", "createdAt", "version"] as const;
+
+export interface FederationConfigVersionDTO
+  extends Pick<FederationConfigVersion, (typeof federationConfigVersionDTOKeys)[number]> {}
+
+export const toFederationConfigVersionDTO = (federationConfigVersion: FederationConfigVersion): FederationConfigVersionDTO =>
+  pickDTOFields(federationConfigVersion, federationConfigVersionDTOKeys);
+
+
+const federationHotReloadDTOKeys = ["id", "status", "neuronId"] as const;
+
+export interface FederationHotReloadDTO
+  extends Pick<FederationHotReload, (typeof federationHotReloadDTOKeys)[number]> {}
+
+export const toFederationHotReloadDTO = (federationHotReload: FederationHotReload): FederationHotReloadDTO =>
+  pickDTOFields(federationHotReload, federationHotReloadDTOKeys);
+
+
+const federationHealthCheckDTOKeys = ["id", "status", "neuronId"] as const;
+
+export interface FederationHealthCheckDTO
+  extends Pick<FederationHealthCheck, (typeof federationHealthCheckDTOKeys)[number]> {}
+
+export const toFederationHealthCheckDTO = (federationHealthCheck: FederationHealthCheck): FederationHealthCheckDTO =>
+  pickDTOFields(federationHealthCheck, federationHealthCheckDTOKeys);
+
+
+const federationConflictDTOKeys = ["id", "status", "neuronId", "priority", "createdAt"] as const;
+
+export interface FederationConflictDTO
+  extends Pick<FederationConflict, (typeof federationConflictDTOKeys)[number]> {}
+
+export const toFederationConflictDTO = (federationConflict: FederationConflict): FederationConflictDTO =>
+  pickDTOFields(federationConflict, federationConflictDTOKeys);
+
+
+const federationMigrationDTOKeys = ["id", "status", "neuronId", "createdAt"] as const;
+
+export interface FederationMigrationDTO
+  extends Pick<FederationMigration, (typeof federationMigrationDTOKeys)[number]> {}
+
+export const toFederationMigrationDTO = (federationMigration: FederationMigration): FederationMigrationDTO =>
+  pickDTOFields(federationMigration, federationMigrationDTOKeys);
+
+
+const federationAnalyticDTOKeys = ["id", "neuronId", "createdAt"] as const;
+
+export interface FederationAnalyticDTO
+  extends Pick<FederationAnalytic, (typeof federationAnalyticDTOKeys)[number]> {}
+
+export const toFederationAnalyticDTO = (federationAnalytic: FederationAnalytic): FederationAnalyticDTO =>
+  pickDTOFields(federationAnalytic, federationAnalyticDTOKeys);
+
+
+const federationSecurityTokenDTOKeys = ["id", "neuronId", "createdAt"] as const;
+
+export interface FederationSecurityTokenDTO
+  extends Pick<FederationSecurityToken, (typeof federationSecurityTokenDTOKeys)[number]> {}
+
+export const toFederationSecurityTokenDTO = (federationSecurityToken: FederationSecurityToken): FederationSecurityTokenDTO =>
+  pickDTOFields(federationSecurityToken, federationSecurityTokenDTOKeys);
+

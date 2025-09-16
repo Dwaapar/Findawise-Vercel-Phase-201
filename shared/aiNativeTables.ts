@@ -2,6 +2,8 @@ import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, rea
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // ==========================================
 // AI-NATIVE OPERATING SYSTEM TABLES
 // ==========================================
@@ -206,24 +208,24 @@ export const federationTasks = pgTable("federation_tasks", {
 });
 
 // Type definitions for better TypeScript support
-export type LlmAgent = typeof llmAgents.$inferSelect;
-export type NewLlmAgent = typeof llmAgents.$inferInsert;
-export type TaskRoutingHistory = typeof taskRoutingHistory.$inferSelect;
-export type NewTaskRoutingHistory = typeof taskRoutingHistory.$inferInsert;
-export type AgentMemory = typeof agentMemories.$inferSelect;
-export type NewAgentMemory = typeof agentMemories.$inferInsert;
-export type PromptTemplate = typeof promptTemplates.$inferSelect;
-export type NewPromptTemplate = typeof promptTemplates.$inferInsert;
-export type AgenticWorkflow = typeof agenticWorkflows.$inferSelect;
-export type NewAgenticWorkflow = typeof agenticWorkflows.$inferInsert;
-export type WorkflowExecution = typeof workflowExecutions.$inferSelect;
-export type NewWorkflowExecution = typeof workflowExecutions.$inferInsert;
-export type RouterLearning = typeof routerLearning.$inferSelect;
-export type NewRouterLearning = typeof routerLearning.$inferInsert;
-export type AgentUsageTracking = typeof agentUsageTracking.$inferSelect;
-export type NewAgentUsageTracking = typeof agentUsageTracking.$inferInsert;
-export type FederationTask = typeof federationTasks.$inferSelect;
-export type NewFederationTask = typeof federationTasks.$inferInsert;
+export type LlmAgent = InferSelectModel<typeof llmAgents>;
+export type NewLlmAgent = InferInsertModel<typeof llmAgents>;
+export type TaskRoutingHistory = InferSelectModel<typeof taskRoutingHistory>;
+export type NewTaskRoutingHistory = InferInsertModel<typeof taskRoutingHistory>;
+export type AgentMemory = InferSelectModel<typeof agentMemories>;
+export type NewAgentMemory = InferInsertModel<typeof agentMemories>;
+export type PromptTemplate = InferSelectModel<typeof promptTemplates>;
+export type NewPromptTemplate = InferInsertModel<typeof promptTemplates>;
+export type AgenticWorkflow = InferSelectModel<typeof agenticWorkflows>;
+export type NewAgenticWorkflow = InferInsertModel<typeof agenticWorkflows>;
+export type WorkflowExecution = InferSelectModel<typeof workflowExecutions>;
+export type NewWorkflowExecution = InferInsertModel<typeof workflowExecutions>;
+export type RouterLearning = InferSelectModel<typeof routerLearning>;
+export type NewRouterLearning = InferInsertModel<typeof routerLearning>;
+export type AgentUsageTracking = InferSelectModel<typeof agentUsageTracking>;
+export type NewAgentUsageTracking = InferInsertModel<typeof agentUsageTracking>;
+export type FederationTask = InferSelectModel<typeof federationTasks>;
+export type NewFederationTask = InferInsertModel<typeof federationTasks>;
 
 // Schema validations
 export const llmAgentSchema = createInsertSchema(llmAgents);
@@ -235,3 +237,85 @@ export const workflowExecutionSchema = createInsertSchema(workflowExecutions);
 export const routerLearningSchema = createInsertSchema(routerLearning);
 export const agentUsageTrackingSchema = createInsertSchema(agentUsageTracking);
 export const federationTaskSchema = createInsertSchema(federationTasks);
+
+// DTOs
+const llmAgentDTOKeys = ["id", "name", "status", "createdAt", "updatedAt", "provider"] as const;
+
+export interface LlmAgentDTO
+  extends Pick<LlmAgent, (typeof llmAgentDTOKeys)[number]> {}
+
+export const toLlmAgentDTO = (llmAgent: LlmAgent): LlmAgentDTO =>
+  pickDTOFields(llmAgent, llmAgentDTOKeys);
+
+
+const taskRoutingHistoryDTOKeys = ["id", "taskId", "taskType"] as const;
+
+export interface TaskRoutingHistoryDTO
+  extends Pick<TaskRoutingHistory, (typeof taskRoutingHistoryDTOKeys)[number]> {}
+
+export const toTaskRoutingHistoryDTO = (taskRoutingHistory: TaskRoutingHistory): TaskRoutingHistoryDTO =>
+  pickDTOFields(taskRoutingHistory, taskRoutingHistoryDTOKeys);
+
+
+const agentMemoryDTOKeys = ["id", "createdAt", "memoryId"] as const;
+
+export interface AgentMemoryDTO
+  extends Pick<AgentMemory, (typeof agentMemoryDTOKeys)[number]> {}
+
+export const toAgentMemoryDTO = (agentMemory: AgentMemory): AgentMemoryDTO =>
+  pickDTOFields(agentMemory, agentMemoryDTOKeys);
+
+
+const promptTemplateDTOKeys = ["id", "name", "status", "category", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface PromptTemplateDTO
+  extends Pick<PromptTemplate, (typeof promptTemplateDTOKeys)[number]> {}
+
+export const toPromptTemplateDTO = (promptTemplate: PromptTemplate): PromptTemplateDTO =>
+  pickDTOFields(promptTemplate, promptTemplateDTOKeys);
+
+
+const agenticWorkflowDTOKeys = ["id", "name", "status", "category", "createdAt", "updatedAt", "description", "version"] as const;
+
+export interface AgenticWorkflowDTO
+  extends Pick<AgenticWorkflow, (typeof agenticWorkflowDTOKeys)[number]> {}
+
+export const toAgenticWorkflowDTO = (agenticWorkflow: AgenticWorkflow): AgenticWorkflowDTO =>
+  pickDTOFields(agenticWorkflow, agenticWorkflowDTOKeys);
+
+
+const workflowExecutionDTOKeys = ["id", "status", "userId", "workflowId"] as const;
+
+export interface WorkflowExecutionDTO
+  extends Pick<WorkflowExecution, (typeof workflowExecutionDTOKeys)[number]> {}
+
+export const toWorkflowExecutionDTO = (workflowExecution: WorkflowExecution): WorkflowExecutionDTO =>
+  pickDTOFields(workflowExecution, workflowExecutionDTOKeys);
+
+
+const routerLearningDTOKeys = ["id", "learningId", "taskType"] as const;
+
+export interface RouterLearningDTO
+  extends Pick<RouterLearning, (typeof routerLearningDTOKeys)[number]> {}
+
+export const toRouterLearningDTO = (routerLearning: RouterLearning): RouterLearningDTO =>
+  pickDTOFields(routerLearning, routerLearningDTOKeys);
+
+
+const agentUsageTrackingDTOKeys = ["id", "userId", "trackingId"] as const;
+
+export interface AgentUsageTrackingDTO
+  extends Pick<AgentUsageTracking, (typeof agentUsageTrackingDTOKeys)[number]> {}
+
+export const toAgentUsageTrackingDTO = (agentUsageTracking: AgentUsageTracking): AgentUsageTrackingDTO =>
+  pickDTOFields(agentUsageTracking, agentUsageTrackingDTOKeys);
+
+
+const federationTaskDTOKeys = ["id", "status", "priority", "createdAt"] as const;
+
+export interface FederationTaskDTO
+  extends Pick<FederationTask, (typeof federationTaskDTOKeys)[number]> {}
+
+export const toFederationTaskDTO = (federationTask: FederationTask): FederationTaskDTO =>
+  pickDTOFields(federationTask, federationTaskDTOKeys);
+

@@ -1,3 +1,5 @@
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pickDTOFields } from "./dtoHelpers";
 // Advanced Compliance/Privacy/Consent Engine - Database Tables
 import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, decimal, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
@@ -453,26 +455,99 @@ export const insertComplianceRbacManagementSchema = createInsertSchema(complianc
 });
 
 // Type exports
-export type GlobalConsentManagement = typeof globalConsentManagement.$inferSelect;
-export type InsertGlobalConsentManagement = z.infer<typeof insertGlobalConsentManagementSchema>;
+export type GlobalConsentManagement = InferSelectModel<typeof globalConsentManagement>;
+export type InsertGlobalConsentManagement = InferInsertModel<typeof globalConsentManagement>;
 
-export type PrivacyPolicyManagement = typeof privacyPolicyManagement.$inferSelect;
-export type InsertPrivacyPolicyManagement = z.infer<typeof insertPrivacyPolicyManagementSchema>;
+export type PrivacyPolicyManagement = InferSelectModel<typeof privacyPolicyManagement>;
+export type InsertPrivacyPolicyManagement = InferInsertModel<typeof privacyPolicyManagement>;
 
-export type UserDataControlRequests = typeof userDataControlRequests.$inferSelect;
-export type InsertUserDataControlRequests = z.infer<typeof insertUserDataControlRequestsSchema>;
+export type UserDataControlRequests = InferSelectModel<typeof userDataControlRequests>;
+export type InsertUserDataControlRequests = InferInsertModel<typeof userDataControlRequests>;
 
-export type AffiliateComplianceManagement = typeof affiliateComplianceManagement.$inferSelect;
-export type InsertAffiliateComplianceManagement = z.infer<typeof insertAffiliateComplianceManagementSchema>;
+export type AffiliateComplianceManagement = InferSelectModel<typeof affiliateComplianceManagement>;
+export type InsertAffiliateComplianceManagement = InferInsertModel<typeof affiliateComplianceManagement>;
 
-export type ComplianceAuditSystem = typeof complianceAuditSystem.$inferSelect;
-export type InsertComplianceAuditSystem = z.infer<typeof insertComplianceAuditSystemSchema>;
+export type ComplianceAuditSystem = InferSelectModel<typeof complianceAuditSystem>;
+export type InsertComplianceAuditSystem = InferInsertModel<typeof complianceAuditSystem>;
 
-export type GeoRestrictionManagement = typeof geoRestrictionManagement.$inferSelect;
-export type InsertGeoRestrictionManagement = z.infer<typeof insertGeoRestrictionManagementSchema>;
+export type GeoRestrictionManagement = InferSelectModel<typeof geoRestrictionManagement>;
+export type InsertGeoRestrictionManagement = InferInsertModel<typeof geoRestrictionManagement>;
 
-export type ComplianceRbacManagement = typeof complianceRbacManagement.$inferSelect;
-export type InsertComplianceRbacManagement = z.infer<typeof insertComplianceRbacManagementSchema>;
+export type ComplianceRbacManagement = InferSelectModel<typeof complianceRbacManagement>;
+export type InsertComplianceRbacManagement = InferInsertModel<typeof complianceRbacManagement>;
 
-export type ModerationRules = typeof moderationRules.$inferSelect;
-export type InsertModerationRules = z.infer<typeof insertModerationRulesSchema>;
+export type ModerationRules = InferSelectModel<typeof moderationRules>;
+export type InsertModerationRules = InferInsertModel<typeof moderationRules>;
+
+// DTOs
+const globalConsentManagementDTOKeys = ["id", "sessionId", "userId", "region", "country", "createdAt", "updatedAt"] as const;
+
+export interface GlobalConsentManagementDTO
+  extends Pick<GlobalConsentManagement, (typeof globalConsentManagementDTOKeys)[number]> {}
+
+export const toGlobalConsentManagementDTO = (globalConsentManagement: GlobalConsentManagement): GlobalConsentManagementDTO =>
+  pickDTOFields(globalConsentManagement, globalConsentManagementDTOKeys);
+
+
+const privacyPolicyManagementDTOKeys = ["id", "title", "status", "vertical", "country", "language", "createdAt", "updatedAt"] as const;
+
+export interface PrivacyPolicyManagementDTO
+  extends Pick<PrivacyPolicyManagement, (typeof privacyPolicyManagementDTOKeys)[number]> {}
+
+export const toPrivacyPolicyManagementDTO = (privacyPolicyManagement: PrivacyPolicyManagement): PrivacyPolicyManagementDTO =>
+  pickDTOFields(privacyPolicyManagement, privacyPolicyManagementDTOKeys);
+
+
+const userDataControlRequestsDTOKeys = ["id", "status", "userId", "priority", "createdAt", "updatedAt", "description", "email"] as const;
+
+export interface UserDataControlRequestsDTO
+  extends Pick<UserDataControlRequests, (typeof userDataControlRequestsDTOKeys)[number]> {}
+
+export const toUserDataControlRequestsDTO = (userDataControlRequests: UserDataControlRequests): UserDataControlRequestsDTO =>
+  pickDTOFields(userDataControlRequests, userDataControlRequestsDTOKeys);
+
+
+const affiliateComplianceManagementDTOKeys = ["id", "status", "createdAt", "updatedAt"] as const;
+
+export interface AffiliateComplianceManagementDTO
+  extends Pick<AffiliateComplianceManagement, (typeof affiliateComplianceManagementDTOKeys)[number]> {}
+
+export const toAffiliateComplianceManagementDTO = (affiliateComplianceManagement: AffiliateComplianceManagement): AffiliateComplianceManagementDTO =>
+  pickDTOFields(affiliateComplianceManagement, affiliateComplianceManagementDTOKeys);
+
+
+const complianceAuditSystemDTOKeys = ["id", "status", "vertical", "country", "createdAt", "updatedAt"] as const;
+
+export interface ComplianceAuditSystemDTO
+  extends Pick<ComplianceAuditSystem, (typeof complianceAuditSystemDTOKeys)[number]> {}
+
+export const toComplianceAuditSystemDTO = (complianceAuditSystem: ComplianceAuditSystem): ComplianceAuditSystemDTO =>
+  pickDTOFields(complianceAuditSystem, complianceAuditSystemDTOKeys);
+
+
+const geoRestrictionManagementDTOKeys = ["id", "status", "ruleId", "priority", "createdAt", "updatedAt"] as const;
+
+export interface GeoRestrictionManagementDTO
+  extends Pick<GeoRestrictionManagement, (typeof geoRestrictionManagementDTOKeys)[number]> {}
+
+export const toGeoRestrictionManagementDTO = (geoRestrictionManagement: GeoRestrictionManagement): GeoRestrictionManagementDTO =>
+  pickDTOFields(geoRestrictionManagement, geoRestrictionManagementDTOKeys);
+
+
+const complianceRbacManagementDTOKeys = ["id", "status", "userId", "createdAt", "updatedAt"] as const;
+
+export interface ComplianceRbacManagementDTO
+  extends Pick<ComplianceRbacManagement, (typeof complianceRbacManagementDTOKeys)[number]> {}
+
+export const toComplianceRbacManagementDTO = (complianceRbacManagement: ComplianceRbacManagement): ComplianceRbacManagementDTO =>
+  pickDTOFields(complianceRbacManagement, complianceRbacManagementDTOKeys);
+
+
+const moderationRulesDTOKeys = ["id", "name", "type", "severity", "createdAt"] as const;
+
+export interface ModerationRulesDTO
+  extends Pick<ModerationRules, (typeof moderationRulesDTOKeys)[number]> {}
+
+export const toModerationRulesDTO = (moderationRules: ModerationRules): ModerationRulesDTO =>
+  pickDTOFields(moderationRules, moderationRulesDTOKeys);
+
