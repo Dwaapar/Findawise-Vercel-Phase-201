@@ -106,7 +106,7 @@
     "isomorphic-dompurify": "^2.26.0",
     "jsdom": "^26.1.0",
     "jsonwebtoken": "^9.0.2",
-    "lucide-react": "^0.453.0",
+    "lucide-react": "^0.542.0",
     "marked": "^16.1.1",
     "memoizee": "^0.4.17",
     "memorystore": "^1.6.7",
